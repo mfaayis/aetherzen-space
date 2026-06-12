@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 import dotenv from "dotenv";
-import { createServer as createViteServer } from "vite";
+
 import { GoogleGenAI, Type } from "@google/genai";
 
 dotenv.config();
@@ -436,13 +436,14 @@ app.post("/api/advisor/counselor-chat", async (req, res) => {
 
 // Configure Vite integration
 async function startServer() {
-  if (process.env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
     });
     app.use(vite.middlewares);
-  } else {
+  } else if (!process.env.VERCEL) {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
     app.get("*", (req, res) => {
@@ -450,9 +451,13 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+  if (!process.env.VERCEL) {
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  }
 }
 
 startServer();
+
+export default app;
