@@ -13,30 +13,30 @@
    ══════════════════════════════════════════════════ */
 
 :root {
-  /* Base: pure black */
-  --ns-bg:           #000000;
-  --ns-bg-2:         #070a13;
+  /* Base: slate 950 */
+  --ns-bg:           #020617;
+  --ns-bg-2:         #0f172a;
   --ns-surface:      rgba(255,255,255,0.03);
   --ns-surface-2:    rgba(255,255,255,0.06);
   --ns-border:       rgba(255,255,255,0.1);
   --ns-border-2:     rgba(255,255,255,0.06);
-  --ns-text:         #ffffff;
-  --ns-text-muted:   rgba(255,255,255,0.55);
-  --ns-text-dim:     rgba(255,255,255,0.25);
+  --ns-text:         #f8fafc;
+  --ns-text-muted:   #94a3b8;
+  --ns-text-dim:     #475569;
 
-  /* Accent — locked to Cyan (#00f2fe) */
-  --color-accent:         #00f2fe;
-  --color-accent-rgb:     0, 242, 254;
-  --color-glow:           rgba(0, 242, 254, 0.18);
-  --color-accent-hover:   #00c6ff;
-  --color-accent-transparent: rgba(0,242,254,0.07);
+  /* Accent — Indigo */
+  --color-accent:         #6366f1;
+  --color-accent-rgb:     99, 102, 241;
+  --color-glow:           rgba(99, 102, 241, 0.18);
+  --color-accent-hover:   #818cf8;
+  --color-accent-transparent: rgba(99, 102, 241, 0.1);
   --color-gradient-a:     #ffffff;
-  --color-gradient-b:     #a5f3fc;
-  --color-gradient-c:     #00f2fe;
+  --color-gradient-b:     #c7d2fe;
+  --color-gradient-c:     #6366f1;
 
   /* Spotlight */
-  --spotlight-color: rgba(0,242,254,0.08);
-  --spotlight-mid:   rgba(0,242,254,0.03);
+  --spotlight-color: rgba(99, 102, 241, 0.08);
+  --spotlight-mid:   rgba(99, 102, 241, 0.03);
 }
 
 /* ── Theme Tokens ── */
