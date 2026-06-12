@@ -126,8 +126,6 @@
    ══════════════════════════════════════════════════ */
 
 /* Hide the native cursor everywhere */
-*, *::before, *::after { cursor: none !important; }
-
 /* ── Colour glow orb (the moving background colour) ── */
 .ns-cursor-glow { }
 .ns-cursor-glow.ns-cursor-hover {
