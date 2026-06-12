@@ -13,30 +13,30 @@
    ══════════════════════════════════════════════════ */
 
 :root {
-  /* Base: slate 950 */
-  --ns-bg:           #020617;
-  --ns-bg-2:         #0f172a;
-  --ns-surface:      rgba(255,255,255,0.03);
-  --ns-surface-2:    rgba(255,255,255,0.06);
-  --ns-border:       rgba(255,255,255,0.1);
-  --ns-border-2:     rgba(255,255,255,0.06);
-  --ns-text:         #f8fafc;
-  --ns-text-muted:   #94a3b8;
-  --ns-text-dim:     #475569;
+  /* Base: premium light */
+  --ns-bg:           #f8fafc;
+  --ns-bg-2:         #ffffff;
+  --ns-surface:      rgba(0,0,0,0.03);
+  --ns-surface-2:    rgba(0,0,0,0.06);
+  --ns-border:       rgba(0,0,0,0.08);
+  --ns-border-2:     rgba(0,0,0,0.04);
+  --ns-text:         #0f172a;
+  --ns-text-muted:   #475569;
+  --ns-text-dim:     #94a3b8;
 
-  /* Accent — Indigo */
-  --color-accent:         #6366f1;
-  --color-accent-rgb:     99, 102, 241;
-  --color-glow:           rgba(99, 102, 241, 0.18);
-  --color-accent-hover:   #818cf8;
-  --color-accent-transparent: rgba(99, 102, 241, 0.1);
+  /* Accent — Premium Royal Blue */
+  --color-accent:         #2563eb;
+  --color-accent-rgb:     37, 99, 235;
+  --color-glow:           rgba(37, 99, 235, 0.12);
+  --color-accent-hover:   #1d4ed8;
+  --color-accent-transparent: rgba(37, 99, 235, 0.08);
   --color-gradient-a:     #ffffff;
-  --color-gradient-b:     #c7d2fe;
-  --color-gradient-c:     #6366f1;
+  --color-gradient-b:     #bfdbfe;
+  --color-gradient-c:     #2563eb;
 
   /* Spotlight */
-  --spotlight-color: rgba(99, 102, 241, 0.08);
-  --spotlight-mid:   rgba(99, 102, 241, 0.03);
+  --spotlight-color: rgba(37, 99, 235, 0.06);
+  --spotlight-mid:   rgba(37, 99, 235, 0.02);
 }
 
 /* ── Theme Tokens ── */

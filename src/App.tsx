@@ -27,21 +27,21 @@ export default function App() {
   return (
     <div
       data-theme="indigo"
-      style={{ minHeight: "100vh", background: "#000", color: "#fff", fontFamily: "'Epilogue', system-ui, sans-serif", display: "flex", flexDirection: "column" }}
+      style={{ minHeight: "100vh", background: "var(--ns-bg)", color: "var(--ns-text)", fontFamily: "'Epilogue', system-ui, sans-serif", display: "flex", flexDirection: "column" }}
     >
       <CustomCursor />
 
       {/* ══════════════════════════ NAVBAR ══════════════════════════ */}
-      <header style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(0,0,0,0.72)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
+      <header style={{ position: "sticky", top: 0, zIndex: 100, background: "var(--ns-bg)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", borderBottom: "1px solid var(--ns-border)" }}>
         <nav style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
 
           {/* Logo */}
           <Link to="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", flexShrink: 0 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 9, padding: "6px 14px 6px 10px", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "9999px", background: "rgba(255,255,255,0.04)" }}>
-              <div style={{ width: 26, height: 26, borderRadius: "50%", background: "rgba(0,242,254,0.1)", border: "1px solid rgba(0,242,254,0.2)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <GraduationCap size={13} color="#00f2fe" />
+            <div style={{ display: "flex", alignItems: "center", gap: 9, padding: "6px 14px 6px 10px", border: "1px solid var(--ns-border)", borderRadius: "9999px", background: "var(--ns-surface)" }}>
+              <div style={{ width: 26, height: 26, borderRadius: "50%", background: "var(--color-accent-transparent)", border: "1px solid var(--spotlight-color)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <GraduationCap size={13} color="var(--color-accent)" />
               </div>
-              <span style={{ fontWeight: 800, fontSize: "0.9rem", letterSpacing: "-0.01em", color: "#fff" }}>Margdarshak.</span>
+              <span style={{ fontWeight: 800, fontSize: "0.9rem", letterSpacing: "-0.01em", color: "var(--ns-text)" }}>Margdarshak.</span>
             </div>
           </Link>
 
@@ -55,16 +55,16 @@ export default function App() {
                   to={item.path}
                   style={{
                     padding: "6px 14px", borderRadius: "9999px", textDecoration: "none",
-                    border: isActive ? "1px solid rgba(255,255,255,0.1)" : "1px solid transparent",
-                    background: isActive ? "rgba(255,255,255,0.05)" : "transparent",
-                    color: isActive ? "#fff" : "rgba(255,255,255,0.5)",
+                    border: isActive ? "1px solid var(--ns-border)" : "1px solid transparent",
+                    background: isActive ? "var(--ns-surface)" : "transparent",
+                    color: isActive ? "var(--ns-text)" : "var(--ns-text-muted)",
                     fontSize: "0.78rem", fontWeight: 500,
                     transition: "all 0.2s ease",
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.color = "#fff"; e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; }}
+                  onMouseEnter={e => { e.currentTarget.style.color = "var(--ns-text)"; e.currentTarget.style.background = "var(--ns-surface)"; e.currentTarget.style.borderColor = "var(--ns-border)"; }}
                   onMouseLeave={e => {
                     if (!isActive) {
-                      e.currentTarget.style.color = "rgba(255,255,255,0.5)"; e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "transparent";
+                      e.currentTarget.style.color = "var(--ns-text-muted)"; e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "transparent";
                     }
                   }}
                 >
@@ -80,13 +80,13 @@ export default function App() {
             style={{
               textDecoration: "none",
               padding: "8px 22px", borderRadius: "9999px",
-              background: "rgba(0,242,254,0.1)", border: "1px solid rgba(0,242,254,0.35)",
-              color: "#00f2fe", fontSize: "0.78rem", fontWeight: 700,
+              background: "var(--color-accent-transparent)", border: "1px solid var(--spotlight-color)",
+              color: "var(--color-accent)", fontSize: "0.78rem", fontWeight: 700,
               transition: "all 0.25s ease", flexShrink: 0,
               fontFamily: "'Epilogue', sans-serif",
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = "rgba(0,242,254,0.18)"; e.currentTarget.style.boxShadow = "0 0 20px rgba(0,242,254,0.18)"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = "rgba(0,242,254,0.1)"; e.currentTarget.style.boxShadow = "none"; }}
+            onMouseEnter={e => { e.currentTarget.style.background = "var(--spotlight-color)"; e.currentTarget.style.boxShadow = "0 0 20px var(--spotlight-color)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "var(--color-accent-transparent)"; e.currentTarget.style.boxShadow = "none"; }}
           >
             Start Assessment
           </Link>
@@ -105,12 +105,12 @@ export default function App() {
       </main>
 
       {/* ══════════════════════════ FOOTER ══════════════════════════ */}
-      <footer style={{ padding: "52px 28px 40px", borderTop: "1px solid rgba(255,255,255,0.07)", marginTop: "auto" }}>
+      <footer style={{ padding: "52px 28px 40px", borderTop: "1px solid var(--ns-border)", marginTop: "auto" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 40, marginBottom: 48 }}>
             <div>
-              <div style={{ fontWeight: 800, fontSize: "1.1rem", letterSpacing: "-0.02em", color: "#fff", marginBottom: 10 }}>Margdarshak.</div>
-              <p style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.28)", lineHeight: 1.65, maxWidth: 280 }}>
+              <div style={{ fontWeight: 800, fontSize: "1.1rem", letterSpacing: "-0.02em", color: "var(--ns-text)", marginBottom: 10 }}>Margdarshak.</div>
+              <p style={{ fontSize: "0.75rem", color: "var(--ns-text-muted)", lineHeight: 1.65, maxWidth: 280 }}>
                 India's national undergraduate career guidance platform. Built for students from every stream and background.
               </p>
             </div>
@@ -120,14 +120,14 @@ export default function App() {
                 { heading: "Exams",    links: ["JEE Advanced", "NEET-UG", "CUET", "CLAT", "IPMAT"] },
               ].map(col => (
                 <div key={col.heading}>
-                  <div style={{ fontSize: "0.6rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: "rgba(255,255,255,0.22)", marginBottom: 16 }}>
+                  <div style={{ fontSize: "0.6rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: "var(--ns-text-dim)", marginBottom: 16 }}>
                     {col.heading}
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 11 }}>
                     {col.links.map(l => (
-                      <a key={l} href="#" style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.4)", textDecoration: "none", transition: "color 0.2s" }}
-                        onMouseEnter={e => (e.currentTarget.style.color = "#fff")}
-                        onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
+                      <a key={l} href="#" style={{ fontSize: "0.78rem", color: "var(--ns-text-muted)", textDecoration: "none", transition: "color 0.2s" }}
+                        onMouseEnter={e => (e.currentTarget.style.color = "var(--ns-text)")}
+                        onMouseLeave={e => (e.currentTarget.style.color = "var(--ns-text-muted)")}
                       >{l}</a>
                     ))}
                   </div>
@@ -135,10 +135,10 @@ export default function App() {
               ))}
             </div>
           </div>
-          <div className="ns-divider" style={{ marginBottom: 22 }} />
+          <div className="ns-divider" style={{ marginBottom: 22, background: "var(--ns-border)" }} />
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
-            <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.18)", fontFamily: "'JetBrains Mono', monospace" }}>© 2026 MARGDARSHAK · ALL RIGHTS RESERVED</span>
-            <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.18)", fontFamily: "'JetBrains Mono', monospace" }}>MARGDARSHAK · CAREER INTELLIGENCE PLATFORM</span>
+            <span style={{ fontSize: "0.65rem", color: "var(--ns-text-dim)", fontFamily: "'JetBrains Mono', monospace" }}>© 2026 MARGDARSHAK · ALL RIGHTS RESERVED</span>
+            <span style={{ fontSize: "0.65rem", color: "var(--ns-text-dim)", fontFamily: "'JetBrains Mono', monospace" }}>MARGDARSHAK · CAREER INTELLIGENCE PLATFORM</span>
           </div>
         </div>
       </footer>

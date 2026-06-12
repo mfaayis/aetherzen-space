@@ -20,8 +20,8 @@ const DIFFICULTY_COLOR: Record<string, string> = {
 };
 
 const card: React.CSSProperties = {
-  background: "rgba(255,255,255,0.025)",
-  border: "1px solid rgba(255,255,255,0.08)",
+  background: "var(--ns-surface)",
+  border: "1px solid var(--ns-border)",
   borderRadius: "1.25rem",
   overflow: "hidden",
 };
@@ -55,30 +55,30 @@ export default function CourseDirectory() {
         position: "relative", overflow: "hidden",
         borderRadius: "1.25rem",
         padding: "32px 32px",
-        background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 60%, transparent 100%)",
-        border: "1px solid rgba(255,255,255,0.12)",
+        background: "var(--ns-surface)",
+        border: "1px solid var(--ns-border)",
       }}>
-        <div style={{ position: "absolute", top: "-30%", right: "-10%", width: "50%", height: "160%", background: "radial-gradient(ellipse, rgba(255,255,255,0.04) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "-30%", right: "-10%", width: "50%", height: "160%", background: "radial-gradient(ellipse, var(--ns-border-hover) 0%, transparent 70%)", pointerEvents: "none" }} />
         <div style={{ position: "relative" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "4px 14px", borderRadius: "9999px", border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.06)", fontSize: "0.62rem", color: "rgba(255,255,255,0.6)", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 14 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "4px 14px", borderRadius: "9999px", border: "1px solid var(--ns-border)", background: "var(--ns-surface-2)", fontSize: "0.62rem", color: "var(--ns-text-muted)", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 14 }}>
             <span style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--color-accent)", display: "inline-block" }} />
             Academic Course Finder
           </div>
-          <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", fontWeight: 800, letterSpacing: "-0.03em", color: "#fff", lineHeight: 1.1, marginBottom: 10 }}>
+          <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", fontWeight: 800, letterSpacing: "-0.03em", color: "var(--ns-text)", lineHeight: 1.1, marginBottom: 10 }}>
             Indian Academic<br />
-            <em style={{ fontWeight: 300, fontSize: "0.85em", color: "rgba(255,255,255,0.5)", fontStyle: "italic" }}>Course Directory</em>
+            <em style={{ fontWeight: 500, fontSize: "0.85em", color: "var(--ns-text-muted)", fontStyle: "italic" }}>Course Directory</em>
           </h2>
-          <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.35)", maxWidth: 560, lineHeight: 1.7 }}>
+          <p style={{ fontSize: "0.78rem", color: "var(--ns-text-dim)", maxWidth: 560, lineHeight: 1.7 }}>
             Cataloging durations, eligibility, starting packages, and entry methods for official public & private UG degrees in India.
           </p>
         </div>
       </div>
 
       {/* ── Controls ── */}
-      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", padding: "16px 20px", borderRadius: "1rem", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.02)" }}>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", padding: "16px 20px", borderRadius: "1rem", border: "1px solid var(--ns-border)", background: "var(--ns-surface)" }}>
         {/* Search */}
         <div style={{ position: "relative", flex: 1, minWidth: 200 }}>
-          <Search size={13} style={{ position: "absolute", left: 13, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.25)", pointerEvents: "none" }} />
+          <Search size={13} style={{ position: "absolute", left: 13, top: "50%", transform: "translateY(-50%)", color: "var(--ns-text-muted)", pointerEvents: "none" }} />
           <input
             id="course-search-field"
             type="text"
@@ -87,13 +87,13 @@ export default function CourseDirectory() {
             placeholder="Search by course, career, or keyword…"
             style={{
               width: "100%", paddingLeft: 36, paddingRight: 14, paddingTop: 10, paddingBottom: 10,
-              background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: "0.75rem", fontSize: "0.75rem", color: "#fff",
+              background: "var(--ns-surface-2)", border: "1px solid var(--ns-border)",
+              borderRadius: "0.75rem", fontSize: "0.75rem", color: "var(--ns-text)",
               fontFamily: "'Epilogue', sans-serif", outline: "none",
               transition: "border-color 0.2s ease",
             }}
-            onFocus={e => (e.currentTarget.style.borderColor = "rgba(var(--color-accent-rgb,255,255,255),0.4)")}
-            onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)")}
+            onFocus={e => (e.currentTarget.style.borderColor = "var(--spotlight-color)")}
+            onBlur={e => (e.currentTarget.style.borderColor = "var(--ns-border)")}
           />
         </div>
         {/* Stream filter pills */}
@@ -104,9 +104,9 @@ export default function CourseDirectory() {
               onClick={() => setStream(f.id)}
               style={{
                 padding: "7px 14px", borderRadius: "9999px",
-                border: stream === f.id ? "1px solid rgba(var(--color-accent-rgb,255,255,255),0.45)" : "1px solid rgba(255,255,255,0.08)",
-                background: stream === f.id ? "rgba(var(--color-accent-rgb,255,255,255),0.08)" : "transparent",
-                color: stream === f.id ? "var(--color-accent,#fff)" : "rgba(255,255,255,0.4)",
+                border: stream === f.id ? "1px solid var(--color-accent-transparent)" : "1px solid var(--ns-border)",
+                background: stream === f.id ? "var(--color-accent-transparent)" : "transparent",
+                color: stream === f.id ? "var(--color-accent)" : "var(--ns-text-muted)",
                 fontSize: "0.65rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700,
                 textTransform: "uppercase", letterSpacing: "0.08em", cursor: "pointer",
                 transition: "all 0.2s ease",
@@ -119,9 +119,9 @@ export default function CourseDirectory() {
       {/* ── Course Grid ── */}
       {courses.length === 0 ? (
         <div style={{ ...card, padding: "60px 32px", textAlign: "center" }}>
-          <HelpCircle size={28} color="rgba(255,255,255,0.2)" style={{ margin: "0 auto 14px" }} />
-          <h4 style={{ fontSize: "0.95rem", fontWeight: 700, color: "rgba(255,255,255,0.5)", marginBottom: 8 }}>No courses matched</h4>
-          <p style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.2)" }}>Try "CSE", "Finance", "Design" or reset the stream filter.</p>
+          <HelpCircle size={28} color="var(--ns-text-muted)" style={{ margin: "0 auto 14px" }} />
+          <h4 style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--ns-text)", marginBottom: 8 }}>No courses matched</h4>
+          <p style={{ fontSize: "0.72rem", color: "var(--ns-text-muted)" }}>Try "CSE", "Finance", "Design" or reset the stream filter.</p>
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 48 }}>
@@ -129,7 +129,7 @@ export default function CourseDirectory() {
             const catCourses = courses.filter(c => c.streamCategory === category);
             return (
               <div key={category}>
-                <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: "#fff", marginBottom: 18, paddingBottom: 10, borderBottom: "1px solid rgba(255,255,255,0.1)", display: "flex", alignItems: "center", gap: 10 }}>
+                <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--ns-text)", marginBottom: 18, paddingBottom: 10, borderBottom: "1px solid var(--ns-border)", display: "flex", alignItems: "center", gap: 10 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--color-accent)" }} />
                   {category}
                 </h3>
@@ -144,41 +144,41 @@ export default function CourseDirectory() {
                   ...card,
                   display: "flex", flexDirection: "column",
                   cursor: "pointer",
-                  transition: "border-color 0.2s ease",
-                  borderColor: open ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.08)",
+                  transition: "border-color 0.2s ease, transform 0.2s ease",
+                  borderColor: open ? "var(--spotlight-color)" : "var(--ns-border)",
                 }}
-                onMouseEnter={e => { if (!open) e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; }}
-                onMouseLeave={e => { if (!open) e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}
+                onMouseEnter={e => { if (!open) { e.currentTarget.style.borderColor = "var(--ns-border-hover)"; e.currentTarget.style.transform = "translateY(-2px)"; } }}
+                onMouseLeave={e => { if (!open) { e.currentTarget.style.borderColor = "var(--ns-border)"; e.currentTarget.style.transform = "translateY(0)"; } }}
                 onClick={() => setExpanded(open ? null : course.id)}
               >
                 {/* Card body */}
                 <div style={{ padding: "22px 22px 16px" }}>
                   {/* Meta row */}
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-                    <span style={{ fontSize: "0.55rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "rgba(255,255,255,0.3)", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", padding: "2px 9px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.1em" }}>
+                    <span style={{ fontSize: "0.55rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "var(--ns-text-muted)", background: "var(--ns-surface-2)", border: "1px solid var(--ns-border-2)", padding: "2px 9px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.1em" }}>
                       {course.streamCategory}
                     </span>
-                    <span style={{ fontSize: "0.55rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: DIFFICULTY_COLOR[course.difficulty] ?? "#fff", background: `rgba(${DIFFICULTY_COLOR[course.difficulty]?.slice(5,-0.1)},0.1)`, border: `1px solid ${DIFFICULTY_COLOR[course.difficulty] ?? "rgba(255,255,255,0.1)"}22`, padding: "2px 9px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                    <span style={{ fontSize: "0.55rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: DIFFICULTY_COLOR[course.difficulty] ?? "var(--ns-text)", background: `rgba(${DIFFICULTY_COLOR[course.difficulty]?.slice(5,-0.1) || "128,128,128"},0.05)`, border: `1px solid ${DIFFICULTY_COLOR[course.difficulty] ?? "var(--ns-border)"}44`, padding: "2px 9px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.08em" }}>
                       {course.difficulty}
                     </span>
                   </div>
 
-                  <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 4 }}>
+                  <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--ns-text)", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 4 }}>
                     {course.name}
                   </h3>
-                  <p style={{ fontSize: "0.62rem", fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.25)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 14 }}>
+                  <p style={{ fontSize: "0.62rem", fontFamily: "'JetBrains Mono', monospace", color: "var(--ns-text-dim)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 14 }}>
                     {course.fullName}
                   </p>
 
                   {/* Duration + Salary */}
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, padding: "12px 14px", borderRadius: "0.75rem", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", marginBottom: 14 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, padding: "12px 14px", borderRadius: "0.75rem", background: "var(--ns-surface-2)", border: "1px solid var(--ns-border-2)", marginBottom: 14 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                      <div style={{ width: 28, height: 28, borderRadius: "6px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <Clock size={12} color="rgba(255,255,255,0.4)" />
+                      <div style={{ width: 28, height: 28, borderRadius: "6px", background: "var(--ns-bg)", border: "1px solid var(--ns-border)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <Clock size={12} color="var(--ns-text-muted)" />
                       </div>
                       <div>
-                        <div style={{ fontSize: "0.5rem", fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.25)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 2 }}>Duration</div>
-                        <div style={{ fontSize: "0.7rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "rgba(255,255,255,0.85)" }}>{course.duration}</div>
+                        <div style={{ fontSize: "0.5rem", fontFamily: "'JetBrains Mono', monospace", color: "var(--ns-text-dim)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 2 }}>Duration</div>
+                        <div style={{ fontSize: "0.7rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "var(--ns-text)" }}>{course.duration}</div>
                       </div>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
@@ -186,13 +186,13 @@ export default function CourseDirectory() {
                         <DollarSign size={12} color="#10b981" />
                       </div>
                       <div>
-                        <div style={{ fontSize: "0.5rem", fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.25)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 2 }}>Est. Salary</div>
+                        <div style={{ fontSize: "0.5rem", fontFamily: "'JetBrains Mono', monospace", color: "var(--ns-text-dim)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 2 }}>Est. Salary</div>
                         <div style={{ fontSize: "0.7rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "#10b981" }}>{course.averageStartingSalary}</div>
                       </div>
                     </div>
                   </div>
 
-                  <p style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.4)", lineHeight: 1.7 }}>
+                  <p style={{ fontSize: "0.72rem", color: "var(--ns-text-muted)", lineHeight: 1.7 }}>
                     {course.overview}
                   </p>
                 </div>
@@ -204,16 +204,16 @@ export default function CourseDirectory() {
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "space-between",
                     padding: "12px 22px",
-                    borderTop: "1px solid rgba(255,255,255,0.06)",
-                    background: open ? "rgba(255,255,255,0.04)" : "transparent",
-                    color: open ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.35)",
+                    borderTop: "1px solid var(--ns-border)",
+                    background: open ? "var(--ns-surface-2)" : "transparent",
+                    color: open ? "var(--ns-text)" : "var(--ns-text-muted)",
                     fontSize: "0.6rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700,
                     textTransform: "uppercase", letterSpacing: "0.1em",
-                    cursor: "pointer", border: "none", width: "100%",
+                    cursor: "pointer", borderLeft: "none", borderRight: "none", borderBottom: "none", width: "100%",
                     transition: "background 0.2s ease, color 0.2s ease",
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.color = "rgba(255,255,255,0.75)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = open ? "rgba(255,255,255,0.04)" : "transparent"; e.currentTarget.style.color = open ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.35)"; }}
+                  onMouseEnter={e => { e.currentTarget.style.background = "var(--ns-surface-2)"; e.currentTarget.style.color = "var(--ns-text)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = open ? "var(--ns-surface-2)" : "transparent"; e.currentTarget.style.color = open ? "var(--ns-text)" : "var(--ns-text-muted)"; }}
                 >
                   <span>{open ? "Collapse details" : "Review eligibility & exams"}</span>
                   {open ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
@@ -221,28 +221,28 @@ export default function CourseDirectory() {
 
                 {/* Expanded detail drawer */}
                 {open && (
-                  <div id={`catalog-drawer-${course.id}`} style={{ padding: "18px 22px 22px", background: "rgba(255,255,255,0.02)", display: "flex", flexDirection: "column", gap: 14 }}>
+                  <div id={`catalog-drawer-${course.id}`} style={{ padding: "18px 22px 22px", background: "var(--ns-bg)", display: "flex", flexDirection: "column", gap: 14 }}>
                     <div>
-                      <span style={{ display: "block", fontSize: "0.52rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "rgba(255,255,255,0.2)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 6 }}>Eligibility Standards</span>
-                      <p style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.55)", lineHeight: 1.65 }}>{course.eligibility}</p>
+                      <span style={{ display: "block", fontSize: "0.52rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "var(--ns-text-dim)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 6 }}>Eligibility Standards</span>
+                      <p style={{ fontSize: "0.72rem", color: "var(--ns-text)", lineHeight: 1.65 }}>{course.eligibility}</p>
                     </div>
                     <div>
-                      <span style={{ display: "block", fontSize: "0.52rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "rgba(255,255,255,0.2)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 8 }}>Core Admission Exams</span>
+                      <span style={{ display: "block", fontSize: "0.52rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "var(--ns-text-dim)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 8 }}>Core Admission Exams</span>
                       <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                         {course.topEntranceExams.map((ex, i) => (
-                          <span key={i} style={{ fontSize: "0.58rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, padding: "3px 10px", borderRadius: 6, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                          <span key={i} style={{ fontSize: "0.58rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, padding: "3px 10px", borderRadius: 6, background: "var(--ns-surface)", border: "1px solid var(--ns-border)", color: "var(--ns-text-muted)", textTransform: "uppercase", letterSpacing: "0.08em" }}>
                             {ex}
                           </span>
                         ))}
                       </div>
                     </div>
                     <div>
-                      <span style={{ display: "block", fontSize: "0.52rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "rgba(255,255,255,0.2)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 8 }}>Career Pathways</span>
+                      <span style={{ display: "block", fontSize: "0.52rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "var(--ns-text-dim)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 8 }}>Career Pathways</span>
                       <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
                         {course.careerRoles.map((r, i) => (
                           <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                            <span style={{ width: 4, height: 4, borderRadius: "50%", background: "rgba(255,255,255,0.3)", flexShrink: 0 }} />
-                            <span style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.5)", fontWeight: 500 }}>{r}</span>
+                            <span style={{ width: 4, height: 4, borderRadius: "50%", background: "var(--ns-text-muted)", flexShrink: 0 }} />
+                            <span style={{ fontSize: "0.68rem", color: "var(--ns-text)", fontWeight: 500 }}>{r}</span>
                           </div>
                         ))}
                       </div>

@@ -20,8 +20,8 @@ const STREAM_FILTERS = [
 ];
 
 const card: React.CSSProperties = {
-  background: "#111111",
-  border: "1px solid #2a2a2a",
+  background: "var(--ns-bg)",
+  border: "1px solid var(--ns-border)",
   borderRadius: "0.75rem",
   overflow: "hidden",
 };
@@ -71,19 +71,19 @@ export default function ExamRoadmap() {
       <div style={{
         position: "relative", overflow: "hidden", borderRadius: "0.75rem",
         padding: "32px 32px",
-        background: "#111111",
-        border: "1px solid #2a2a2a",
+        background: "var(--ns-bg)",
+        border: "1px solid var(--ns-border)",
       }}>
         <div style={{ position: "relative" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "4px 14px", borderRadius: "9999px", border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.06)", fontSize: "0.62rem", color: "rgba(255,255,255,0.6)", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 14 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "4px 14px", borderRadius: "9999px", border: "1px solid var(--ns-border)", background: "var(--ns-surface)", fontSize: "0.62rem", color: "var(--ns-text-muted)", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 14 }}>
             <span style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--color-accent)", display: "inline-block" }} />
             Entrance Exams Hub
           </div>
-          <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", fontWeight: 800, letterSpacing: "-0.03em", color: "#fff", lineHeight: 1.1, marginBottom: 10 }}>
+          <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", fontWeight: 800, letterSpacing: "-0.03em", color: "var(--ns-text)", lineHeight: 1.1, marginBottom: 10 }}>
             Post-12th Entrance<br />
-            <em style={{ fontWeight: 300, fontSize: "0.85em", color: "rgba(255,255,255,0.5)", fontStyle: "italic" }}>Exam Roadmap</em>
+            <em style={{ fontWeight: 500, fontSize: "0.85em", color: "var(--ns-text-muted)", fontStyle: "italic" }}>Exam Roadmap</em>
           </h2>
-          <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.35)", maxWidth: 580, lineHeight: 1.7 }}>
+          <p style={{ fontSize: "0.78rem", color: "var(--ns-text-dim)", maxWidth: 580, lineHeight: 1.7 }}>
             Registration deadlines, key testing subjects, difficulty ranks, and structures for every major Indian undergraduate entrance exam.
           </p>
         </div>
@@ -95,9 +95,9 @@ export default function ExamRoadmap() {
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
 
           {/* Search + filter bar */}
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", padding: "14px 16px", borderRadius: "0.75rem", border: "1px solid #2a2a2a", background: "#111111" }}>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", padding: "14px 16px", borderRadius: "0.75rem", border: "1px solid var(--ns-border)", background: "var(--ns-bg)" }}>
             <div style={{ position: "relative", flex: 1, minWidth: 180 }}>
-              <Search size={12} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.25)", pointerEvents: "none" }} />
+              <Search size={12} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "var(--ns-text-muted)", pointerEvents: "none" }} />
               <input
                 id="exam-search"
                 type="text"
@@ -106,8 +106,8 @@ export default function ExamRoadmap() {
                 placeholder="Search JEE, CLAT, NEET, CUET…"
                 style={{
                   width: "100%", paddingLeft: 32, paddingRight: 12, paddingTop: 8, paddingBottom: 8,
-                  background: "#1a1a1a", border: "1px solid #2a2a2a",
-                  borderRadius: "0.5rem", fontSize: "0.72rem", color: "#fff",
+                  background: "var(--ns-surface)", border: "1px solid var(--ns-border)",
+                  borderRadius: "0.5rem", fontSize: "0.72rem", color: "var(--ns-text)",
                   fontFamily: "'Epilogue', sans-serif", outline: "none",
                 }}
               />
@@ -119,9 +119,9 @@ export default function ExamRoadmap() {
                   onClick={() => setStreamFilter(f.id)}
                   style={{
                     padding: "6px 14px", borderRadius: "9999px",
-                    border: streamFilter === f.id ? "1px solid rgba(var(--color-accent-rgb,255,255,255),0.45)" : "1px solid rgba(255,255,255,0.08)",
-                    background: streamFilter === f.id ? "rgba(var(--color-accent-rgb,255,255,255),0.08)" : "transparent",
-                    color: streamFilter === f.id ? "var(--color-accent,#fff)" : "rgba(255,255,255,0.4)",
+                    border: streamFilter === f.id ? "1px solid var(--color-accent-transparent)" : "1px solid var(--ns-border)",
+                    background: streamFilter === f.id ? "var(--color-accent-transparent)" : "transparent",
+                    color: streamFilter === f.id ? "var(--color-accent)" : "var(--ns-text-muted)",
                     fontSize: "0.6rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700,
                     textTransform: "uppercase", letterSpacing: "0.1em", cursor: "pointer",
                     transition: "all 0.2s ease",
@@ -137,7 +137,7 @@ export default function ExamRoadmap() {
               const catExams = filtered.filter(e => e.stream === category);
               return (
                 <div key={category}>
-                  <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: "#fff", marginBottom: 18, paddingBottom: 10, borderBottom: "1px solid rgba(255,255,255,0.1)", display: "flex", alignItems: "center", gap: 10 }}>
+                  <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--ns-text)", marginBottom: 18, paddingBottom: 10, borderBottom: "1px solid var(--ns-border)", display: "flex", alignItems: "center", gap: 10 }}>
                     <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--color-accent)" }} />
                     {category}
                   </h3>
@@ -152,28 +152,28 @@ export default function ExamRoadmap() {
                     ...card,
                     padding: "22px 22px",
                     transition: "border-color 0.25s ease",
-                    borderColor: report ? (report.eligible ? "rgba(16,185,129,0.3)" : "rgba(244,63,94,0.3)") : "rgba(255,255,255,0.08)",
+                    borderColor: report ? (report.eligible ? "rgba(16,185,129,0.3)" : "rgba(244,63,94,0.3)") : "var(--ns-border)",
                   }}
-                  onMouseEnter={e => { if (!report) e.currentTarget.style.borderColor = "rgba(255,255,255,0.18)"; }}
-                  onMouseLeave={e => { if (!report) e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}
+                  onMouseEnter={e => { if (!report) e.currentTarget.style.borderColor = "var(--spotlight-color)"; }}
+                  onMouseLeave={e => { if (!report) e.currentTarget.style.borderColor = "var(--ns-border)"; }}
                 >
                   {/* Top meta */}
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, marginBottom: 14 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <div style={{ width: 36, height: 36, borderRadius: "0.5rem", background: "#1a1a1a", border: "1px solid #2a2a2a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                        <Award size={16} color="rgba(255,255,255,0.55)" />
+                      <div style={{ width: 36, height: 36, borderRadius: "0.5rem", background: "var(--ns-surface)", border: "1px solid var(--ns-border)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                        <Award size={16} color="var(--ns-text-muted)" />
                       </div>
                       <div>
-                        <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.1 }}>{exam.name}</h3>
-                        <p style={{ fontSize: "0.6rem", fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.25)", textTransform: "uppercase", letterSpacing: "0.06em", marginTop: 2 }}>{exam.fullName}</p>
+                        <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "var(--ns-text)", letterSpacing: "-0.02em", lineHeight: 1.1 }}>{exam.name}</h3>
+                        <p style={{ fontSize: "0.6rem", fontFamily: "'JetBrains Mono', monospace", color: "var(--ns-text-dim)", textTransform: "uppercase", letterSpacing: "0.06em", marginTop: 2 }}>{exam.fullName}</p>
                       </div>
                     </div>
-                    <span style={{ fontSize: "0.55rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "rgba(255,255,255,0.35)", background: "#1a1a1a", border: "1px solid #2a2a2a", padding: "4px 10px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
+                    <span style={{ fontSize: "0.55rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "var(--ns-text-muted)", background: "var(--ns-surface)", border: "1px solid var(--ns-border)", padding: "4px 10px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
                       {exam.stream}
                     </span>
                   </div>
 
-                  <p style={{ fontSize: "0.74rem", color: "rgba(255,255,255,0.4)", lineHeight: 1.7, marginBottom: 16 }}>{exam.description}</p>
+                  <p style={{ fontSize: "0.74rem", color: "var(--ns-text-muted)", lineHeight: 1.7, marginBottom: 16 }}>{exam.description}</p>
 
                   {/* 4-cell info grid */}
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 14 }}>
@@ -183,9 +183,9 @@ export default function ExamRoadmap() {
                       { label: "Difficulty Rank",       value: exam.difficulty },
                       { label: "Syllabus Themes",       value: exam.keySubjects.join(", ") },
                     ].map(({ label, value }) => (
-                      <div key={label} style={{ padding: "12px 14px", borderRadius: "0.5rem", background: "#1a1a1a", border: "1px solid #2a2a2a" }}>
-                        <span style={{ display: "block", fontSize: "0.5rem", fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 6 }}>{label}</span>
-                        <span style={{ fontSize: "0.65rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "rgba(255,255,255,0.85)", lineHeight: 1.4 }}>{value}</span>
+                      <div key={label} style={{ padding: "12px 14px", borderRadius: "0.5rem", background: "var(--ns-surface)", border: "1px solid var(--ns-border)" }}>
+                        <span style={{ display: "block", fontSize: "0.5rem", fontFamily: "'JetBrains Mono', monospace", color: "var(--ns-text-dim)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 6 }}>{label}</span>
+                        <span style={{ fontSize: "0.65rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "var(--ns-text)", lineHeight: 1.4 }}>{value}</span>
                       </div>
                     ))}
                   </div>
@@ -212,17 +212,17 @@ export default function ExamRoadmap() {
                   )}
 
                   {/* Bottom row */}
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-                    <span style={{ fontSize: "0.58rem", fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.2)", maxWidth: "65%", lineHeight: 1.5 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 12, borderTop: "1px solid var(--ns-border-2)" }}>
+                    <span style={{ fontSize: "0.58rem", fontFamily: "'JetBrains Mono', monospace", color: "var(--ns-text-dim)", maxWidth: "65%", lineHeight: 1.5 }}>
                       Format: {exam.examPattern}
                     </span>
                     <a
                       href={exam.officialWebsite}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "0.6rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "rgba(255,255,255,0.45)", textDecoration: "none", transition: "color 0.2s ease" }}
-                      onMouseEnter={e => (e.currentTarget.style.color = "var(--color-accent,#fff)")}
-                      onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.45)")}
+                      style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "0.6rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "var(--ns-text-muted)", textDecoration: "none", transition: "color 0.2s ease" }}
+                      onMouseEnter={e => (e.currentTarget.style.color = "var(--color-accent)")}
+                      onMouseLeave={e => (e.currentTarget.style.color = "var(--ns-text-muted)")}
                     >
                       <Link2 size={11} />Official Portal
                     </a>
@@ -240,13 +240,13 @@ export default function ExamRoadmap() {
         {/* ── Sidebar Eligibility Checker ── */}
         <div style={{ ...card, padding: "22px 20px", display: "flex", flexDirection: "column", gap: 18, position: "sticky", top: 80 }}>
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, paddingBottom: 14, borderBottom: "1px solid rgba(255,255,255,0.07)", marginBottom: 14 }}>
-              <Compass size={13} color="rgba(255,255,255,0.4)" />
-              <span style={{ fontSize: "0.58rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: "rgba(255,255,255,0.28)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, paddingBottom: 14, borderBottom: "1px solid var(--ns-border)", marginBottom: 14 }}>
+              <Compass size={13} color="var(--ns-text-muted)" />
+              <span style={{ fontSize: "0.58rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: "var(--ns-text-dim)" }}>
                 Eligibility Simulator
               </span>
             </div>
-            <p style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.3)", lineHeight: 1.65 }}>
+            <p style={{ fontSize: "0.7rem", color: "var(--ns-text-muted)", lineHeight: 1.65 }}>
               Set your 12th standard details to check exam eligibility across the list.
             </p>
           </div>
@@ -254,7 +254,7 @@ export default function ExamRoadmap() {
           <form onSubmit={runEligibility} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {/* Stream select */}
             <div>
-              <label style={{ display: "block", fontSize: "0.55rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "rgba(255,255,255,0.25)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 8 }}>
+              <label style={{ display: "block", fontSize: "0.55rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "var(--ns-text-dim)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 8 }}>
                 Class 12 Stream
               </label>
               <select
@@ -265,7 +265,7 @@ export default function ExamRoadmap() {
                   if (e.target.value === "pcm") { setTestMath(true); setTestBio(false); }
                   else if (e.target.value === "pcb") { setTestMath(false); setTestBio(true); }
                 }}
-                style={{ width: "100%", padding: "10px 12px", background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "0.5rem", color: "#fff", fontSize: "0.72rem", fontFamily: "'Epilogue', sans-serif", outline: "none" }}
+                style={{ width: "100%", padding: "10px 12px", background: "var(--ns-surface-2)", border: "1px solid var(--ns-border)", borderRadius: "0.5rem", color: "var(--ns-text)", fontSize: "0.72rem", fontFamily: "'Epilogue', sans-serif", outline: "none" }}
               >
                 <option value="pcm">Science (PCM)</option>
                 <option value="pcb">Science (PCB)</option>
@@ -276,7 +276,7 @@ export default function ExamRoadmap() {
 
             {/* Marks */}
             <div>
-              <label style={{ display: "block", fontSize: "0.55rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "rgba(255,255,255,0.25)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 8 }}>
+              <label style={{ display: "block", fontSize: "0.55rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "var(--ns-text-dim)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 8 }}>
                 Expected Board Aggregate
               </label>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -286,15 +286,15 @@ export default function ExamRoadmap() {
                   min={40} max={100}
                   value={testMarks}
                   onChange={e => setTestMarks(Number(e.target.value))}
-                  style={{ width: 72, padding: "8px 10px", background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "0.5rem", color: "#fff", fontSize: "0.8rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, outline: "none" }}
+                  style={{ width: 72, padding: "8px 10px", background: "var(--ns-surface-2)", border: "1px solid var(--ns-border)", borderRadius: "0.5rem", color: "var(--ns-text)", fontSize: "0.8rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, outline: "none" }}
                 />
-                <span style={{ fontSize: "0.62rem", fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.25)", textTransform: "uppercase" }}>% Aggregate</span>
+                <span style={{ fontSize: "0.62rem", fontFamily: "'JetBrains Mono', monospace", color: "var(--ns-text-dim)", textTransform: "uppercase" }}>% Aggregate</span>
               </div>
             </div>
 
             {/* Checkboxes */}
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <span style={{ fontSize: "0.52rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "rgba(255,255,255,0.2)", textTransform: "uppercase", letterSpacing: "0.12em" }}>Subject Electives</span>
+              <span style={{ fontSize: "0.52rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "var(--ns-text-dim)", textTransform: "uppercase", letterSpacing: "0.12em" }}>Subject Electives</span>
               {[
                 { id: "sim-math", label: "Passed Core Mathematics", value: testMath, set: setTestMath },
                 { id: "sim-bio",  label: "Passed Biology / Biotech", value: testBio,  set: setTestBio },
@@ -304,15 +304,15 @@ export default function ExamRoadmap() {
                     onClick={() => set(!value)}
                     style={{
                       width: 18, height: 18, borderRadius: 5, flexShrink: 0,
-                      border: value ? "1px solid var(--color-accent,#fff)" : "1px solid #2a2a2a",
-                      background: value ? "rgba(var(--color-accent-rgb,255,255,255),0.15)" : "#1a1a1a",
+                      border: value ? "1px solid var(--color-accent)" : "1px solid var(--ns-border)",
+                      background: value ? "var(--color-accent-transparent)" : "var(--ns-surface-2)",
                       display: "flex", alignItems: "center", justifyContent: "center",
                       transition: "all 0.2s ease",
                     }}
                   >
-                    {value && <div style={{ width: 8, height: 8, borderRadius: 2, background: "var(--color-accent,#fff)" }} />}
+                    {value && <div style={{ width: 8, height: 8, borderRadius: 2, background: "var(--color-accent)" }} />}
                   </div>
-                  <span style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.5)", fontWeight: 500 }}>{label}</span>
+                  <span style={{ fontSize: "0.68rem", color: "var(--ns-text-muted)", fontWeight: 500 }}>{label}</span>
                 </label>
               ))}
             </div>
@@ -323,14 +323,14 @@ export default function ExamRoadmap() {
               type="submit"
               style={{
                 width: "100%", padding: "11px", borderRadius: "0.5rem",
-                background: "#1a1a1a", border: "1px solid #2a2a2a",
-                color: "#fff", fontSize: "0.65rem", fontFamily: "'JetBrains Mono', monospace",
+                background: "var(--ns-surface-2)", border: "1px solid var(--ns-border)",
+                color: "var(--ns-text)", fontSize: "0.65rem", fontFamily: "'JetBrains Mono', monospace",
                 fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em",
                 cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                 transition: "all 0.2s ease",
               }}
-              onMouseEnter={e => { e.currentTarget.style.background = "#222222"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "#1a1a1a"; }}
+              onMouseEnter={e => { e.currentTarget.style.background = "var(--ns-surface)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "var(--ns-surface-2)"; }}
             >
               Check Eligibility <ArrowRight size={12} />
             </button>
@@ -341,13 +341,13 @@ export default function ExamRoadmap() {
                 onClick={() => setResults(null)}
                 style={{
                   width: "100%", padding: "9px", borderRadius: "0.5rem",
-                  border: "1px solid #2a2a2a", background: "transparent",
-                  color: "rgba(255,255,255,0.3)", fontSize: "0.6rem", fontFamily: "'JetBrains Mono', monospace",
+                  border: "1px solid var(--ns-border)", background: "transparent",
+                  color: "var(--ns-text-muted)", fontSize: "0.6rem", fontFamily: "'JetBrains Mono', monospace",
                   fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", cursor: "pointer",
                   transition: "all 0.2s ease",
                 }}
-                onMouseEnter={e => { e.currentTarget.style.color = "rgba(255,255,255,0.6)"; e.currentTarget.style.borderColor = "#444"; }}
-                onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.3)"; e.currentTarget.style.borderColor = "#2a2a2a"; }}
+                onMouseEnter={e => { e.currentTarget.style.color = "var(--ns-text)"; e.currentTarget.style.borderColor = "var(--ns-border-hover)"; }}
+                onMouseLeave={e => { e.currentTarget.style.color = "var(--ns-text-muted)"; e.currentTarget.style.borderColor = "var(--ns-border)"; }}
               >
                 Reset Highlights
               </button>

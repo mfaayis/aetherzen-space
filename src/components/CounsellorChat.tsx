@@ -88,10 +88,11 @@ export default function CounsellorChat() {
 
   /* ── Styles ── */
   const cardBase: React.CSSProperties = {
-    background: "rgba(255,255,255,0.025)",
-    border: "1px solid rgba(255,255,255,0.09)",
+    background: "var(--ns-bg)",
+    border: "1px solid var(--ns-border)",
     borderRadius: "1.25rem",
     overflow: "hidden",
+    boxShadow: "0 4px 24px rgba(0,0,0,0.03)",
   };
 
   return (
@@ -115,14 +116,14 @@ export default function CounsellorChat() {
         }}
       >
         {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", gap: 8, paddingBottom: 14, borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
-          <Zap size={13} color="rgba(255,255,255,0.4)" />
-          <span style={{ fontSize: "0.58rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: "rgba(255,255,255,0.28)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, paddingBottom: 14, borderBottom: "1px solid var(--ns-border)" }}>
+          <Zap size={13} color="var(--ns-text-dim)" />
+          <span style={{ fontSize: "0.58rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: "var(--ns-text-dim)" }}>
             Quick Queries
           </span>
         </div>
 
-        <p style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.3)", lineHeight: 1.65 }}>
+        <p style={{ fontSize: "0.7rem", color: "var(--ns-text-muted)", lineHeight: 1.65 }}>
           Tap any prompt below to instantly ask MargDarshak.
         </p>
 
@@ -137,9 +138,9 @@ export default function CounsellorChat() {
                 textAlign: "left",
                 padding: "11px 14px",
                 borderRadius: "0.875rem",
-                border: "1px solid rgba(255,255,255,0.07)",
-                background: "rgba(255,255,255,0.02)",
-                color: "rgba(255,255,255,0.55)",
+                border: "1px solid var(--ns-border)",
+                background: "var(--ns-surface)",
+                color: "var(--ns-text-muted)",
                 fontSize: "0.72rem",
                 lineHeight: 1.5,
                 fontFamily: "'Epilogue', sans-serif",
@@ -150,15 +151,15 @@ export default function CounsellorChat() {
               }}
               onMouseEnter={e => {
                 if (!isLoading) {
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
-                  e.currentTarget.style.color = "rgba(255,255,255,0.85)";
-                  e.currentTarget.style.background = "rgba(255,255,255,0.05)";
+                  e.currentTarget.style.borderColor = "var(--spotlight-color)";
+                  e.currentTarget.style.color = "var(--ns-text)";
+                  e.currentTarget.style.background = "var(--ns-surface-2)";
                 }
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)";
-                e.currentTarget.style.color = "rgba(255,255,255,0.55)";
-                e.currentTarget.style.background = "rgba(255,255,255,0.02)";
+                e.currentTarget.style.borderColor = "var(--ns-border)";
+                e.currentTarget.style.color = "var(--ns-text-muted)";
+                e.currentTarget.style.background = "var(--ns-surface)";
               }}
             >
               {p}
@@ -178,35 +179,35 @@ export default function CounsellorChat() {
         {/* Top bar */}
         <div style={{
           padding: "16px 22px",
-          borderBottom: "1px solid rgba(255,255,255,0.07)",
+          borderBottom: "1px solid var(--ns-border)",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          background: "rgba(255,255,255,0.02)",
+          background: "var(--ns-surface)",
           flexShrink: 0,
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{
               width: 32, height: 32, borderRadius: "50%",
-              background: "rgba(255,255,255,0.06)",
-              border: "1px solid rgba(255,255,255,0.12)",
+              background: "var(--ns-surface-2)",
+              border: "1px solid var(--ns-border)",
               display: "flex", alignItems: "center", justifyContent: "center",
             }}>
-              <Bot size={15} color="rgba(255,255,255,0.7)" />
+              <Bot size={15} color="var(--ns-text-muted)" />
             </div>
             <div>
-              <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "#fff", letterSpacing: "-0.01em" }}>
+              <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--ns-text)", letterSpacing: "-0.01em" }}>
                 MargDarshak
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 5, marginTop: 1 }}>
                 <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#10b981", display: "inline-block", animation: "ns-spin 2s linear infinite", boxShadow: "0 0 4px #10b981" }} />
-                <span style={{ fontSize: "0.58rem", fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+                <span style={{ fontSize: "0.58rem", fontFamily: "'JetBrains Mono', monospace", color: "var(--ns-text-dim)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
                   Live Academic Counselor
                 </span>
               </div>
             </div>
           </div>
-          <Sparkles size={15} color="rgba(255,255,255,0.25)" />
+          <Sparkles size={15} color="var(--ns-text-dim)" />
         </div>
 
         {/* Messages */}
@@ -241,11 +242,11 @@ export default function CounsellorChat() {
                   flexShrink: 0,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   background: isAI
-                    ? "rgba(255,255,255,0.06)"
-                    : "rgba(var(--color-accent-rgb, 0,242,254), 0.15)",
+                    ? "var(--ns-surface-2)"
+                    : "var(--color-accent-transparent)",
                   border: isAI
-                    ? "1px solid rgba(255,255,255,0.1)"
-                    : "1px solid rgba(var(--color-accent-rgb, 0,242,254), 0.3)",
+                    ? "1px solid var(--ns-border)"
+                    : "1px solid var(--spotlight-color)",
                 }}>
                   {isAI
                     ? <Bot size={14} color="rgba(255,255,255,0.6)" />
@@ -262,35 +263,35 @@ export default function CounsellorChat() {
                     lineHeight: 1.7,
                     whiteSpace: "pre-line",
                     background: isAI
-                      ? "rgba(255,255,255,0.04)"
-                      : "rgba(var(--color-accent-rgb, 0,242,254), 0.1)",
+                      ? "var(--ns-surface-2)"
+                      : "var(--ns-text)",
                     border: isAI
-                      ? "1px solid rgba(255,255,255,0.08)"
-                      : "1px solid rgba(var(--color-accent-rgb, 0,242,254), 0.2)",
-                    color: isAI ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.9)",
+                      ? "1px solid var(--ns-border)"
+                      : "1px solid var(--ns-text)",
+                    color: isAI ? "var(--ns-text)" : "var(--ns-bg)",
                   }}>
                     {isAI ? (
                       <ReactMarkdown 
                         remarkPlugins={[remarkGfm]}
                         components={{
-                          table: ({node, ...props}) => <div style={{overflowX: 'auto'}}><table style={{ borderCollapse: 'collapse', width: '100%', margin: '12px 0', fontSize: '0.75rem', border: '1px solid rgba(255,255,255,0.1)' }} {...props} /></div>,
-                          th: ({node, ...props}) => <th style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', padding: '10px 12px', background: 'rgba(255,255,255,0.03)', textAlign: 'left', fontWeight: 600, color: 'rgba(255,255,255,0.9)' }} {...props} />,
-                          td: ({node, ...props}) => <td style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '10px 12px' }} {...props} />,
-                          a: ({node, ...props}) => <a style={{ color: '#00f2fe', textDecoration: 'none', borderBottom: '1px dashed rgba(0,242,254,0.4)' }} target="_blank" rel="noopener noreferrer" {...props} />,
+                          table: ({node, ...props}) => <div style={{overflowX: 'auto'}}><table style={{ borderCollapse: 'collapse', width: '100%', margin: '12px 0', fontSize: '0.75rem', border: '1px solid var(--ns-border)' }} {...props} /></div>,
+                          th: ({node, ...props}) => <th style={{ borderBottom: '1px solid var(--ns-border)', padding: '10px 12px', background: 'var(--ns-surface)', textAlign: 'left', fontWeight: 600, color: 'var(--ns-text)' }} {...props} />,
+                          td: ({node, ...props}) => <td style={{ borderBottom: '1px solid var(--ns-border-2)', padding: '10px 12px' }} {...props} />,
+                          a: ({node, ...props}) => <a style={{ color: 'var(--color-accent)', textDecoration: 'none', borderBottom: '1px dashed var(--spotlight-color)' }} target="_blank" rel="noopener noreferrer" {...props} />,
                           p: ({node, ...props}) => <p style={{ margin: '0 0 12px 0', lineHeight: '1.6' }} {...props} />,
                           ul: ({node, ...props}) => <ul style={{ margin: '0 0 12px 0', paddingLeft: '22px', listStyleType: 'disc' }} {...props} />,
                           ol: ({node, ...props}) => <ol style={{ margin: '0 0 12px 0', paddingLeft: '22px' }} {...props} />,
                           li: ({node, ...props}) => <li style={{ marginBottom: '6px' }} {...props} />,
-                          h1: ({node, ...props}) => <h1 style={{ fontSize: '1.2rem', margin: '18px 0 12px', color: '#fff', fontWeight: 600 }} {...props} />,
-                          h2: ({node, ...props}) => <h2 style={{ fontSize: '1.1rem', margin: '18px 0 10px', color: '#fff', fontWeight: 600 }} {...props} />,
-                          h3: ({node, ...props}) => <h3 style={{ fontSize: '0.95rem', margin: '16px 0 8px', color: '#fff', fontWeight: 600 }} {...props} />,
-                          h4: ({node, ...props}) => <h4 style={{ fontSize: '0.85rem', margin: '12px 0 6px', color: '#fff', fontWeight: 600 }} {...props} />,
-                          strong: ({node, ...props}) => <strong style={{ color: 'rgba(255,255,255,0.95)', fontWeight: 600 }} {...props} />,
-                          hr: ({node, ...props}) => <hr style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.1)', margin: '18px 0' }} {...props} />,
-                          blockquote: ({node, ...props}) => <blockquote style={{ margin: '0 0 12px 0', paddingLeft: '14px', borderLeft: '2px solid rgba(0,242,254,0.5)', color: 'rgba(255,255,255,0.6)' }} {...props} />,
+                          h1: ({node, ...props}) => <h1 style={{ fontSize: '1.2rem', margin: '18px 0 12px', color: 'var(--ns-text)', fontWeight: 600 }} {...props} />,
+                          h2: ({node, ...props}) => <h2 style={{ fontSize: '1.1rem', margin: '18px 0 10px', color: 'var(--ns-text)', fontWeight: 600 }} {...props} />,
+                          h3: ({node, ...props}) => <h3 style={{ fontSize: '0.95rem', margin: '16px 0 8px', color: 'var(--ns-text)', fontWeight: 600 }} {...props} />,
+                          h4: ({node, ...props}) => <h4 style={{ fontSize: '0.85rem', margin: '12px 0 6px', color: 'var(--ns-text)', fontWeight: 600 }} {...props} />,
+                          strong: ({node, ...props}) => <strong style={{ color: 'var(--ns-text)', fontWeight: 600 }} {...props} />,
+                          hr: ({node, ...props}) => <hr style={{ border: 'none', borderTop: '1px solid var(--ns-border)', margin: '18px 0' }} {...props} />,
+                          blockquote: ({node, ...props}) => <blockquote style={{ margin: '0 0 12px 0', paddingLeft: '14px', borderLeft: '2px solid var(--color-accent-transparent)', color: 'var(--ns-text-muted)' }} {...props} />,
                           code: ({node, inline, ...props}: any) => inline 
-                            ? <code style={{ background: 'rgba(255,255,255,0.08)', padding: '2px 4px', borderRadius: '4px', fontSize: '0.85em', fontFamily: 'monospace' }} {...props} />
-                            : <code style={{ display: 'block', background: 'rgba(255,255,255,0.05)', padding: '12px', borderRadius: '6px', overflowX: 'auto', fontSize: '0.85em', fontFamily: 'monospace', margin: '0 0 12px 0' }} {...props} />
+                            ? <code style={{ background: 'var(--ns-surface-2)', padding: '2px 4px', borderRadius: '4px', fontSize: '0.85em', fontFamily: 'monospace' }} {...props} />
+                            : <code style={{ display: 'block', background: 'var(--ns-surface-2)', padding: '12px', borderRadius: '6px', overflowX: 'auto', fontSize: '0.85em', fontFamily: 'monospace', margin: '0 0 12px 0' }} {...props} />
                         }}
                       >
                         {m.text}
@@ -303,7 +304,7 @@ export default function CounsellorChat() {
                     display: "block",
                     fontSize: "0.55rem",
                     fontFamily: "'JetBrains Mono', monospace",
-                    color: "rgba(255,255,255,0.2)",
+                    color: "var(--ns-text-dim)",
                     marginTop: 5,
                     paddingLeft: isAI ? 2 : 0,
                     textAlign: isAI ? "left" : "right",
@@ -322,24 +323,24 @@ export default function CounsellorChat() {
             <div style={{ display: "flex", alignItems: "center", gap: 10, alignSelf: "flex-start" }}>
               <div style={{
                 width: 30, height: 30, borderRadius: "50%",
-                background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)",
+                background: "var(--ns-surface-2)", border: "1px solid var(--ns-border)",
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>
-                <RefreshCw size={13} color="rgba(255,255,255,0.5)" style={{ animation: "ns-spin 1s linear infinite" }} />
+                <RefreshCw size={13} color="var(--ns-text-muted)" style={{ animation: "ns-spin 1s linear infinite" }} />
               </div>
               <div style={{
                 display: "flex", alignItems: "center", gap: 5,
                 padding: "10px 14px",
                 borderRadius: "4px 14px 14px 14px",
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.07)",
+                background: "var(--ns-surface)",
+                border: "1px solid var(--ns-border)",
               }}>
                 {[0, 1, 2].map(i => (
                   <div
                     key={i}
                     style={{
                       width: 5, height: 5, borderRadius: "50%",
-                      background: "rgba(255,255,255,0.3)",
+                      background: "var(--ns-text-muted)",
                       animation: `ns-bounce 1.2s ${i * 0.2}s ease-in-out infinite`,
                     }}
                   />
@@ -354,11 +355,11 @@ export default function CounsellorChat() {
         <form
           onSubmit={handleSubmit}
           style={{
-            borderTop: "1px solid rgba(255,255,255,0.07)",
+            borderTop: "1px solid var(--ns-border)",
             padding: "14px 18px",
             display: "flex",
             gap: 10,
-            background: "rgba(255,255,255,0.02)",
+            background: "var(--ns-surface)",
             flexShrink: 0,
           }}
         >
@@ -368,21 +369,21 @@ export default function CounsellorChat() {
             value={input}
             onChange={e => setInput(e.target.value)}
             disabled={isLoading}
-            placeholder="Type your concern here… (e.g., 'What marks are needed to clear NID cutoff?')"
+            placeholder="Type your concern here…"
             style={{
               flex: 1,
-              background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.1)",
+              background: "var(--ns-surface-2)",
+              border: "1px solid var(--ns-border)",
               borderRadius: "0.875rem",
               padding: "11px 16px",
               fontSize: "0.78rem",
-              color: "#fff",
+              color: "var(--ns-text)",
               fontFamily: "'Epilogue', sans-serif",
               outline: "none",
               transition: "border-color 0.2s ease",
             }}
-            onFocus={e => (e.currentTarget.style.borderColor = "rgba(var(--color-accent-rgb,0,242,254),0.5)")}
-            onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")}
+            onFocus={e => (e.currentTarget.style.borderColor = "var(--color-accent-transparent)")}
+            onBlur={e => (e.currentTarget.style.borderColor = "var(--ns-border)")}
           />
           <button
             id="chat-submit-btn"
@@ -391,10 +392,10 @@ export default function CounsellorChat() {
             style={{
               width: 44, height: 44,
               borderRadius: "0.875rem",
-              border: "1px solid rgba(255,255,255,0.12)",
+              border: "1px solid var(--ns-border)",
               background: !input.trim() || isLoading
-                ? "rgba(255,255,255,0.04)"
-                : "rgba(var(--color-accent-rgb,0,242,254),0.12)",
+                ? "var(--ns-surface-2)"
+                : "var(--color-accent)",
               display: "flex", alignItems: "center", justifyContent: "center",
               cursor: isLoading || !input.trim() ? "not-allowed" : "pointer",
               transition: "all 0.2s ease",
@@ -402,18 +403,16 @@ export default function CounsellorChat() {
             }}
             onMouseEnter={e => {
               if (!isLoading && input.trim()) {
-                e.currentTarget.style.background = "rgba(var(--color-accent-rgb,0,242,254),0.2)";
-                e.currentTarget.style.borderColor = "rgba(var(--color-accent-rgb,0,242,254),0.4)";
+                e.currentTarget.style.background = "var(--color-accent-hover)";
               }
             }}
             onMouseLeave={e => {
               e.currentTarget.style.background = !input.trim() || isLoading
-                ? "rgba(255,255,255,0.04)"
-                : "rgba(var(--color-accent-rgb,0,242,254),0.12)";
-              e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
+                ? "var(--ns-surface-2)"
+                : "var(--color-accent)";
             }}
           >
-            <Send size={15} color={isLoading || !input.trim() ? "rgba(255,255,255,0.2)" : "var(--color-accent,#00f2fe)"} />
+            <Send size={15} color={isLoading || !input.trim() ? "var(--ns-text-muted)" : "var(--ns-bg)"} />
           </button>
         </form>
       </div>
