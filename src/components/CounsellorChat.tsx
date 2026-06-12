@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ChatMessage } from "../types";
 import { Send, HelpCircle, Bot, User, Sparkles, RefreshCw, Zap } from "lucide-react";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const SHORTCUTS = [
   "Is Math compulsory to prepare for B.Arch (NATA)?",
@@ -267,7 +269,35 @@ export default function CounsellorChat() {
                       : "1px solid rgba(var(--color-accent-rgb, 0,242,254), 0.2)",
                     color: isAI ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.9)",
                   }}>
-                    {m.text}
+                    {isAI ? (
+                      <ReactMarkdown 
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          table: ({node, ...props}) => <div style={{overflowX: 'auto'}}><table style={{ borderCollapse: 'collapse', width: '100%', margin: '12px 0', fontSize: '0.75rem', border: '1px solid rgba(255,255,255,0.1)' }} {...props} /></div>,
+                          th: ({node, ...props}) => <th style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', padding: '10px 12px', background: 'rgba(255,255,255,0.03)', textAlign: 'left', fontWeight: 600, color: 'rgba(255,255,255,0.9)' }} {...props} />,
+                          td: ({node, ...props}) => <td style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '10px 12px' }} {...props} />,
+                          a: ({node, ...props}) => <a style={{ color: '#00f2fe', textDecoration: 'none', borderBottom: '1px dashed rgba(0,242,254,0.4)' }} target="_blank" rel="noopener noreferrer" {...props} />,
+                          p: ({node, ...props}) => <p style={{ margin: '0 0 12px 0', lineHeight: '1.6' }} {...props} />,
+                          ul: ({node, ...props}) => <ul style={{ margin: '0 0 12px 0', paddingLeft: '22px', listStyleType: 'disc' }} {...props} />,
+                          ol: ({node, ...props}) => <ol style={{ margin: '0 0 12px 0', paddingLeft: '22px' }} {...props} />,
+                          li: ({node, ...props}) => <li style={{ marginBottom: '6px' }} {...props} />,
+                          h1: ({node, ...props}) => <h1 style={{ fontSize: '1.2rem', margin: '18px 0 12px', color: '#fff', fontWeight: 600 }} {...props} />,
+                          h2: ({node, ...props}) => <h2 style={{ fontSize: '1.1rem', margin: '18px 0 10px', color: '#fff', fontWeight: 600 }} {...props} />,
+                          h3: ({node, ...props}) => <h3 style={{ fontSize: '0.95rem', margin: '16px 0 8px', color: '#fff', fontWeight: 600 }} {...props} />,
+                          h4: ({node, ...props}) => <h4 style={{ fontSize: '0.85rem', margin: '12px 0 6px', color: '#fff', fontWeight: 600 }} {...props} />,
+                          strong: ({node, ...props}) => <strong style={{ color: 'rgba(255,255,255,0.95)', fontWeight: 600 }} {...props} />,
+                          hr: ({node, ...props}) => <hr style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.1)', margin: '18px 0' }} {...props} />,
+                          blockquote: ({node, ...props}) => <blockquote style={{ margin: '0 0 12px 0', paddingLeft: '14px', borderLeft: '2px solid rgba(0,242,254,0.5)', color: 'rgba(255,255,255,0.6)' }} {...props} />,
+                          code: ({node, inline, ...props}: any) => inline 
+                            ? <code style={{ background: 'rgba(255,255,255,0.08)', padding: '2px 4px', borderRadius: '4px', fontSize: '0.85em', fontFamily: 'monospace' }} {...props} />
+                            : <code style={{ display: 'block', background: 'rgba(255,255,255,0.05)', padding: '12px', borderRadius: '6px', overflowX: 'auto', fontSize: '0.85em', fontFamily: 'monospace', margin: '0 0 12px 0' }} {...props} />
+                        }}
+                      >
+                        {m.text}
+                      </ReactMarkdown>
+                    ) : (
+                      <span style={{ whiteSpace: "pre-line" }}>{m.text}</span>
+                    )}
                   </div>
                   <span style={{
                     display: "block",
