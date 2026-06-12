@@ -1,0 +1,6 @@
+{
+  "name": "AetherZen Space",
+  "description": "A beautiful, premium minimal workspace pairing a cosmic dark-mode productivity dashboard, ambient focus tools, interactive scratchpads, and a secure server-side AI Creative Copilot.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
