@@ -1,12 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 
 export function CustomCursor() {
-  const dotRef  = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
-
   const mouse   = useRef({ x: -300, y: -300 });
-  const ringPos = useRef({ x: -300, y: -300 });
   const glowPos = useRef({ x: -300, y: -300 });
   const frame   = useRef<number>(0);
 
@@ -14,15 +10,12 @@ export function CustomCursor() {
     const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
     const tick = () => {
-      ringPos.current.x = lerp(ringPos.current.x, mouse.current.x, 0.14);
-      ringPos.current.y = lerp(ringPos.current.y, mouse.current.y, 0.14);
       glowPos.current.x = lerp(glowPos.current.x, mouse.current.x, 0.04);
       glowPos.current.y = lerp(glowPos.current.y, mouse.current.y, 0.04);
 
-      const tf = (x: number, y: number) => `translate(${x}px, ${y}px) translate(-50%,-50%)`;
-      if (dotRef.current)  dotRef.current.style.transform  = tf(mouse.current.x, mouse.current.y);
-      if (ringRef.current) ringRef.current.style.transform = tf(ringPos.current.x, ringPos.current.y);
-      if (glowRef.current) glowRef.current.style.transform = tf(glowPos.current.x, glowPos.current.y);
+      if (glowRef.current) {
+        glowRef.current.style.transform = `translate(${glowPos.current.x}px, ${glowPos.current.y}px) translate(-50%,-50%)`;
+      }
 
       frame.current = requestAnimationFrame(tick);
     };
@@ -31,26 +24,18 @@ export function CustomCursor() {
     const move  = (e: MouseEvent) => { mouse.current = { x: e.clientX, y: e.clientY }; };
     const enter = (e: MouseEvent) => {
       if ((e.target as HTMLElement).closest('button,a,[role="button"],input,select,textarea')) {
-        dotRef.current?.classList.add('ns-cursor-hover');
-        ringRef.current?.classList.add('ns-cursor-hover');
         glowRef.current?.classList.add('ns-cursor-hover');
       }
     };
     const leave = (e: MouseEvent) => {
       if (!(e.relatedTarget as HTMLElement)?.closest('button,a,[role="button"],input,select,textarea')) {
-        dotRef.current?.classList.remove('ns-cursor-hover');
-        ringRef.current?.classList.remove('ns-cursor-hover');
         glowRef.current?.classList.remove('ns-cursor-hover');
       }
     };
     const down = () => {
-      ringRef.current?.classList.add('ns-cursor-click');
-      dotRef.current?.classList.add('ns-cursor-click');
       glowRef.current?.classList.add('ns-cursor-click');
     };
     const up = () => {
-      ringRef.current?.classList.remove('ns-cursor-click');
-      dotRef.current?.classList.remove('ns-cursor-click');
       glowRef.current?.classList.remove('ns-cursor-click');
     };
 
@@ -70,24 +55,12 @@ export function CustomCursor() {
   }, []);
 
   return (
-    <>
-      <div ref={glowRef} className="ns-cursor-glow" style={{
-        position:'fixed', top:0, left:0, width:560, height:560, borderRadius:'50%',
-        background:'radial-gradient(circle, rgba(0,242,254,0.10) 0%, rgba(0,242,254,0.04) 40%, transparent 70%)',
-        pointerEvents:'none', zIndex:1, willChange:'transform', filter:'blur(40px)',
-        transition:'background 0.5s ease, width 0.4s ease, height 0.4s ease',
-      }} />
-      <div ref={dotRef} className="ns-cursor-dot" style={{
-        position:'fixed', top:0, left:0, width:7, height:7, borderRadius:'50%',
-        background:'#ffffff', pointerEvents:'none', zIndex:99999, willChange:'transform',
-        mixBlendMode:'difference', transition:'width 0.2s ease, height 0.2s ease',
-      }} />
-      <div ref={ringRef} className="ns-cursor-ring" style={{
-        position:'fixed', top:0, left:0, width:36, height:36, borderRadius:'50%',
-        border:'1.5px solid rgba(255,255,255,0.4)', pointerEvents:'none', zIndex:99998,
-        willChange:'transform', transition:'width 0.25s ease, height 0.25s ease, border-color 0.25s ease, background 0.25s ease',
-      }} />
-    </>
+    <div ref={glowRef} className="ns-cursor-glow" style={{
+      position:'fixed', top:0, left:0, width:560, height:560, borderRadius:'50%',
+      background:'radial-gradient(circle, var(--spotlight-color) 0%, var(--spotlight-mid) 40%, transparent 70%)',
+      pointerEvents:'none', zIndex:1, willChange:'transform', filter:'blur(40px)',
+      transition:'background 0.5s ease, width 0.4s ease, height 0.4s ease',
+    }} />
   );
 }
 

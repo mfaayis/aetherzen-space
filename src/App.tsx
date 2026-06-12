@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { GraduationCap } from "lucide-react";
+import { CustomCursor } from "./components/Shared";
 
 import Home from "./pages/Home";
 import Assessment from "./pages/Assessment";
@@ -28,6 +29,8 @@ export default function App() {
       data-theme="indigo"
       style={{ minHeight: "100vh", background: "#000", color: "#fff", fontFamily: "'Epilogue', system-ui, sans-serif", display: "flex", flexDirection: "column" }}
     >
+      <CustomCursor />
+
       {/* ══════════════════════════ NAVBAR ══════════════════════════ */}
       <header style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(0,0,0,0.72)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
         <nav style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
