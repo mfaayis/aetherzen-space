@@ -20,9 +20,9 @@ const STREAM_FILTERS = [
 ];
 
 const card: React.CSSProperties = {
-  background: "rgba(255,255,255,0.025)",
-  border: "1px solid rgba(255,255,255,0.08)",
-  borderRadius: "1.25rem",
+  background: "#111111",
+  border: "1px solid #2a2a2a",
+  borderRadius: "0.75rem",
   overflow: "hidden",
 };
 
@@ -69,12 +69,11 @@ export default function ExamRoadmap() {
 
       {/* ── Header ── */}
       <div style={{
-        position: "relative", overflow: "hidden", borderRadius: "1.25rem",
+        position: "relative", overflow: "hidden", borderRadius: "0.75rem",
         padding: "32px 32px",
-        background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 60%, transparent 100%)",
-        border: "1px solid rgba(255,255,255,0.12)",
+        background: "#111111",
+        border: "1px solid #2a2a2a",
       }}>
-        <div style={{ position: "absolute", top: "-30%", right: "-10%", width: "50%", height: "160%", background: "radial-gradient(ellipse, rgba(255,255,255,0.04) 0%, transparent 70%)", pointerEvents: "none" }} />
         <div style={{ position: "relative" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "4px 14px", borderRadius: "9999px", border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.06)", fontSize: "0.62rem", color: "rgba(255,255,255,0.6)", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 14 }}>
             <span style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--color-accent)", display: "inline-block" }} />
@@ -96,7 +95,7 @@ export default function ExamRoadmap() {
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
 
           {/* Search + filter bar */}
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", padding: "14px 16px", borderRadius: "1rem", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.02)" }}>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", padding: "14px 16px", borderRadius: "0.75rem", border: "1px solid #2a2a2a", background: "#111111" }}>
             <div style={{ position: "relative", flex: 1, minWidth: 180 }}>
               <Search size={12} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.25)", pointerEvents: "none" }} />
               <input
@@ -107,8 +106,8 @@ export default function ExamRoadmap() {
                 placeholder="Search JEE, CLAT, NEET, CUET…"
                 style={{
                   width: "100%", paddingLeft: 32, paddingRight: 12, paddingTop: 8, paddingBottom: 8,
-                  background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: "0.75rem", fontSize: "0.72rem", color: "#fff",
+                  background: "#1a1a1a", border: "1px solid #2a2a2a",
+                  borderRadius: "0.5rem", fontSize: "0.72rem", color: "#fff",
                   fontFamily: "'Epilogue', sans-serif", outline: "none",
                 }}
               />
@@ -161,7 +160,7 @@ export default function ExamRoadmap() {
                   {/* Top meta */}
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, marginBottom: 14 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <div style={{ width: 36, height: 36, borderRadius: "0.625rem", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <div style={{ width: 36, height: 36, borderRadius: "0.5rem", background: "#1a1a1a", border: "1px solid #2a2a2a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                         <Award size={16} color="rgba(255,255,255,0.55)" />
                       </div>
                       <div>
@@ -169,7 +168,7 @@ export default function ExamRoadmap() {
                         <p style={{ fontSize: "0.6rem", fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.25)", textTransform: "uppercase", letterSpacing: "0.06em", marginTop: 2 }}>{exam.fullName}</p>
                       </div>
                     </div>
-                    <span style={{ fontSize: "0.55rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "rgba(255,255,255,0.35)", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", padding: "3px 10px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
+                    <span style={{ fontSize: "0.55rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "rgba(255,255,255,0.35)", background: "#1a1a1a", border: "1px solid #2a2a2a", padding: "4px 10px", borderRadius: 6, textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
                       {exam.stream}
                     </span>
                   </div>
@@ -184,9 +183,9 @@ export default function ExamRoadmap() {
                       { label: "Difficulty Rank",       value: exam.difficulty },
                       { label: "Syllabus Themes",       value: exam.keySubjects.join(", ") },
                     ].map(({ label, value }) => (
-                      <div key={label} style={{ padding: "10px 14px", borderRadius: "0.75rem", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                        <span style={{ display: "block", fontSize: "0.5rem", fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.2)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 4 }}>{label}</span>
-                        <span style={{ fontSize: "0.65rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "rgba(255,255,255,0.65)", lineHeight: 1.4 }}>{value}</span>
+                      <div key={label} style={{ padding: "12px 14px", borderRadius: "0.5rem", background: "#1a1a1a", border: "1px solid #2a2a2a" }}>
+                        <span style={{ display: "block", fontSize: "0.5rem", fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 6 }}>{label}</span>
+                        <span style={{ fontSize: "0.65rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: "rgba(255,255,255,0.85)", lineHeight: 1.4 }}>{value}</span>
                       </div>
                     ))}
                   </div>
@@ -266,7 +265,7 @@ export default function ExamRoadmap() {
                   if (e.target.value === "pcm") { setTestMath(true); setTestBio(false); }
                   else if (e.target.value === "pcb") { setTestMath(false); setTestBio(true); }
                 }}
-                style={{ width: "100%", padding: "10px 12px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "0.75rem", color: "#fff", fontSize: "0.72rem", fontFamily: "'Epilogue', sans-serif", outline: "none" }}
+                style={{ width: "100%", padding: "10px 12px", background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "0.5rem", color: "#fff", fontSize: "0.72rem", fontFamily: "'Epilogue', sans-serif", outline: "none" }}
               >
                 <option value="pcm">Science (PCM)</option>
                 <option value="pcb">Science (PCB)</option>
@@ -287,7 +286,7 @@ export default function ExamRoadmap() {
                   min={40} max={100}
                   value={testMarks}
                   onChange={e => setTestMarks(Number(e.target.value))}
-                  style={{ width: 72, padding: "8px 10px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "0.75rem", color: "#fff", fontSize: "0.8rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, outline: "none" }}
+                  style={{ width: 72, padding: "8px 10px", background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: "0.5rem", color: "#fff", fontSize: "0.8rem", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, outline: "none" }}
                 />
                 <span style={{ fontSize: "0.62rem", fontFamily: "'JetBrains Mono', monospace", color: "rgba(255,255,255,0.25)", textTransform: "uppercase" }}>% Aggregate</span>
               </div>
@@ -305,8 +304,8 @@ export default function ExamRoadmap() {
                     onClick={() => set(!value)}
                     style={{
                       width: 18, height: 18, borderRadius: 5, flexShrink: 0,
-                      border: value ? "1px solid var(--color-accent,#fff)" : "1px solid rgba(255,255,255,0.15)",
-                      background: value ? "rgba(var(--color-accent-rgb,255,255,255),0.15)" : "rgba(255,255,255,0.03)",
+                      border: value ? "1px solid var(--color-accent,#fff)" : "1px solid #2a2a2a",
+                      background: value ? "rgba(var(--color-accent-rgb,255,255,255),0.15)" : "#1a1a1a",
                       display: "flex", alignItems: "center", justifyContent: "center",
                       transition: "all 0.2s ease",
                     }}
@@ -323,15 +322,15 @@ export default function ExamRoadmap() {
               id="btn-run-sim"
               type="submit"
               style={{
-                width: "100%", padding: "11px", borderRadius: "0.875rem",
-                background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)",
+                width: "100%", padding: "11px", borderRadius: "0.5rem",
+                background: "#1a1a1a", border: "1px solid #2a2a2a",
                 color: "#fff", fontSize: "0.65rem", fontFamily: "'JetBrains Mono', monospace",
                 fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em",
                 cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                 transition: "all 0.2s ease",
               }}
-              onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.14)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
+              onMouseEnter={e => { e.currentTarget.style.background = "#222222"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "#1a1a1a"; }}
             >
               Check Eligibility <ArrowRight size={12} />
             </button>
@@ -341,14 +340,14 @@ export default function ExamRoadmap() {
                 type="button"
                 onClick={() => setResults(null)}
                 style={{
-                  width: "100%", padding: "9px", borderRadius: "0.875rem",
-                  border: "1px solid rgba(255,255,255,0.07)", background: "transparent",
+                  width: "100%", padding: "9px", borderRadius: "0.5rem",
+                  border: "1px solid #2a2a2a", background: "transparent",
                   color: "rgba(255,255,255,0.3)", fontSize: "0.6rem", fontFamily: "'JetBrains Mono', monospace",
                   fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", cursor: "pointer",
                   transition: "all 0.2s ease",
                 }}
-                onMouseEnter={e => { e.currentTarget.style.color = "rgba(255,255,255,0.6)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; }}
-                onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.3)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)"; }}
+                onMouseEnter={e => { e.currentTarget.style.color = "rgba(255,255,255,0.6)"; e.currentTarget.style.borderColor = "#444"; }}
+                onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.3)"; e.currentTarget.style.borderColor = "#2a2a2a"; }}
               >
                 Reset Highlights
               </button>
