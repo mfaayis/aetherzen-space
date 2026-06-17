@@ -19,8 +19,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Aetherzen | Futuristic Experience",
-  description: "An Awwwards-level interactive website experience.",
+  title: "NextStep | Career Guidance Platform",
+  description: "AI-powered career assessment and guidance for your post-12th journey.",
 };
 
 export default function RootLayout({

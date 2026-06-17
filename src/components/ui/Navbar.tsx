@@ -29,10 +29,10 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group shrink-0" onClick={() => setIsMobileOpen(false)}>
             <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-black font-heading font-bold group-hover:scale-110 transition-transform">
-              A
+              N
             </div>
             <span className="text-white font-heading font-bold text-xl tracking-tighter">
-              Aetherzen
+              NextStep
             </span>
           </Link>
 
@@ -107,7 +107,7 @@ export function Navbar() {
             </nav>
             
             <div className="mt-16 text-neutral-600 font-sans text-sm uppercase tracking-widest">
-              Aetherzen Platform
+              NextStep Platform
             </div>
           </motion.div>
         )}

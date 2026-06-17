@@ -16,7 +16,7 @@ export function ContactSection() {
           transition={{ duration: 0.8 }}
           className="text-neutral-400 uppercase tracking-[0.3em] text-sm md:text-base mb-6"
         >
-          Ready for the next level?
+          Ready to find your path?
         </motion.p>
         
         <motion.h2
@@ -28,11 +28,12 @@ export function ContactSection() {
         >
           Let&apos;s <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-neutral-500">
-            Create.
+            Begin.
           </span>
         </motion.h2>
         
-        <motion.button
+        <motion.a
+          href="/#assessment"
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -42,14 +43,14 @@ export function ContactSection() {
           className="group relative px-12 py-5 rounded-full border border-white/30 bg-transparent text-white font-sans font-semibold tracking-wide overflow-hidden"
         >
           <span className="relative z-10 group-hover:text-black transition-colors duration-300">
-            START A PROJECT
+            TAKE THE ASSESSMENT
           </span>
           <div className="absolute inset-0 bg-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-        </motion.button>
+        </motion.a>
       </div>
       
       <div className="w-full max-w-7xl mx-auto px-6 mt-auto pt-32 flex flex-col md:flex-row justify-between items-center text-neutral-500 text-sm font-sans">
-        <p>© {new Date().getFullYear()} Aetherzen. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} NextStep Platform. All rights reserved.</p>
         <div className="flex gap-6 mt-4 md:mt-0">
           <a href="#" className="hover:text-white transition-colors">Twitter</a>
           <a href="#" className="hover:text-white transition-colors">Instagram</a>
