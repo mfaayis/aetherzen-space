@@ -34,88 +34,79 @@ const questions = [
       { id: "leadership", label: "Organizing & Leading", icon: "👑" },
     ],
   },
+  {
+    id: 4,
+    question: "What is your ideal work environment?",
+    options: [
+      { id: "office", label: "Corporate Office", icon: "🏢" },
+      { id: "field", label: "Outdoors / On-site", icon: "🌍" },
+      { id: "lab", label: "Hospital / Laboratory", icon: "🔬" },
+      { id: "remote", label: "Remote / Studio", icon: "🏠" },
+    ],
+  },
+  {
+    id: 5,
+    question: "What is your preferred working style?",
+    options: [
+      { id: "independent", label: "Deep Independent Work", icon: "🎧" },
+      { id: "team", label: "Highly Collaborative", icon: "👥" },
+      { id: "hands_on", label: "Hands-on & Practical", icon: "🛠️" },
+      { id: "analytical", label: "Research & Analysis", icon: "📊" },
+    ],
+  },
 ];
 
 // Complex recommendation logic based on stream
 const getRecommendations = (answers: string[]) => {
-  const stream = answers[0];
-  const interest = answers[1];
-  const skill = answers[2];
+  const [stream, interest, skill, environment, style] = answers;
 
   if (stream === "pcm") {
-    if (interest === "tech" || skill === "logic") {
-      return [
-        { title: "B.Tech Computer Science", match: "98%", desc: "The premier choice for PCM students interested in coding and algorithms." },
-        { title: "B.Sc Data Science", match: "94%", desc: "Perfect for those who excel at math and want to dive into AI and Big Data." }
-      ];
+    if (interest === "tech" || style === "independent") {
+      if (environment === "remote") return [{ title: "B.Tech Computer Science", match: "99%", desc: "Perfect for deep independent coding work in a remote or modern tech setting." }, { title: "BCA / MCA", match: "94%", desc: "A great alternative pathway to software engineering." }];
+      if (skill === "logic") return [{ title: "B.Tech Artificial Intelligence", match: "97%", desc: "Ideal for highly logical problem solvers looking to build the future." }, { title: "Data Science", match: "95%", desc: "Focuses heavily on algorithms and statistics." }];
+    }
+    if (environment === "field" || style === "hands_on") {
+      return [{ title: "B.Tech Civil Engineering", match: "98%", desc: "Excellent for those who prefer hands-on, outdoor, and on-site project management." }, { title: "B.Tech Mechanical Engineering", match: "95%", desc: "Focuses on practical machinery and systems." }];
     }
     if (interest === "art" || skill === "creativity") {
-      return [
-        { title: "B.Architecture", match: "96%", desc: "Combines math and physics with deep creative design principles." },
-        { title: "B.Des Industrial Design", match: "90%", desc: "For those who want to engineer and design physical products." }
-      ];
+      return [{ title: "B.Architecture", match: "96%", desc: "Combines strict math with boundless creativity." }, { title: "Industrial Design", match: "90%", desc: "Engineer physical products." }];
     }
-    return [
-      { title: "B.Tech Electronics", match: "92%", desc: "A great core engineering field." },
-      { title: "BCA (Bachelor of Computer Apps)", match: "88%", desc: "A strong alternative to B.Tech for software development." }
-    ];
+    return [{ title: "B.Tech Electronics & Communication", match: "92%", desc: "A strong core engineering field with vast opportunities." }, { title: "B.Sc Physics/Maths", match: "88%", desc: "For those deeply interested in pure sciences." }];
   }
 
   if (stream === "pcb") {
-    if (interest === "helping" || skill === "empathy") {
-      return [
-        { title: "MBBS", match: "99%", desc: "The traditional path for dedicated biology students aiming to become doctors." },
-        { title: "BDS / B.Pharm", match: "92%", desc: "Excellent alternatives in the medical and pharmaceutical fields." }
-      ];
+    if (interest === "helping" || environment === "lab") {
+      if (style === "hands_on") return [{ title: "MBBS / BDS", match: "99%", desc: "The direct path to becoming a hands-on medical professional." }, { title: "B.Sc Nursing", match: "96%", desc: "Highly demanded globally with direct patient care." }];
+      if (style === "analytical") return [{ title: "B.Pharmacy", match: "95%", desc: "Focuses on chemical research and medicine formulation." }, { title: "Medical Laboratory Technology", match: "92%", desc: "Crucial diagnostic work behind the scenes." }];
     }
     if (interest === "tech") {
-      return [
-        { title: "B.Sc Biotechnology", match: "95%", desc: "Fuses biology with cutting-edge technological applications." },
-        { title: "Bioinformatics", match: "90%", desc: "Perfect for PCB students who also want to learn data analysis." }
-      ];
+      return [{ title: "B.Sc Biotechnology", match: "98%", desc: "Fuses biology with cutting-edge technological research." }, { title: "Bioinformatics", match: "94%", desc: "Data analysis applied to biological sciences." }];
     }
-    return [
-      { title: "B.Sc Nursing", match: "94%", desc: "A highly demanded profession globally in healthcare." },
-      { title: "B.Sc Psychology", match: "89%", desc: "Explore the science of the human mind." }
-    ];
+    return [{ title: "BPT (Physiotherapy)", match: "93%", desc: "Hands-on healthcare focused on physical rehabilitation." }, { title: "B.Sc Psychology", match: "89%", desc: "Explore the science of the human mind." }];
   }
 
   if (stream === "commerce") {
     if (interest === "business" || skill === "leadership") {
-      return [
-        { title: "Chartered Accountancy (CA)", match: "97%", desc: "The ultimate prestige for commerce students with strong analytical skills." },
-        { title: "B.Com (Hons)", match: "94%", desc: "A solid foundation for finance, accounting, and corporate roles." }
-      ];
+      if (style === "analytical" || skill === "logic") return [{ title: "Chartered Accountancy (CA)", match: "98%", desc: "The ultimate prestige for commerce students with strong analytical skills." }, { title: "B.Com (Hons)", match: "94%", desc: "A solid foundation for finance and accounting." }];
+      if (environment === "office") return [{ title: "BBA / BBM", match: "96%", desc: "Perfect for future corporate leaders and managers." }, { title: "Company Secretary (CS)", match: "92%", desc: "Focus on corporate governance and law." }];
     }
     if (skill === "creativity" || interest === "art") {
-      return [
-        { title: "BBA Marketing", match: "95%", desc: "Combines business acumen with creative campaign strategies." },
-        { title: "B.Des Communication Design", match: "88%", desc: "Commerce students can excel in branding and advertising design." }
-      ];
+      return [{ title: "BBA Marketing", match: "97%", desc: "Combines business acumen with creative campaign strategies." }, { title: "Digital Business", match: "93%", desc: "Focuses on e-commerce and digital growth." }];
     }
-    return [
-      { title: "B.A. Economics", match: "93%", desc: "For those fascinated by markets, trends, and fiscal policies." },
-      { title: "BBA Finance", match: "91%", desc: "Dive deep into corporate finance and investment." }
-    ];
+    return [{ title: "B.A. Economics", match: "95%", desc: "For those fascinated by markets, trends, and fiscal policies." }, { title: "Banking & Finance", match: "91%", desc: "Dive deep into the banking sector." }];
   }
 
   if (stream === "humanities") {
-    if (interest === "art" || skill === "creativity") {
-      return [
-        { title: "B.Des / Fine Arts", match: "98%", desc: "Ideal for highly creative humanities students." },
-        { title: "B.A. Mass Communication", match: "95%", desc: "Perfect for those interested in media, journalism, and storytelling." }
-      ];
+    if (interest === "art" || environment === "remote") {
+      if (skill === "creativity") return [{ title: "B.Des / Fine Arts", match: "99%", desc: "Ideal for highly creative humanities students looking to build portfolios." }, { title: "Journalism & Mass Comm", match: "95%", desc: "Storytelling across digital and print media." }];
     }
     if (interest === "helping" || skill === "empathy") {
-      return [
-        { title: "B.A. Psychology", match: "97%", desc: "A top choice for understanding human behavior and therapy." },
-        { title: "BA LLB (Law)", match: "92%", desc: "Advocate for justice and societal change." }
-      ];
+      return [{ title: "B.A. Psychology", match: "98%", desc: "A top choice for understanding human behavior and therapy." }, { title: "BA LLB (Law)", match: "96%", desc: "Advocate for justice and societal change." }];
     }
-    return [
-      { title: "B.A. Political Science", match: "90%", desc: "For those interested in governance, policy, and civil services." },
-      { title: "Liberal Arts", match: "88%", desc: "A flexible program allowing you to study a diverse range of subjects." }
-    ];
+    if (skill === "leadership" || environment === "office") {
+      return [{ title: "B.A. Political Science", match: "95%", desc: "For those interested in governance, policy, and civil services." }, { title: "Hotel Management", match: "90%", desc: "Fast-paced hospitality leadership." }];
+    }
+    return [{ title: "Liberal Arts", match: "92%", desc: "A flexible program allowing you to study a diverse range of subjects." }, { title: "Foreign Languages", match: "88%", desc: "Opens up global career opportunities." }];
   }
 
   // Absolute fallback
