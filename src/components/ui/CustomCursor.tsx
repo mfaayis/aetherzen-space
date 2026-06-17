@@ -40,6 +40,21 @@ export const CustomCursor = () => {
   return (
     <>
       <motion.div
+        className="fixed top-0 left-0 w-[600px] h-[600px] pointer-events-none z-0"
+        style={{
+          background: "radial-gradient(circle, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 60%)",
+        }}
+        animate={{
+          x: mousePosition.x - 300,
+          y: mousePosition.y - 300,
+        }}
+        transition={{
+          type: "tween",
+          ease: "backOut",
+          duration: 0.1,
+        }}
+      />
+      <motion.div
         className="fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[9999] flex items-center justify-center bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 shadow-[0_0_15px_rgba(168,85,247,0.5)]"
         animate={{
           x: mousePosition.x - (isHovering ? 32 : 8),
