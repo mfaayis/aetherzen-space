@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-inter), sans-serif;
+  --font-heading: var(--font-outfit), sans-serif;
+  
+  --color-background: #050505;
+  --color-foreground: #fcfcfc;
+  
+  --color-primary: #ffffff;
+  --color-primary-foreground: #000000;
+  
+  --color-accent: #3b82f6;
+  --color-accent-foreground: #ffffff;
+  
+  --color-muted: #1f1f1f;
+  --color-muted-foreground: #a3a3a3;
+  
+  --color-border: #262626;
+}
+
+:root {
+  --background: #050505;
+  --foreground: #fcfcfc;
+}
+
+/* Base resets & typography */
+html {
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  overflow-x: hidden;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+::selection {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+/* Hide native cursor globally to use custom cursor */
+@media (pointer: fine) {
+  body, a, button, [role="button"], input, select, textarea {
+    cursor: none !important;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Typography Scale for brutalist feel */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.text-massive {
+  font-size: clamp(3rem, 10vw, 12rem);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Text reveal mask */
+.reveal-mask {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
