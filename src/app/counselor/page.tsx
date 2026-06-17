@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Send, Bot, AlertCircle } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 type Message = {
   id: string;
@@ -104,7 +105,23 @@ export default function CounselorPage() {
                     ? "bg-white text-black rounded-tr-sm" 
                     : "bg-white/5 border border-white/10 text-neutral-200 rounded-tl-sm"
                 }`}>
-                  <p className="text-[15px] leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+                  <div className={`text-[15px] leading-relaxed ${msg.role === "user" ? "text-black" : "text-neutral-200"}`}>
+                    <ReactMarkdown
+                      components={{
+                        strong: ({node, ...props}) => <span className={`font-bold ${msg.role === "user" ? "text-black" : "text-white"}`} {...props} />,
+                        ul: ({node, ...props}) => <ul className="list-disc pl-5 mt-2 mb-2 space-y-1" {...props} />,
+                        ol: ({node, ...props}) => <ol className="list-decimal pl-5 mt-2 mb-2 space-y-1" {...props} />,
+                        li: ({node, ...props}) => <li className="pl-1" {...props} />,
+                        p: ({node, ...props}) => <p className="mb-3 last:mb-0" {...props} />,
+                        h1: ({node, ...props}) => <h1 className="text-xl font-bold mt-4 mb-2" {...props} />,
+                        h2: ({node, ...props}) => <h2 className="text-lg font-bold mt-4 mb-2" {...props} />,
+                        h3: ({node, ...props}) => <h3 className="text-base font-bold mt-3 mb-2" {...props} />,
+                        a: ({node, ...props}) => <a className="text-blue-400 hover:underline" target="_blank" rel="noopener noreferrer" {...props} />,
+                      }}
+                    >
+                      {msg.content}
+                    </ReactMarkdown>
+                  </div>
                 </div>
               </div>
             ))}
