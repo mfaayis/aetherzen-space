@@ -2,50 +2,8 @@
 
 import { motion } from "framer-motion";
 
-const exams = [
-  {
-    name: "JEE Main & Advanced",
-    target: "Engineering (B.Tech / B.Arch)",
-    eligibility: "Science PCM",
-    desc: "The gateway to NITs, IIITs, and the prestigious IITs. Tests Physics, Chemistry, and Mathematics extensively.",
-    month: "Jan / Apr"
-  },
-  {
-    name: "NEET UG",
-    target: "Medical (MBBS / BDS)",
-    eligibility: "Science PCB",
-    desc: "The single national level medical entrance exam for admission to medical colleges across India.",
-    month: "May"
-  },
-  {
-    name: "CUET UG",
-    target: "Central Universities (B.A / B.Com / B.Sc)",
-    eligibility: "All Streams",
-    desc: "Common University Entrance Test for admission into all UG programs in all Central Universities.",
-    month: "May"
-  },
-  {
-    name: "CLAT",
-    target: "Law (BA LLB)",
-    eligibility: "All Streams",
-    desc: "Common Law Admission Test for entry into the 24 National Law Universities (NLUs) in India.",
-    month: "December"
-  },
-  {
-    name: "NID DAT / UCEED",
-    target: "Design (B.Des)",
-    eligibility: "All Streams",
-    desc: "Design Aptitude Tests for entry into National Institutes of Design and IITs for design programs.",
-    month: "Jan / Feb"
-  },
-  {
-    name: "BITSAT",
-    target: "Engineering (BITS)",
-    eligibility: "Science PCM",
-    desc: "A highly competitive exam for admission to BITS Pilani, Goa, and Hyderabad campuses.",
-    month: "May / June"
-  }
-];
+import { examsData } from "@/data/exams";
+import Link from "next/link";
 
 export default function ExamsPage() {
   return (
@@ -66,7 +24,7 @@ export default function ExamsPage() {
         </motion.div>
 
         <div className="flex flex-col gap-6">
-          {exams.map((exam, i) => (
+          {examsData.map((exam, i) => (
             <motion.div
               key={exam.name}
               initial={{ opacity: 0, x: -30 }}
@@ -97,10 +55,13 @@ export default function ExamsPage() {
                 </p>
               </div>
 
-              <div className="z-10 w-full md:w-auto flex justify-end">
-                <button className="w-full md:w-auto px-6 py-3 rounded-full border border-neutral-700 text-neutral-300 hover:bg-white hover:text-black hover:border-white transition-all font-sans text-sm font-bold uppercase tracking-wider">
+              <div className="z-10 w-full md:w-auto flex justify-end shrink-0">
+                <Link 
+                  href={`/exams/${exam.slug}`}
+                  className="w-full md:w-auto px-8 py-3 rounded-full border border-white text-white hover:bg-white hover:text-black transition-all font-sans text-sm font-bold uppercase tracking-wider text-center"
+                >
                   Details
-                </button>
+                </Link>
               </div>
             </motion.div>
           ))}
