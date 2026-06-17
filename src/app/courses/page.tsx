@@ -30,15 +30,15 @@ export default function CoursesPage() {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              <div className="flex items-center gap-4 mb-8">
-                <div className={`w-3 h-12 bg-gradient-to-b ${category.color} rounded-full`} />
-                <h2 className="text-3xl md:text-5xl font-heading font-bold text-white tracking-tight flex items-center gap-4">
-                  <span>{category.icon}</span>
+              <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
+                <div className={`w-2 md:w-3 h-10 md:h-12 bg-gradient-to-b ${category.color} rounded-full shrink-0`} />
+                <h2 className="text-2xl md:text-5xl font-heading font-bold text-white tracking-tight flex items-center gap-3 md:gap-4">
+                  <span className="text-3xl md:text-5xl">{category.icon}</span>
                   {category.title}
                 </h2>
               </div>
               
-              <div className="glass-panel p-8 md:p-10 rounded-3xl border border-white/10">
+              <div className="glass-panel p-5 md:p-10 rounded-3xl border border-white/10">
                 <div className="flex flex-wrap gap-3 md:gap-4">
                   {category.courses.map((course, i) => (
                     <span 

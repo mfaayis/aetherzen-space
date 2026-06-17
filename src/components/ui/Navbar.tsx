@@ -19,10 +19,10 @@ export function Navbar() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="fixed top-0 left-0 w-full z-50 px-6 py-6"
+      className="fixed top-0 left-0 w-full z-50 px-4 md:px-6 py-4 md:py-6"
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between glass-panel px-6 py-4 rounded-full border border-white/10 shadow-2xl bg-black/40 backdrop-blur-md">
-        <Link href="/" className="flex items-center gap-2 group">
+      <div className="max-w-7xl mx-auto flex items-center justify-between glass-panel px-4 md:px-6 py-3 md:py-4 rounded-full border border-white/10 shadow-2xl bg-black/40 backdrop-blur-md">
+        <Link href="/" className="flex items-center gap-2 group shrink-0">
           <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-black font-heading font-bold group-hover:scale-110 transition-transform">
             A
           </div>
@@ -31,14 +31,14 @@ export function Navbar() {
           </span>
         </Link>
 
-        <nav className="flex items-center gap-2 md:gap-8 bg-white/5 px-4 md:px-8 py-2 rounded-full border border-white/10">
+        <nav className="flex items-center gap-2 md:gap-8 bg-white/5 px-2 md:px-8 py-2 rounded-full border border-white/10 overflow-x-auto no-scrollbar max-w-[60vw] md:max-w-none">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className="relative px-3 py-1 font-sans text-sm tracking-widest uppercase transition-colors"
+                className="relative px-2 md:px-3 py-1 font-sans text-[11px] md:text-sm tracking-widest uppercase transition-colors shrink-0"
               >
                 <span className={`relative z-10 ${isActive ? "text-white font-bold" : "text-neutral-400 hover:text-white"}`}>
                   {link.label}

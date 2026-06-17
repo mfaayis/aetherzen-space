@@ -177,9 +177,9 @@ export function AssessmentFlow() {
                     whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.08)" }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => handleSelect(opt.id)}
-                    className="glass-panel p-8 rounded-2xl flex flex-col items-start gap-4 text-left group border border-white/10 transition-colors"
+                    className="glass-panel p-5 md:p-8 rounded-2xl flex flex-col items-start gap-4 text-left group border border-white/10 transition-colors"
                   >
-                    <span className="text-4xl filter grayscale group-hover:grayscale-0 transition-all duration-300">
+                    <span className="text-3xl md:text-4xl filter grayscale group-hover:grayscale-0 transition-all duration-300">
                       {opt.icon}
                     </span>
                     <span className="text-xl md:text-2xl font-heading text-neutral-300 group-hover:text-white transition-colors">
@@ -216,15 +216,15 @@ export function AssessmentFlow() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.2 + i * 0.2 }}
-                    className="relative p-8 rounded-3xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 overflow-hidden group"
+                    className="relative p-6 md:p-8 rounded-3xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 overflow-hidden group"
                   >
-                    <div className="absolute top-0 right-0 p-6">
-                      <span className="text-3xl font-heading font-bold text-white/20 group-hover:text-white/40 transition-colors">
+                    <div className="absolute top-0 right-0 p-4 md:p-6">
+                      <span className="text-2xl md:text-3xl font-heading font-bold text-white/20 group-hover:text-white/40 transition-colors">
                         {res.match}
                       </span>
                     </div>
-                    <div className="flex flex-col h-full justify-between gap-8 z-10 relative">
-                      <h3 className="text-3xl font-heading font-bold text-white tracking-tight w-3/4">
+                    <div className="flex flex-col h-full justify-between gap-6 md:gap-8 z-10 relative">
+                      <h3 className="text-2xl md:text-3xl font-heading font-bold text-white tracking-tight w-3/4">
                         {res.title}
                       </h3>
                       <p className="text-neutral-400 font-sans leading-relaxed">

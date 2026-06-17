@@ -65,9 +65,9 @@ export function AIChat() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-[100] w-16 h-16 bg-white text-black rounded-full shadow-2xl flex items-center justify-center cursor-none group border border-white/20"
+            className="fixed bottom-4 md:bottom-6 right-4 md:right-6 z-[100] w-14 h-14 md:w-16 md:h-16 bg-white text-black rounded-full shadow-2xl flex items-center justify-center cursor-none group border border-white/20"
           >
-            <MessageSquare size={28} className="group-hover:rotate-12 transition-transform" />
+            <MessageSquare size={24} className="md:w-7 md:h-7 group-hover:rotate-12 transition-transform" />
           </motion.button>
         )}
       </AnimatePresence>
@@ -79,7 +79,7 @@ export function AIChat() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="fixed bottom-6 right-6 z-[100] w-[350px] md:w-[400px] h-[550px] max-h-[80vh] glass-panel bg-black/80 rounded-2xl border border-white/20 shadow-2xl flex flex-col overflow-hidden"
+            className="fixed bottom-4 md:bottom-6 right-4 md:right-6 z-[100] w-[calc(100vw-2rem)] md:w-[400px] h-[500px] md:h-[550px] max-h-[80vh] glass-panel bg-black/80 rounded-2xl border border-white/20 shadow-2xl flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">

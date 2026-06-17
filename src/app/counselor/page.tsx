@@ -82,7 +82,7 @@ export default function CounselorPage() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="w-full h-[65vh] glass-panel bg-black/40 rounded-3xl border border-white/10 flex flex-col overflow-hidden shadow-2xl"
+          className="w-full h-[65vh] md:h-[70vh] glass-panel bg-black/40 rounded-3xl border border-white/10 flex flex-col overflow-hidden shadow-2xl"
         >
           {error && (
             <div className="bg-red-500/20 border-b border-red-500/50 p-4 flex items-center justify-center gap-2 text-red-400 font-sans text-sm">
@@ -96,11 +96,11 @@ export default function CounselorPage() {
             {messages.map((msg) => (
               <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 {msg.role === "ai" && (
-                  <div className="w-8 h-8 rounded-full bg-blue-500/20 border border-blue-500/50 flex items-center justify-center mr-3 mt-1 shrink-0">
-                    <Bot size={16} className="text-blue-400" />
+                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-blue-500/20 border border-blue-500/50 flex items-center justify-center mr-2 md:mr-3 mt-1 shrink-0">
+                    <Bot size={14} className="text-blue-400 md:w-4 md:h-4" />
                   </div>
                 )}
-                <div className={`max-w-[85%] md:max-w-[75%] rounded-3xl px-6 py-4 ${
+                <div className={`max-w-[90%] md:max-w-[75%] rounded-3xl px-5 py-4 md:px-6 md:py-4 ${
                   msg.role === "user" 
                     ? "bg-white text-black rounded-tr-sm" 
                     : "bg-white/5 border border-white/10 text-neutral-200 rounded-tl-sm"
@@ -142,7 +142,7 @@ export default function CounselorPage() {
           </div>
 
           {/* Input Area */}
-          <div className="p-4 border-t border-white/10 bg-white/5">
+          <div className="p-3 md:p-4 border-t border-white/10 bg-white/5">
             <form 
               onSubmit={(e) => { e.preventDefault(); handleSend(); }}
               className="relative flex items-center max-w-3xl mx-auto"
@@ -152,14 +152,14 @@ export default function CounselorPage() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Message the Counselor..."
-                className="w-full bg-black/50 border border-white/20 rounded-full py-4 pl-6 pr-14 text-base text-white placeholder-neutral-500 focus:outline-none focus:border-white/50 transition-colors font-sans shadow-inner"
+                className="w-full bg-black/50 border border-white/20 rounded-full py-3 md:py-4 pl-5 md:pl-6 pr-12 md:pr-14 text-sm md:text-base text-white placeholder-neutral-500 focus:outline-none focus:border-white/50 transition-colors font-sans shadow-inner"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isTyping}
-                className="absolute right-2 w-10 h-10 rounded-full bg-white text-black flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-200 transition-colors"
+                className="absolute right-1 md:right-2 w-9 h-9 md:w-10 md:h-10 rounded-full bg-white text-black flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-200 transition-colors"
               >
-                <Send size={18} />
+                <Send size={16} className="md:w-[18px] md:h-[18px]" />
               </button>
             </form>
           </div>
