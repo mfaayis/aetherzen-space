@@ -8,8 +8,9 @@ export function generateStaticParams() {
   }));
 }
 
-export default function ExamDetailPage({ params }: { params: { slug: string } }) {
-  const exam = examsData.find(e => e.slug === params.slug);
+export default async function ExamDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const exam = examsData.find(e => e.slug === resolvedParams.slug);
 
   if (!exam) {
     notFound();
