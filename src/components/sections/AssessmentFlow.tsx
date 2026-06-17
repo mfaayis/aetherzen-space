@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { courseCategories } from "@/data/courses";
 
 const questions = [
   {
@@ -73,42 +74,36 @@ const questions = [
   },
 ];
 
-const courseDatabase = [
-  // Engineering & Tech
-  { title: "B.Tech Computer Science", desc: "Software engineering and algorithms.", streams: ["pcm"], tags: ["tech", "logic", "remote", "independent", "startup"] },
-  { title: "B.Tech Artificial Intelligence", desc: "Machine learning and data processing.", streams: ["pcm"], tags: ["tech", "data", "logic", "analytical", "startup"] },
-  { title: "B.Tech Civil Engineering", desc: "Infrastructure and construction.", streams: ["pcm"], tags: ["tech", "field", "hands_on_skill", "team", "hands_on"] },
-  { title: "B.Tech Mechanical Eng", desc: "Machinery and physical systems.", streams: ["pcm"], tags: ["tech", "logic", "hands_on", "hands_on_skill", "office", "startup"] },
-  { title: "B.Architecture", desc: "Building design and structure.", streams: ["pcm"], tags: ["art", "tech", "creativity", "studio", "independent"] },
-  { title: "BCA / MCA", desc: "Software application development.", streams: ["pcm", "commerce"], tags: ["tech", "logic", "remote", "independent"] },
-  { title: "Data Science", desc: "Statistics and big data.", streams: ["pcm", "commerce"], tags: ["tech", "finance", "data", "logic", "analytical", "office", "remote"] },
+// Map each category to core streams and tags
+const categoryTagMap: Record<string, { streams: string[], tags: string[] }> = {
+  "Engineering and Technology": { streams: ["pcm"], tags: ["tech", "logic", "analytical", "office", "startup"] },
+  "Medical and Allied Health Sciences": { streams: ["pcb"], tags: ["science", "helping", "lab", "hands_on", "process", "empathy"] },
+  "Commerce and Management": { streams: ["commerce", "humanities"], tags: ["business", "finance", "data", "leadership", "office", "global"] },
+  "Pure Science": { streams: ["pcm", "pcb"], tags: ["science", "analytical", "independent", "lab", "logic"] },
+  "Computer and IT Courses": { streams: ["pcm", "commerce"], tags: ["tech", "logic", "remote", "independent", "startup", "data"] },
+  "Law": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: ["law", "speaking", "logic", "empathy", "office", "analytical"] },
+  "Aviation": { streams: ["pcm", "commerce"], tags: ["global", "hands_on_skill", "process", "field"] },
+  "Arts, Humanities and Social Sciences": { streams: ["humanities", "commerce", "pcb"], tags: ["media", "speaking", "creativity", "independent", "empathy", "analytical"] },
+  "Design and Creative Arts": { streams: ["humanities", "commerce", "pcm"], tags: ["art", "creativity", "studio", "remote", "independent", "hands_on_skill"] },
+  "Hospitality and Tourism": { streams: ["humanities", "commerce"], tags: ["business", "helping", "team", "global", "hands_on"] },
+  "Agriculture and Environment": { streams: ["pcb", "pcm"], tags: ["environment", "science", "field", "hands_on", "independent"] },
+  "Defence and Uniform Services": { streams: ["pcm", "pcb", "humanities"], tags: ["leadership", "field", "team", "process", "hands_on_skill"] },
+  "Diploma Courses": { streams: ["pcm", "commerce", "humanities"], tags: ["hands_on_skill", "hands_on", "startup"] },
+  "Foreign Language Courses": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: ["speaking", "global", "remote", "empathy"] },
+  "Modern Skill-Based Courses": { streams: ["commerce", "humanities", "pcm"], tags: ["tech", "media", "business", "remote", "startup", "independent", "creativity"] },
+  "Government Career Preparation": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: ["process", "analytical", "office", "logic"] },
+};
 
-  // Medical
-  { title: "MBBS", desc: "General medicine and surgery.", streams: ["pcb"], tags: ["helping", "science", "empathy", "lab", "team", "hands_on", "process"] },
-  { title: "BDS (Dentistry)", desc: "Dental surgery and care.", streams: ["pcb"], tags: ["helping", "science", "hands_on_skill", "lab", "independent"] },
-  { title: "B.Sc Nursing", desc: "Patient care and medical support.", streams: ["pcb"], tags: ["helping", "empathy", "lab", "team", "process"] },
-  { title: "B.Pharmacy", desc: "Drug research and chemistry.", streams: ["pcb"], tags: ["science", "helping", "lab", "analytical", "process"] },
-  { title: "B.Sc Biotechnology", desc: "Genetic and biological tech.", streams: ["pcb", "pcm"], tags: ["tech", "science", "lab", "analytical", "independent"] },
-
-  // Commerce & Business
-  { title: "Chartered Accountancy (CA)", desc: "Elite accounting and auditing.", streams: ["commerce"], tags: ["finance", "business", "data", "logic", "office", "analytical", "process"] },
-  { title: "BBA / BBM", desc: "Business management and operations.", streams: ["commerce", "humanities"], tags: ["business", "leadership", "office", "team", "global"] },
-  { title: "B.Com (Hons)", desc: "Finance and accounting foundations.", streams: ["commerce"], tags: ["finance", "business", "data", "office", "process"] },
-  { title: "B.A. Economics", desc: "Market trends and fiscal policies.", streams: ["commerce", "humanities"], tags: ["finance", "science", "data", "analytical", "office"] },
-  { title: "Digital Marketing", desc: "Online branding and growth.", streams: ["commerce", "humanities", "pcm"], tags: ["media", "business", "creativity", "remote", "startup"] },
-
-  // Humanities & Law
-  { title: "BA LLB (Law)", desc: "Legal practice and advocacy.", streams: ["humanities", "commerce", "pcm", "pcb"], tags: ["law", "speaking", "logic", "empathy", "office", "analytical"] },
-  { title: "B.A. Psychology", desc: "Study of human behavior.", streams: ["humanities", "pcb"], tags: ["helping", "science", "empathy", "office", "remote", "analytical"] },
-  { title: "Journalism & Mass Comm", desc: "News, media, and storytelling.", streams: ["humanities", "commerce"], tags: ["media", "speaking", "creativity", "field", "team", "startup"] },
-  { title: "B.Des / Fine Arts", desc: "Visual arts and design.", streams: ["humanities", "commerce", "pcm"], tags: ["art", "creativity", "hands_on_skill", "remote", "independent", "studio"] },
-  { title: "B.A. Political Science", desc: "Governance and civil services.", streams: ["humanities"], tags: ["law", "leadership", "speaking", "office", "process"] },
-  { title: "Hotel Management", desc: "Hospitality and tourism.", streams: ["humanities", "commerce"], tags: ["business", "helping", "empathy", "team", "global", "hands_on"] },
-  
-  // Niche / General
-  { title: "Environmental Science", desc: "Sustainability and ecology.", streams: ["pcb", "pcm", "humanities"], tags: ["environment", "science", "field", "analytical", "global"] },
-  { title: "Foreign Languages", desc: "Translation and diplomacy.", streams: ["humanities", "commerce", "pcm", "pcb"], tags: ["speaking", "empathy", "global", "independent", "remote"] },
-];
+// Flatten all 150+ courses into a massive scored database
+const expandedCourseDatabase = courseCategories.flatMap(category => {
+  const meta = categoryTagMap[category.title] || { streams: ["pcm", "pcb", "commerce", "humanities"], tags: [] };
+  return category.courses.map(courseName => ({
+    title: courseName,
+    desc: `A specialized professional program in the ${category.title} sector.`,
+    streams: meta.streams,
+    tags: meta.tags
+  }));
+});
 
 const getRecommendations = (answers: string[][]) => {
   if (!answers || answers.length === 0) return [];
@@ -120,22 +115,24 @@ const getRecommendations = (answers: string[][]) => {
   const userTags = answers.slice(1).flat();
 
   // Filter courses by stream, then score them based on matching tags
-  const scoredCourses = courseDatabase
+  const scoredCourses = expandedCourseDatabase
     .filter(course => course.streams.includes(stream))
     .map(course => {
       let score = 0;
       course.tags.forEach(tag => {
         if (userTags.includes(tag)) score += 1;
       });
+      // Add slight random variance to break ties dynamically
+      score += Math.random() * 0.5;
       return { ...course, score };
     })
     // Sort descending by score
     .sort((a, b) => b.score - a.score);
 
-  // Return top 4
+  // Return top 4 matches
   return scoredCourses.slice(0, 4).map(c => ({
     title: c.title,
-    match: Math.min(100, 80 + (c.score * 5)) + "%", 
+    match: Math.min(99, 80 + Math.floor(c.score * 5)) + "%", 
     desc: c.desc
   }));
 };
