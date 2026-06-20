@@ -55,6 +55,7 @@ export interface MatchResult {
   score: number;
   matchPercentage: string;
   tags: Record<string, number>;
+  exams: string[];
 }
 
 export function scoreCourses(studentVector: Record<string, number>, streamId: string): MatchResult[] {
@@ -91,7 +92,8 @@ export function scoreCourses(studentVector: Record<string, number>, streamId: st
       title: course.title,
       category: course.category,
       score,
-      tags: course.tags
+      tags: course.tags,
+      exams: course.exams
     };
   });
 

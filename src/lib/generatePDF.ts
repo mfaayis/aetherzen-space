@@ -4,6 +4,7 @@ export interface BlueprintResult {
   title: string;
   match: string;
   desc: string;
+  exams: string[];
 }
 
 export const generateBlueprintPDF = async (results: BlueprintResult[], userName?: string) => {
@@ -80,22 +81,30 @@ export const generateBlueprintPDF = async (results: BlueprintResult[], userName?
     }
 
     // Card background simulation (light gray rounded rect)
-    const cardHeight = 35;
+    const cardHeight = 38;
     doc.setFillColor(248, 250, 252); // Slate 50
     doc.setDrawColor(226, 232, 240); // Slate 200
     doc.roundedRect(margin, cursorY, pageWidth - margin * 2, cardHeight, 3, 3, "FD");
 
-    // Title & Match
+    // Title 
     doc.setFontSize(12);
     doc.setTextColor(15, 23, 42);
     doc.setFont("helvetica", "bold");
     doc.text(`${index + 1}. ${res.title}`, margin + 5, cursorY + 10);
     
-    // Match badge (right aligned inside card)
+    // Match badge (colored badge right aligned inside card)
     const matchText = `${res.match} Match`;
     const matchWidth = doc.getTextWidth(matchText);
-    doc.setTextColor(59, 130, 246);
-    doc.text(matchText, pageWidth - margin - 5 - matchWidth, cursorY + 10);
+    const badgePadding = 3;
+    
+    // Match badge background
+    doc.setFillColor(239, 246, 255); // blue-50
+    doc.roundedRect(pageWidth - margin - matchWidth - badgePadding * 2 - 5, cursorY + 5, matchWidth + badgePadding * 2, 8, 2, 2, "F");
+    
+    // Match badge text
+    doc.setTextColor(59, 130, 246); // blue-500
+    doc.setFontSize(10);
+    doc.text(matchText, pageWidth - margin - matchWidth - badgePadding - 5, cursorY + 10.5);
 
     // Description
     doc.setFontSize(10);
@@ -109,7 +118,7 @@ export const generateBlueprintPDF = async (results: BlueprintResult[], userName?
 
   cursorY += 5;
 
-  // 3. Next Steps Section
+  // 3. Next Steps & Recommended Exams
   if (cursorY > pageHeight - 60) {
     doc.addPage();
     cursorY = margin;
@@ -121,10 +130,18 @@ export const generateBlueprintPDF = async (results: BlueprintResult[], userName?
   doc.text("Actionable Next Steps", margin, cursorY);
   cursorY += 10;
 
+  // Compile unique exams
+  const uniqueExams = Array.from(new Set(results.flatMap(r => r.exams || [])));
+  
+  let examText = "Check official entrance exam dates.";
+  if (uniqueExams.length > 0) {
+    examText = `Check official entrance exam dates for: ${uniqueExams.join(", ")}.`;
+  }
+
   const steps = [
-    "Explore these courses in detail in our Course Directory.",
+    "Explore these specific courses in our Course Directory.",
     "Search for top-ranked colleges offering these programs.",
-    "Check official entrance exam dates (JEE, NEET, CUET, etc.).",
+    examText,
     "Use the NextStep AI Counselor for specific follow-up questions."
   ];
 
@@ -134,8 +151,11 @@ export const generateBlueprintPDF = async (results: BlueprintResult[], userName?
     doc.setFontSize(11);
     doc.setTextColor(71, 85, 105);
     doc.setFont("helvetica", "normal");
-    doc.text(step, margin + 8, cursorY);
-    cursorY += 8;
+    
+    // Wrap step text just in case it's long
+    const stepLines = doc.splitTextToSize(step, pageWidth - margin * 2 - 10);
+    doc.text(stepLines, margin + 8, cursorY);
+    cursorY += stepLines.length * 5 + 3;
   });
 
   // 4. Footer

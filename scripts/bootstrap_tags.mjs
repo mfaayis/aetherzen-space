@@ -142,22 +142,22 @@ const categories = [
 ];
 
 const categoryDefaults = {
-  "Engineering and Technology": { streams: ["pcm"], tags: { analytical: 4, tech: 3, hands_on: 2, office: 2, math: 4 }, coreTags: ["math", "analytical"] },
-  "Medical and Allied Health Sciences": { streams: ["pcb"], tags: { biology: 5, lab: 4, people_facing: 3, long_duration: 3, hands_on: 2 }, coreTags: ["biology"] },
-  "Commerce and Management": { streams: ["commerce", "humanities", "pcm"], tags: { business: 5, office: 4, analytical: 2, people_facing: 2, math: 1 }, coreTags: ["business"] },
-  "Pure Science": { streams: ["pcm", "pcb"], tags: { analytical: 5, lab: 3, tech: 1, math: 2 }, coreTags: ["analytical"] },
-  "Computer and IT Courses": { streams: ["pcm", "commerce"], tags: { tech: 5, analytical: 4, remote: 3, office: 2, math: 2 }, coreTags: ["tech"] },
-  "Law": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: { humanities: 3, analytical: 3, people_facing: 3, office: 3, long_duration: 2 }, coreTags: ["analytical", "humanities"] },
-  "Aviation": { streams: ["pcm", "commerce"], tags: { field: 4, hands_on: 3, tech: 2, risk_tolerant: 2 }, coreTags: ["hands_on"] },
-  "Arts, Humanities and Social Sciences": { streams: ["humanities", "commerce", "pcb"], tags: { humanities: 5, people_facing: 3, creative: 2, analytical: 2 }, coreTags: ["humanities"] },
-  "Design and Creative Arts": { streams: ["humanities", "commerce", "pcm"], tags: { creative: 5, studio: 4, remote: 2, hands_on: 2 }, coreTags: ["creative"] },
-  "Hospitality and Tourism": { streams: ["humanities", "commerce"], tags: { people_facing: 5, hands_on: 2, field: 2, business: 2 }, coreTags: ["people_facing"] },
-  "Agriculture and Environment": { streams: ["pcb", "pcm"], tags: { field: 4, biology: 3, lab: 2, hands_on: 2 }, coreTags: ["field"] },
-  "Defence and Uniform Services": { streams: ["pcm", "pcb", "humanities"], tags: { field: 5, hands_on: 4, risk_tolerant: 3, people_facing: 2 }, coreTags: ["field", "hands_on"] },
-  "Diploma Courses": { streams: ["pcm", "commerce", "humanities", "pcb"], tags: { short_duration: 5, hands_on: 4, tech: 2 }, coreTags: ["short_duration"] },
-  "Foreign Language Courses": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: { humanities: 4, people_facing: 3, remote: 2 }, coreTags: ["humanities"] },
-  "Modern Skill-Based Courses": { streams: ["commerce", "humanities", "pcm"], tags: { creative: 3, tech: 3, remote: 5, short_duration: 4, risk_tolerant: 3 }, coreTags: [] },
-  "Government Career Preparation": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: { risk_averse: 5, office: 4, analytical: 3, long_duration: 3 }, coreTags: ["risk_averse", "office"] },
+  "Engineering and Technology": { streams: ["pcm"], tags: { analytical: 4, tech: 3, hands_on: 2, office: 2, math: 4 }, coreTags: ["math", "analytical"], exams: ["JEE Main", "JEE Advanced", "State CETs"] },
+  "Medical and Allied Health Sciences": { streams: ["pcb"], tags: { biology: 5, lab: 4, people_facing: 3, long_duration: 3, hands_on: 2 }, coreTags: ["biology"], exams: ["NEET UG"] },
+  "Commerce and Management": { streams: ["commerce", "humanities", "pcm"], tags: { business: 5, office: 4, analytical: 2, people_facing: 2, math: 1 }, coreTags: ["business"], exams: ["CUET UG", "CA Foundation", "IPMAT"] },
+  "Pure Science": { streams: ["pcm", "pcb"], tags: { analytical: 5, lab: 3, tech: 1, math: 2 }, coreTags: ["analytical"], exams: ["CUET UG", "IISER Aptitude Test (IAT)", "NEST"] },
+  "Computer and IT Courses": { streams: ["pcm", "commerce"], tags: { tech: 5, analytical: 4, remote: 3, office: 2, math: 2 }, coreTags: ["tech"], exams: ["JEE Main", "CUET UG", "State CETs"] },
+  "Law": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: { humanities: 3, analytical: 3, people_facing: 3, office: 3, long_duration: 2 }, coreTags: ["analytical", "humanities"], exams: ["CLAT", "AILET", "LSAT India"] },
+  "Aviation": { streams: ["pcm", "commerce"], tags: { field: 4, hands_on: 3, tech: 2, risk_tolerant: 2 }, coreTags: ["hands_on"], exams: ["DGCA Exams", "NDA (Air Force)"] },
+  "Arts, Humanities and Social Sciences": { streams: ["humanities", "commerce", "pcb"], tags: { humanities: 5, people_facing: 3, creative: 2, analytical: 2 }, coreTags: ["humanities"], exams: ["CUET UG", "TISS BAT"] },
+  "Design and Creative Arts": { streams: ["humanities", "commerce", "pcm"], tags: { creative: 5, studio: 4, remote: 2, hands_on: 2 }, coreTags: ["creative"], exams: ["NID DAT", "UCEED", "NIFT"] },
+  "Hospitality and Tourism": { streams: ["humanities", "commerce"], tags: { people_facing: 5, hands_on: 2, field: 2, business: 2 }, coreTags: ["people_facing"], exams: ["NCHMCT JEE", "CUET UG"] },
+  "Agriculture and Environment": { streams: ["pcb", "pcm"], tags: { field: 4, biology: 3, lab: 2, hands_on: 2 }, coreTags: ["field"], exams: ["ICAR AIEEA", "CUET UG", "State Agriculture CETs"] },
+  "Defence and Uniform Services": { streams: ["pcm", "pcb", "humanities"], tags: { field: 5, hands_on: 4, risk_tolerant: 3, people_facing: 2 }, coreTags: ["field", "hands_on"], exams: ["NDA", "CDS", "AFCAT"] },
+  "Diploma Courses": { streams: ["pcm", "commerce", "humanities", "pcb"], tags: { short_duration: 5, hands_on: 4, tech: 2 }, coreTags: ["short_duration"], exams: ["State Polytechnic Entrance Exams"] },
+  "Foreign Language Courses": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: { humanities: 4, people_facing: 3, remote: 2 }, coreTags: ["humanities"], exams: ["CUET UG"] },
+  "Modern Skill-Based Courses": { streams: ["commerce", "humanities", "pcm"], tags: { creative: 3, tech: 3, remote: 5, short_duration: 4, risk_tolerant: 3 }, coreTags: [], exams: ["Portfolio/Direct Admission"] },
+  "Government Career Preparation": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: { risk_averse: 5, office: 4, analytical: 3, long_duration: 3 }, coreTags: ["risk_averse", "office"], exams: ["UPSC CSE", "SSC CGL", "Bank PO"] },
 };
 
 // Course-specific overrides (only adding things that stand out uniquely)
@@ -178,15 +178,16 @@ let output = `export interface CourseTagProfile {
   streams: string[];
   tags: Record<string, number>;
   coreTags: string[];
+  exams: string[];
 }
 
 export const courseTags: CourseTagProfile[] = [\n`;
 
 categories.forEach(cat => {
-  const defaults = categoryDefaults[cat.title] || { streams: ["humanities"], tags: {}, coreTags: [] };
+  const defaults = categoryDefaults[cat.title] || { streams: ["humanities"], tags: {}, coreTags: [], exams: [] };
   
   cat.courses.forEach(course => {
-    const override = courseOverrides[course] || { tags: {}, coreTags: null };
+    const override = courseOverrides[course] || { tags: {}, coreTags: null, exams: null };
     
     // Merge tags
     const mergedTags = { ...defaults.tags };
@@ -198,13 +199,18 @@ categories.forEach(cat => {
     const finalCoreTags = override.coreTags !== null && override.coreTags !== undefined 
       ? override.coreTags 
       : defaults.coreTags;
+      
+    const finalExams = override.exams !== null && override.exams !== undefined 
+      ? override.exams 
+      : defaults.exams;
 
     output += `  {
     title: "${course}",
     category: "${cat.title}",
     streams: ${JSON.stringify(defaults.streams)},
     tags: ${JSON.stringify(mergedTags)},
-    coreTags: ${JSON.stringify(finalCoreTags)}
+    coreTags: ${JSON.stringify(finalCoreTags)},
+    exams: ${JSON.stringify(finalExams)}
   },\n`;
   });
 });

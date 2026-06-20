@@ -102,7 +102,8 @@ export function AssessmentFlow() {
       return {
         title: match.title,
         match: match.matchPercentage,
-        desc: `This strongly aligns with your interest in ${topTag} and fits your overall profile.`
+        desc: `This strongly aligns with your interest in ${topTag} and fits your overall profile.`,
+        exams: match.exams || []
       };
     });
 
@@ -124,7 +125,8 @@ export function AssessmentFlow() {
          return {
            title: match.title,
            match: match.matchPercentage,
-           desc: aiDescObj ? aiDescObj.explanation : `This aligns perfectly with your skills.`
+           desc: aiDescObj ? aiDescObj.explanation : `This aligns perfectly with your skills.`,
+           exams: match.exams || []
          };
       });
       setResults(finalResults);
