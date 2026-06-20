@@ -110,16 +110,16 @@ export function scoreCourses(studentVector: Record<string, number>, streamId: st
   const baseCeiling = 98; // Highest possible displayed percentage
 
   return top4.map(course => {
-    // Normalize relative to the top scorer, but floor it at a reasonable baseline so it doesn't look terrible
+    // Normalize relative to the top scorer
     const relativeRatio = course.score / maxScore;
-    let percentage = Math.floor(baseCeiling * relativeRatio);
+    let percentage = baseCeiling * relativeRatio;
     
     // Ensure it doesn't drop to 10% (usually top 4 are at least decent matches)
-    if (percentage < 60) percentage = 60 + Math.floor(Math.random() * 10);
+    if (percentage < 60) percentage = 60 + (Math.random() * 10);
 
     return {
       ...course,
-      matchPercentage: `${percentage}%`
+      matchPercentage: `${percentage.toFixed(1)}%`
     };
   });
 }
