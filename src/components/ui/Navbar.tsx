@@ -9,8 +9,10 @@ import { Menu, X } from "lucide-react";
 const navLinks = [
   { href: "/", label: "Assessment" },
   { href: "/courses", label: "Courses" },
+  { href: "/colleges", label: "Colleges" },
   { href: "/exams", label: "Exams" },
   { href: "/counselor", label: "Counselor" },
+  { href: "/blog", label: "Blog" },
 ];
 
 export function Navbar() {

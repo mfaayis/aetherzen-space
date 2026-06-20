@@ -6,6 +6,7 @@ import { CustomCursor } from "@/components/ui/CustomCursor";
 import { Background3D } from "@/components/canvas/Background3D";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { Navbar } from "@/components/ui/Navbar";
+import { Footer } from "@/components/ui/Footer";
 import { AIChat } from "@/components/ui/AIChat";
 
 const inter = Inter({
@@ -36,6 +37,7 @@ export default function RootLayout({
           <Background3D />
           <CustomCursor />
           {children}
+          <Footer />
           <AIChat />
         </SmoothScroll>
       </body>

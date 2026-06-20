@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { courseCategories } from "@/data/courses";
 
 export default function CoursesPage() {
@@ -40,14 +41,18 @@ export default function CoursesPage() {
               
               <div className="glass-panel p-5 md:p-10 rounded-3xl border border-white/10">
                 <div className="flex flex-wrap gap-3 md:gap-4">
-                  {category.courses.map((course, i) => (
-                    <span 
-                      key={i} 
-                      className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-neutral-300 font-sans text-sm hover:bg-white hover:text-black hover:border-white transition-all cursor-default"
-                    >
-                      {course}
-                    </span>
-                  ))}
+                  {category.courses.map((course, i) => {
+                    const slug = course.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+                    return (
+                      <Link 
+                        key={i} 
+                        href={`/courses/${slug}`}
+                        className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-neutral-300 font-sans text-sm hover:bg-white hover:text-black hover:border-white transition-all"
+                      >
+                        {course}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             </motion.div>
