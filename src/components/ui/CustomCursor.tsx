@@ -40,7 +40,7 @@ export const CustomCursor = () => {
   return (
     <>
       <motion.div
-        className="fixed top-0 left-0 w-[600px] h-[600px] pointer-events-none z-0"
+        className="hidden md:block fixed top-0 left-0 w-[600px] h-[600px] pointer-events-none z-0"
         style={{
           background: "radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 60%)",
         }}
@@ -55,7 +55,7 @@ export const CustomCursor = () => {
         }}
       />
       <motion.div
-        className="fixed top-0 left-0 w-4 h-4 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference flex items-center justify-center"
+        className="hidden md:flex fixed top-0 left-0 w-4 h-4 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference items-center justify-center"
         animate={{
           x: mousePosition.x - (isHovering ? 32 : 8),
           y: mousePosition.y - (isHovering ? 32 : 8),
@@ -69,7 +69,7 @@ export const CustomCursor = () => {
         }}
       />
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 border border-white/30 rounded-full pointer-events-none z-[9998]"
+        className="hidden md:block fixed top-0 left-0 w-8 h-8 border border-white/30 rounded-full pointer-events-none z-[9998]"
         animate={{
           x: mousePosition.x - 16,
           y: mousePosition.y - 16,
