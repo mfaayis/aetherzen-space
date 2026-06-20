@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -89,6 +89,17 @@ function Particles({ count = 1000 }) {
 }
 
 export function Background3D() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile(); // Check immediately on mount
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  if (isMobile) return null; // Save battery and memory on mobile
+
   return (
     <div className="fixed inset-0 z-[-1] bg-background pointer-events-none">
       <Canvas camera={{ position: [0, 0, 15], fov: 75 }}>

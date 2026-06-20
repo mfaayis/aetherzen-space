@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, Share2, Copy, Check, Loader2 } from "lucide-react";
+import { Download, Share2, Copy, Check, Loader2, Clock, Wallet, Briefcase } from "lucide-react";
 import { generateBlueprintPDF, BlueprintResult } from "@/lib/generatePDF";
 import { assessmentQuestions as questions } from "@/data/assessmentQuestions";
 import { calculateStudentVector, scoreCourses } from "@/lib/matching";
@@ -103,7 +103,13 @@ export function AssessmentFlow() {
         title: match.title,
         match: match.matchPercentage,
         desc: `This strongly aligns with your interest in ${topTag} and fits your overall profile.`,
-        exams: match.exams || []
+        exams: match.exams || [],
+        duration: match.duration,
+        costRange: match.costRange,
+        salaryRange: match.salaryRange,
+        jobStats: match.jobStats,
+        coreSubjects: match.coreSubjects,
+        careerOutcomes: match.careerOutcomes
       };
     });
 
@@ -126,7 +132,13 @@ export function AssessmentFlow() {
            title: match.title,
            match: match.matchPercentage,
            desc: aiDescObj ? aiDescObj.explanation : `This aligns perfectly with your skills.`,
-           exams: match.exams || []
+           exams: match.exams || [],
+           duration: match.duration,
+           costRange: match.costRange,
+           salaryRange: match.salaryRange,
+           jobStats: match.jobStats,
+           coreSubjects: match.coreSubjects,
+           careerOutcomes: match.careerOutcomes
          };
       });
       setResults(finalResults);
@@ -291,10 +303,29 @@ export function AssessmentFlow() {
                       </span>
                     </div>
                     <div className="flex flex-col h-full justify-between gap-4 z-10 relative">
-                      <h3 className="text-2xl md:text-3xl font-heading font-bold text-white tracking-tight w-3/4">
-                        {res.title}
-                      </h3>
-                      <p className="text-neutral-400 font-sans leading-relaxed">
+                      <div className="flex flex-col gap-2">
+                        <h3 className="text-2xl md:text-3xl font-heading font-bold text-white tracking-tight w-3/4">
+                          {res.title}
+                        </h3>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {res.duration && (
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-neutral-300 font-medium">
+                              <Clock size={12} className="text-blue-400" /> {res.duration}
+                            </span>
+                          )}
+                          {res.salaryRange && (
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-neutral-300 font-medium">
+                              <Wallet size={12} className="text-emerald-400" /> {res.salaryRange}
+                            </span>
+                          )}
+                          {res.jobStats && (
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-neutral-300 font-medium">
+                              <Briefcase size={12} className="text-purple-400" /> {res.jobStats}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <p className="text-neutral-400 font-sans leading-relaxed text-sm">
                         {res.desc}
                       </p>
                     </div>

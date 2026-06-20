@@ -159,7 +159,9 @@ export const courseCategories = [
       "Content Writing", "Copywriting", "Forex Trading", "Stock Market Analysis", 
       "Cryptocurrency Analysis", "E-commerce", "Shopify Development", 
       "Affiliate Marketing", "AI Prompt Engineering", "AI Automation", 
-      "Data Analytics", "Business Analytics"
+      "Data Analytics", "Business Analytics", "Vlogging and YouTube Creation",
+      "Podcasting", "Influencer Marketing", "Esports and Professional Gaming",
+      "Dropshipping", "SaaS Business Development", "Day Trading", "Options Trading"
     ]
   },
   {

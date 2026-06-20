@@ -54,8 +54,16 @@ export interface MatchResult {
   category: string;
   score: number;
   matchPercentage: string;
+  desc?: string;
   tags: Record<string, number>;
   exams: string[];
+  duration?: string;
+  costRange?: string;
+  salaryRange?: string;
+  jobStats?: string;
+  coreSubjects?: string[];
+  careerOutcomes?: string[];
+  studyEnvironment?: string;
 }
 
 export function scoreCourses(studentVector: Record<string, number>, streamId: string): MatchResult[] {
@@ -93,7 +101,14 @@ export function scoreCourses(studentVector: Record<string, number>, streamId: st
       category: course.category,
       score,
       tags: course.tags,
-      exams: course.exams
+      exams: course.exams,
+      duration: course.duration,
+      costRange: course.costRange,
+      salaryRange: course.salaryRange,
+      jobStats: course.jobStats,
+      coreSubjects: course.coreSubjects,
+      careerOutcomes: course.careerOutcomes,
+      studyEnvironment: course.studyEnvironment
     };
   });
 

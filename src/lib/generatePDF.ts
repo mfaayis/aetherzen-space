@@ -5,6 +5,12 @@ export interface BlueprintResult {
   match: string;
   desc: string;
   exams: string[];
+  duration?: string;
+  costRange?: string;
+  salaryRange?: string;
+  jobStats?: string;
+  coreSubjects?: string[];
+  careerOutcomes?: string[];
 }
 
 export const generateBlueprintPDF = async (results: BlueprintResult[], userName?: string) => {
@@ -81,7 +87,7 @@ export const generateBlueprintPDF = async (results: BlueprintResult[], userName?
     }
 
     // Card background simulation (light gray rounded rect)
-    const cardHeight = 38;
+    const cardHeight = 45;
     doc.setFillColor(248, 250, 252); // Slate 50
     doc.setDrawColor(226, 232, 240); // Slate 200
     doc.roundedRect(margin, cursorY, pageWidth - margin * 2, cardHeight, 3, 3, "FD");
@@ -106,12 +112,22 @@ export const generateBlueprintPDF = async (results: BlueprintResult[], userName?
     doc.setFontSize(10);
     doc.text(matchText, pageWidth - margin - matchWidth - badgePadding - 5, cursorY + 10.5);
 
+    // Rich Data (Duration, Salary)
+    doc.setFontSize(9);
+    doc.setTextColor(100, 116, 139); // Slate 500
+    doc.setFont("helvetica", "italic");
+    let statsText = "";
+    if (res.duration) statsText += `Duration: ${res.duration}  |  `;
+    if (res.salaryRange) statsText += `Expected Salary: ${res.salaryRange}  |  `;
+    if (res.costRange) statsText += `Est. Cost: ${res.costRange}`;
+    doc.text(statsText, margin + 5, cursorY + 18);
+
     // Description
     doc.setFontSize(10);
     doc.setTextColor(71, 85, 105); // Slate 600
     doc.setFont("helvetica", "normal");
     const descLines = doc.splitTextToSize(res.desc, pageWidth - margin * 2 - 10);
-    doc.text(descLines, margin + 5, cursorY + 20);
+    doc.text(descLines, margin + 5, cursorY + 28);
 
     cursorY += cardHeight + 10;
   });
