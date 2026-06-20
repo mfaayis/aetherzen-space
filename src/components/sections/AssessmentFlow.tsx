@@ -2,150 +2,20 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, Share2, Copy, Check } from "lucide-react";
-import { courseCategories } from "@/data/courses";
-import { generateBlueprintPDF } from "@/lib/generatePDF";
+import { Download, Share2, Copy, Check, Loader2 } from "lucide-react";
+import { generateBlueprintPDF, BlueprintResult } from "@/lib/generatePDF";
+import { assessmentQuestions as questions } from "@/data/assessmentQuestions";
+import { calculateStudentVector, scoreCourses } from "@/lib/matching";
 
-const questions = [
-  {
-    id: 1,
-    question: "What is your 12th-grade stream?",
-    multiSelect: false,
-    options: [
-      { id: "pcm", label: "Science (PCM)", icon: "📐" },
-      { id: "pcb", label: "Science (PCB)", icon: "🧬" },
-      { id: "commerce", label: "Commerce", icon: "📊" },
-      { id: "humanities", label: "Arts / Humanities", icon: "🎭" },
-    ],
-  },
-  {
-    id: 2,
-    question: "What excites you the most?",
-    multiSelect: true,
-    options: [
-      { id: "tech", label: "Technology & Code", icon: "💻" },
-      { id: "art", label: "Design & Creativity", icon: "🎨" },
-      { id: "business", label: "Business & Management", icon: "📈" },
-      { id: "helping", label: "Healthcare & Society", icon: "🤝" },
-      { id: "finance", label: "Finance & Markets", icon: "💰" },
-      { id: "media", label: "Media & Writing", icon: "📝" },
-      { id: "science", label: "Pure Science & Research", icon: "🔬" },
-      { id: "law", label: "Law & Justice", icon: "⚖️" },
-      { id: "environment", label: "Nature & Environment", icon: "🌿" },
-      { id: "aviation", label: "Aviation & Transport", icon: "✈️" },
-      { id: "defence", label: "Defence & Military", icon: "🪖" },
-    ],
-  },
-  {
-    id: 3,
-    question: "What are your strongest skills?",
-    multiSelect: true,
-    options: [
-      { id: "logic", label: "Logic & Math", icon: "🧩" },
-      { id: "empathy", label: "Understanding People", icon: "❤️" },
-      { id: "creativity", label: "Out of the box thinking", icon: "💡" },
-      { id: "leadership", label: "Organizing & Leading", icon: "👑" },
-      { id: "data", label: "Data Analysis", icon: "📊" },
-      { id: "speaking", label: "Public Speaking", icon: "🎤" },
-      { id: "hands_on_skill", label: "Physical Dexterity", icon: "🛠️" },
-    ],
-  },
-  {
-    id: 4,
-    question: "What is your ideal work environment?",
-    multiSelect: true,
-    options: [
-      { id: "office", label: "Corporate Office", icon: "🏢" },
-      { id: "field", label: "Outdoors / On-site", icon: "🌍" },
-      { id: "lab", label: "Hospital / Laboratory", icon: "🩺" },
-      { id: "remote", label: "Remote / WFH", icon: "🏠" },
-      { id: "startup", label: "Fast-paced Startup", icon: "🚀" },
-      { id: "studio", label: "Creative Studio", icon: "🎨" },
-      { id: "global", label: "Global / Traveling", icon: "✈️" },
-    ],
-  },
-  {
-    id: 5,
-    question: "What is your preferred working style?",
-    multiSelect: true,
-    options: [
-      { id: "independent", label: "Deep Independent Work", icon: "🎧" },
-      { id: "team", label: "Highly Collaborative", icon: "👥" },
-      { id: "hands_on", label: "Hands-on & Practical", icon: "🔨" },
-      { id: "analytical", label: "Research & Analysis", icon: "🔍" },
-      { id: "process", label: "Structured & Process-driven", icon: "📋" },
-    ],
-  },
-];
-
-// Map each category to core streams and tags
-const categoryTagMap: Record<string, { streams: string[], tags: string[] }> = {
-  "Engineering and Technology": { streams: ["pcm"], tags: ["tech", "logic", "analytical", "office", "startup"] },
-  "Medical and Allied Health Sciences": { streams: ["pcb"], tags: ["science", "helping", "lab", "hands_on", "process", "empathy"] },
-  "Commerce and Management": { streams: ["commerce", "humanities"], tags: ["business", "finance", "data", "leadership", "office", "global"] },
-  "Pure Science": { streams: ["pcm", "pcb"], tags: ["science", "analytical", "independent", "lab", "logic"] },
-  "Computer and IT Courses": { streams: ["pcm", "commerce"], tags: ["tech", "logic", "remote", "independent", "startup", "data"] },
-  "Law": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: ["law", "speaking", "logic", "empathy", "office", "analytical"] },
-  "Aviation": { streams: ["pcm", "commerce", "humanities"], tags: ["aviation", "global", "hands_on_skill", "process", "field"] },
-  "Arts, Humanities and Social Sciences": { streams: ["humanities", "commerce", "pcb"], tags: ["media", "speaking", "creativity", "independent", "empathy", "analytical"] },
-  "Design and Creative Arts": { streams: ["humanities", "commerce", "pcm"], tags: ["art", "creativity", "studio", "remote", "independent", "hands_on_skill"] },
-  "Hospitality and Tourism": { streams: ["humanities", "commerce"], tags: ["business", "helping", "team", "global", "hands_on"] },
-  "Agriculture and Environment": { streams: ["pcb", "pcm"], tags: ["environment", "science", "field", "hands_on", "independent"] },
-  "Defence and Uniform Services": { streams: ["pcm", "pcb", "humanities"], tags: ["defence", "leadership", "field", "team", "process", "hands_on_skill"] },
-  "Diploma Courses": { streams: ["pcm", "commerce", "humanities"], tags: ["hands_on_skill", "hands_on", "startup"] },
-  "Foreign Language Courses": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: ["speaking", "global", "remote", "empathy"] },
-  "Modern Skill-Based Courses": { streams: ["commerce", "humanities", "pcm"], tags: ["tech", "media", "business", "remote", "startup", "independent", "creativity"] },
-  "Government Career Preparation": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: ["process", "analytical", "office", "logic"] },
-};
-
-// Flatten all 150+ courses into a massive scored database
-const expandedCourseDatabase = courseCategories.flatMap(category => {
-  const meta = categoryTagMap[category.title] || { streams: ["pcm", "pcb", "commerce", "humanities"], tags: [] };
-  return category.courses.map(courseName => ({
-    title: courseName,
-    desc: `A specialized professional program in the ${category.title} sector.`,
-    streams: meta.streams,
-    tags: meta.tags
-  }));
-});
-
-const getRecommendations = (answers: string[][]) => {
-  if (!answers || answers.length === 0) return [];
-
-  // Q1 is stream (single select, but stored as array for consistency)
-  const stream = answers[0][0]; 
-  
-  // Flatten all other tags into one array
-  const userTags = answers.slice(1).flat();
-
-  // Filter courses by stream, then score them based on matching tags
-  const scoredCourses = expandedCourseDatabase
-    .filter(course => course.streams.includes(stream))
-    .map(course => {
-      let score = 0;
-      course.tags.forEach(tag => {
-        if (userTags.includes(tag)) score += 1;
-      });
-      // Add slight random variance to break ties dynamically
-      score += Math.random() * 0.5;
-      return { ...course, score };
-    })
-    // Sort descending by score
-    .sort((a, b) => b.score - a.score);
-
-  // Return top 4 matches
-  return scoredCourses.slice(0, 4).map(c => ({
-    title: c.title,
-    match: Math.min(99, 80 + Math.floor(c.score * 5)) + "%", 
-    desc: c.desc
-  }));
-};
+// Replaced old static matching logic with dynamic imports from lib/matching
 
 export function AssessmentFlow() {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<string[][]>([]);
   const [currentSelections, setCurrentSelections] = useState<string[]>([]);
   const [isComplete, setIsComplete] = useState(false);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [results, setResults] = useState<BlueprintResult[]>([]);
   const [isSharedView, setIsSharedView] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
@@ -161,6 +31,7 @@ export function AssessmentFlow() {
             setAnswers(decoded);
             setIsComplete(true);
             setIsSharedView(true);
+            generateFinalBlueprint(decoded);
           }
         } catch (e) {
           console.error("Failed to parse blueprint data");
@@ -192,7 +63,7 @@ export function AssessmentFlow() {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     const newAnswers = [...answers, currentSelections];
     setAnswers(newAnswers);
     if (currentStep < questions.length - 1) {
@@ -200,6 +71,68 @@ export function AssessmentFlow() {
       setCurrentSelections([]);
     } else {
       setIsComplete(true);
+      await generateFinalBlueprint(newAnswers);
+    }
+  };
+
+  const generateFinalBlueprint = async (finalAnswers: string[][]) => {
+    setIsCalculating(true);
+    
+    // 1. Math matching
+    const studentVector = calculateStudentVector(finalAnswers, questions);
+    const streamId = finalAnswers[0][0]; // Q1 single select
+    const topMatches = scoreCourses(studentVector, streamId);
+    
+    // 2. Format profile summary for Gemini
+    const profileSummary = finalAnswers.map((ans, i) => {
+      if (!questions[i]) return "";
+      return `Q: ${questions[i].question}\nA: ${ans.map(id => questions[i].options.find(o => o.id === id)?.label).join(", ")}`;
+    }).filter(Boolean).join("\n\n");
+
+    // 3. Fallback explanations based on top tag overlap
+    const fallbackResults = topMatches.map(match => {
+      let topTag = "your core interests";
+      let topVal = 0;
+      for (const [tag, val] of Object.entries(studentVector)) {
+         if (match.tags[tag] && val > topVal) {
+            topVal = val;
+            topTag = tag.replace(/_/g, " ");
+         }
+      }
+      return {
+        title: match.title,
+        match: match.matchPercentage,
+        desc: `This strongly aligns with your interest in ${topTag} and fits your overall profile.`
+      };
+    });
+
+    try {
+      const res = await fetch("/api/assessment/explain", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ studentProfile: profileSummary, matches: topMatches })
+      });
+      
+      if (!res.ok) throw new Error("API error");
+      const data = await res.json();
+      
+      // Attempt to parse JSON response securely
+      const parsedExplanations = JSON.parse(data.result);
+      
+      const finalResults = topMatches.map(match => {
+         const aiDescObj = parsedExplanations.find((e: any) => e.title === match.title);
+         return {
+           title: match.title,
+           match: match.matchPercentage,
+           desc: aiDescObj ? aiDescObj.explanation : `This aligns perfectly with your skills.`
+         };
+      });
+      setResults(finalResults);
+    } catch (err) {
+      console.error("AI Generation failed, using fallbacks:", err);
+      setResults(fallbackResults);
+    } finally {
+      setIsCalculating(false);
     }
   };
 
@@ -217,8 +150,6 @@ export function AssessmentFlow() {
       window.history.replaceState({}, "", url.toString());
     }
   };
-
-  const results = isComplete ? getRecommendations(answers) : [];
 
   const handleDownloadPDF = async () => {
     setIsGeneratingPDF(true);
@@ -336,9 +267,16 @@ export function AssessmentFlow() {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-                {results.map((res, i) => (
-                  <motion.div
+              {isCalculating ? (
+                <div className="flex flex-col items-center justify-center py-20 gap-6">
+                  <Loader2 size={48} className="text-blue-500 animate-spin" />
+                  <h3 className="text-2xl font-heading text-white">Calculating Math Matrix & AI Analysis...</h3>
+                  <p className="text-neutral-500 font-sans text-sm">Please wait while we generate your personalized blueprint.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                  {results.map((res, i) => (
+                    <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -361,6 +299,7 @@ export function AssessmentFlow() {
                   </motion.div>
                 ))}
               </div>
+              )}
 
               <div className="flex flex-col sm:flex-row justify-center mt-8 gap-4 sm:gap-6">
                 <button
