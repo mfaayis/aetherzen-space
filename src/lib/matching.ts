@@ -70,10 +70,22 @@ export function scoreCourses(studentVector: Record<string, number>, streamId: st
     // We use a mix of Cosine Similarity (direction) and a small weight for Dot Product (magnitude)
     // to ensure students with lots of answers don't just match everything.
     // Cosine similarity gives a value between -1 and 1.
-    const similarity = calculateCosineSimilarity(studentVector, course.tags);
+    let similarity = calculateCosineSimilarity(studentVector, course.tags);
     
+    // Core Trait Penalty: if a course has core/dealbreaker tags, check if the student actually has them
+    let penalty = 0;
+    if (course.coreTags && course.coreTags.length > 0) {
+      for (const coreTag of course.coreTags) {
+        if (!studentVector[coreTag] || studentVector[coreTag] <= 0) {
+          // Apply a massive flat penalty for missing a core trait.
+          // Since similarity is typically 0 to 1, subtracting 0.6 ensures it rarely breaks Top 4.
+          penalty += 0.6; 
+        }
+      }
+    }
+
     // Add a tiny bit of random noise (0.001) to break exact ties naturally
-    const score = similarity + (Math.random() * 0.001);
+    const score = similarity - penalty + (Math.random() * 0.001);
     
     return {
       title: course.title,

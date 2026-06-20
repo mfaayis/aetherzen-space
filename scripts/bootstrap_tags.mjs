@@ -142,34 +142,34 @@ const categories = [
 ];
 
 const categoryDefaults = {
-  "Engineering and Technology": { streams: ["pcm"], tags: { analytical: 4, tech: 3, hands_on: 2, office: 2, math: 4 } },
-  "Medical and Allied Health Sciences": { streams: ["pcb"], tags: { biology: 5, lab: 4, people_facing: 3, long_duration: 3, hands_on: 2 } },
-  "Commerce and Management": { streams: ["commerce", "humanities", "pcm"], tags: { business: 5, office: 4, analytical: 2, people_facing: 2, math: 1 } },
-  "Pure Science": { streams: ["pcm", "pcb"], tags: { analytical: 5, lab: 3, tech: 1, math: 2 } },
-  "Computer and IT Courses": { streams: ["pcm", "commerce"], tags: { tech: 5, analytical: 4, remote: 3, office: 2, math: 2 } },
-  "Law": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: { humanities: 3, analytical: 3, people_facing: 3, office: 3, long_duration: 2 } },
-  "Aviation": { streams: ["pcm", "commerce"], tags: { field: 4, hands_on: 3, tech: 2, risk_tolerant: 2 } },
-  "Arts, Humanities and Social Sciences": { streams: ["humanities", "commerce", "pcb"], tags: { humanities: 5, people_facing: 3, creative: 2, analytical: 2 } },
-  "Design and Creative Arts": { streams: ["humanities", "commerce", "pcm"], tags: { creative: 5, studio: 4, remote: 2, hands_on: 2 } },
-  "Hospitality and Tourism": { streams: ["humanities", "commerce"], tags: { people_facing: 5, hands_on: 2, field: 2, business: 2 } },
-  "Agriculture and Environment": { streams: ["pcb", "pcm"], tags: { field: 4, biology: 3, lab: 2, hands_on: 2 } },
-  "Defence and Uniform Services": { streams: ["pcm", "pcb", "humanities"], tags: { field: 5, hands_on: 4, risk_tolerant: 3, people_facing: 2 } },
-  "Diploma Courses": { streams: ["pcm", "commerce", "humanities", "pcb"], tags: { short_duration: 5, hands_on: 4, tech: 2 } },
-  "Foreign Language Courses": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: { humanities: 4, people_facing: 3, remote: 2 } },
-  "Modern Skill-Based Courses": { streams: ["commerce", "humanities", "pcm"], tags: { creative: 3, tech: 3, remote: 5, short_duration: 4, risk_tolerant: 3 } },
-  "Government Career Preparation": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: { risk_averse: 5, office: 4, analytical: 3, long_duration: 3 } },
+  "Engineering and Technology": { streams: ["pcm"], tags: { analytical: 4, tech: 3, hands_on: 2, office: 2, math: 4 }, coreTags: ["math", "analytical"] },
+  "Medical and Allied Health Sciences": { streams: ["pcb"], tags: { biology: 5, lab: 4, people_facing: 3, long_duration: 3, hands_on: 2 }, coreTags: ["biology"] },
+  "Commerce and Management": { streams: ["commerce", "humanities", "pcm"], tags: { business: 5, office: 4, analytical: 2, people_facing: 2, math: 1 }, coreTags: ["business"] },
+  "Pure Science": { streams: ["pcm", "pcb"], tags: { analytical: 5, lab: 3, tech: 1, math: 2 }, coreTags: ["analytical"] },
+  "Computer and IT Courses": { streams: ["pcm", "commerce"], tags: { tech: 5, analytical: 4, remote: 3, office: 2, math: 2 }, coreTags: ["tech"] },
+  "Law": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: { humanities: 3, analytical: 3, people_facing: 3, office: 3, long_duration: 2 }, coreTags: ["analytical", "humanities"] },
+  "Aviation": { streams: ["pcm", "commerce"], tags: { field: 4, hands_on: 3, tech: 2, risk_tolerant: 2 }, coreTags: ["hands_on"] },
+  "Arts, Humanities and Social Sciences": { streams: ["humanities", "commerce", "pcb"], tags: { humanities: 5, people_facing: 3, creative: 2, analytical: 2 }, coreTags: ["humanities"] },
+  "Design and Creative Arts": { streams: ["humanities", "commerce", "pcm"], tags: { creative: 5, studio: 4, remote: 2, hands_on: 2 }, coreTags: ["creative"] },
+  "Hospitality and Tourism": { streams: ["humanities", "commerce"], tags: { people_facing: 5, hands_on: 2, field: 2, business: 2 }, coreTags: ["people_facing"] },
+  "Agriculture and Environment": { streams: ["pcb", "pcm"], tags: { field: 4, biology: 3, lab: 2, hands_on: 2 }, coreTags: ["field"] },
+  "Defence and Uniform Services": { streams: ["pcm", "pcb", "humanities"], tags: { field: 5, hands_on: 4, risk_tolerant: 3, people_facing: 2 }, coreTags: ["field", "hands_on"] },
+  "Diploma Courses": { streams: ["pcm", "commerce", "humanities", "pcb"], tags: { short_duration: 5, hands_on: 4, tech: 2 }, coreTags: ["short_duration"] },
+  "Foreign Language Courses": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: { humanities: 4, people_facing: 3, remote: 2 }, coreTags: ["humanities"] },
+  "Modern Skill-Based Courses": { streams: ["commerce", "humanities", "pcm"], tags: { creative: 3, tech: 3, remote: 5, short_duration: 4, risk_tolerant: 3 }, coreTags: [] },
+  "Government Career Preparation": { streams: ["humanities", "commerce", "pcm", "pcb"], tags: { risk_averse: 5, office: 4, analytical: 3, long_duration: 3 }, coreTags: ["risk_averse", "office"] },
 };
 
 // Course-specific overrides (only adding things that stand out uniquely)
 const courseOverrides = {
-  "Computer Science Engineering": { tech: 6, remote: 3 },
-  "MBBS": { biology: 6, long_duration: 5, lab: 5 },
-  "Civil Engineering": { field: 4, office: 1 },
-  "Mechanical Engineering": { hands_on: 5 },
-  "Chartered Accountancy (CA)": { math: 4, business: 5, analytical: 5, long_duration: 4, office: 5 },
-  "Event Management": { people_facing: 5, field: 3, creative: 3, office: 1 },
-  "Game Development": { tech: 5, creative: 5, studio: 4 },
-  "BA Psychology": { humanities: 5, people_facing: 5, analytical: 3 },
+  "Computer Science Engineering": { tags: { tech: 6, remote: 3 }, coreTags: ["tech", "analytical"] },
+  "MBBS": { tags: { biology: 6, long_duration: 5, lab: 5 }, coreTags: ["biology", "long_duration"] },
+  "Civil Engineering": { tags: { field: 4, office: 1 }, coreTags: ["hands_on", "field"] },
+  "Mechanical Engineering": { tags: { hands_on: 5 }, coreTags: ["hands_on"] },
+  "Chartered Accountancy (CA)": { tags: { math: 4, business: 5, analytical: 5, long_duration: 4, office: 5 }, coreTags: ["business", "analytical", "long_duration"] },
+  "Event Management": { tags: { people_facing: 5, field: 3, creative: 3, office: 1 }, coreTags: ["people_facing", "creative"] },
+  "Game Development": { tags: { tech: 5, creative: 5, studio: 4 }, coreTags: ["tech", "creative"] },
+  "BA Psychology": { tags: { humanities: 5, people_facing: 5, analytical: 3 }, coreTags: ["people_facing", "humanities"] },
 };
 
 let output = `export interface CourseTagProfile {
@@ -177,26 +177,34 @@ let output = `export interface CourseTagProfile {
   category: string;
   streams: string[];
   tags: Record<string, number>;
+  coreTags: string[];
 }
 
 export const courseTags: CourseTagProfile[] = [\n`;
 
 categories.forEach(cat => {
-  const defaults = categoryDefaults[cat.title] || { streams: ["humanities"], tags: {} };
+  const defaults = categoryDefaults[cat.title] || { streams: ["humanities"], tags: {}, coreTags: [] };
   
   cat.courses.forEach(course => {
-    const overrideTags = courseOverrides[course] || {};
-    // Merge tags, overrides take precedence, but we sum them if they both exist? No, just overwrite or sum. Let's merge and sum
+    const override = courseOverrides[course] || { tags: {}, coreTags: null };
+    
+    // Merge tags
     const mergedTags = { ...defaults.tags };
-    for (const [key, val] of Object.entries(overrideTags)) {
+    for (const [key, val] of Object.entries(override.tags || {})) {
       mergedTags[key] = val; // overwrite
     }
+    
+    // Merge core tags (override entirely if exists)
+    const finalCoreTags = override.coreTags !== null && override.coreTags !== undefined 
+      ? override.coreTags 
+      : defaults.coreTags;
 
     output += `  {
     title: "${course}",
     category: "${cat.title}",
     streams: ${JSON.stringify(defaults.streams)},
-    tags: ${JSON.stringify(mergedTags)}
+    tags: ${JSON.stringify(mergedTags)},
+    coreTags: ${JSON.stringify(finalCoreTags)}
   },\n`;
   });
 });

@@ -27,6 +27,8 @@ YOUR TASK:
 For each of these exactly 4 courses, write a 1-2 sentence personalized explanation of why this course fits the student's profile, referencing their specific traits/preferences mentioned above. 
 DO NOT suggest different courses. DO NOT rank them. ONLY explain the matches provided.
 
+CRITICAL INSTRUCTION: If you cannot write a genuine, non-contradictory explanation for why this course fits without using caveats like "even though", "even if", or "despite", then do not soften the mismatch. The explanation should NEVER need to explain away a core mismatch. If a mismatch exists, state the alignment plainly without compensating for the mismatch.
+
 Return the result STRICTLY as a JSON array of objects with this format:
 [
   {
