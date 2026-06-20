@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Download, Share2, Copy, Check } from "lucide-react";
 import { courseCategories } from "@/data/courses";
+import { generateBlueprintPDF } from "@/lib/generatePDF";
 
 const questions = [
   {
@@ -144,6 +146,28 @@ export function AssessmentFlow() {
   const [answers, setAnswers] = useState<string[][]>([]);
   const [currentSelections, setCurrentSelections] = useState<string[]>([]);
   const [isComplete, setIsComplete] = useState(false);
+  const [isSharedView, setIsSharedView] = useState(false);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const blueprintData = params.get("blueprint");
+      if (blueprintData) {
+        try {
+          const decoded = JSON.parse(atob(blueprintData));
+          if (Array.isArray(decoded) && decoded.length > 0) {
+            setAnswers(decoded);
+            setIsComplete(true);
+            setIsSharedView(true);
+          }
+        } catch (e) {
+          console.error("Failed to parse blueprint data");
+        }
+      }
+    }
+  }, []);
 
   const currentQuestion = questions[currentStep];
 
@@ -184,9 +208,51 @@ export function AssessmentFlow() {
     setAnswers([]);
     setCurrentSelections([]);
     setIsComplete(false);
+    setIsSharedView(false);
+    
+    // Clear the URL parameter silently
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("blueprint");
+      window.history.replaceState({}, "", url.toString());
+    }
   };
 
   const results = isComplete ? getRecommendations(answers) : [];
+
+  const handleDownloadPDF = async () => {
+    setIsGeneratingPDF(true);
+    try {
+      await generateBlueprintPDF(results);
+    } catch (error) {
+      console.error("Failed to generate PDF", error);
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  };
+
+  const handleShare = async () => {
+    try {
+      const encodedAnswers = btoa(JSON.stringify(answers));
+      const url = new URL(window.location.href);
+      url.searchParams.set("blueprint", encodedAnswers);
+      const shareUrl = url.toString();
+
+      if (navigator.share) {
+        await navigator.share({
+          title: "My Career Blueprint",
+          text: "Check out my personalized career blueprint from NextStep!",
+          url: shareUrl,
+        });
+      } else {
+        await navigator.clipboard.writeText(shareUrl);
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 2000);
+      }
+    } catch (error) {
+      console.error("Error sharing", error);
+    }
+  };
 
   return (
     <section id="assessment" className="relative w-full min-h-screen py-32 flex flex-col items-center justify-center bg-black/50 z-10 overflow-hidden border-t border-white/5">
@@ -296,12 +362,30 @@ export function AssessmentFlow() {
                 ))}
               </div>
 
-              <div className="flex justify-center mt-8 gap-6">
+              <div className="flex flex-col sm:flex-row justify-center mt-8 gap-4 sm:gap-6">
+                <button
+                  onClick={handleDownloadPDF}
+                  disabled={isGeneratingPDF}
+                  className="px-6 py-3 rounded-full bg-blue-600 text-white hover:bg-blue-500 transition-all font-sans text-sm tracking-widest uppercase flex items-center justify-center gap-2 font-bold disabled:opacity-50"
+                >
+                  <Download size={16} />
+                  {isGeneratingPDF ? "Generating..." : "Download PDF"}
+                </button>
+                <button
+                  onClick={handleShare}
+                  className="px-6 py-3 rounded-full border border-white/20 bg-white/5 text-white hover:bg-white/10 transition-all font-sans text-sm tracking-widest uppercase flex items-center justify-center gap-2"
+                >
+                  {copySuccess ? <Check size={16} className="text-green-400" /> : <Share2 size={16} />}
+                  {copySuccess ? "Link Copied!" : "Share Result"}
+                </button>
+              </div>
+
+              <div className="flex justify-center mt-4">
                 <button
                   onClick={resetAssessment}
-                  className="px-6 py-3 rounded-full text-neutral-400 hover:text-white border border-neutral-800 hover:border-white/30 transition-all font-sans text-sm tracking-widest uppercase"
+                  className="px-6 py-3 rounded-full text-neutral-400 hover:text-white border border-transparent hover:border-white/30 transition-all font-sans text-xs tracking-widest uppercase"
                 >
-                  Retake Assessment
+                  {isSharedView ? "Take Your Own Assessment" : "Retake Assessment"}
                 </button>
               </div>
             </motion.div>
