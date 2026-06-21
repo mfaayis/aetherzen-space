@@ -30,7 +30,7 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto flex items-center justify-between glass-panel px-4 md:px-6 py-3 md:py-4 rounded-full border border-white/10 shadow-2xl bg-black/40 backdrop-blur-md">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group shrink-0" onClick={() => setIsMobileOpen(false)}>
-            <img src="/logo.png" alt="NextStep Logo" className="h-10 w-auto object-contain mix-blend-screen group-hover:scale-105 transition-transform" />
+            <img src="/logo.png" alt="NextStep Logo" className="h-16 sm:h-20 w-auto object-contain mix-blend-screen brightness-110 group-hover:scale-105 transition-transform" />
           </Link>
 
           {/* Desktop Navigation */}
