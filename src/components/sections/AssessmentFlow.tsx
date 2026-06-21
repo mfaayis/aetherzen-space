@@ -81,7 +81,18 @@ export function AssessmentFlow() {
     
     const studentVector = calculateStudentVector(finalAnswers, questions);
     const streamId = finalAnswers[0][0]; 
-    const topMatches = scoreCourses(studentVector, streamId);
+    
+    let courseData = [];
+    try {
+      const fetchRes = await fetch("/data/courseTags.json");
+      if (fetchRes.ok) {
+        courseData = await fetchRes.json();
+      }
+    } catch (err) {
+      console.error("Failed to load massive course database", err);
+    }
+    
+    const topMatches = scoreCourses(courseData, studentVector, streamId);
     
     const profileSummary = finalAnswers.map((ans, i) => {
       if (!questions[i]) return "";

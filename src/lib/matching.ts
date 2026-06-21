@@ -1,5 +1,5 @@
 import { AssessmentQuestion } from "@/data/assessmentQuestions";
-import { courseTags, CourseTagProfile } from "@/data/courseTags";
+import { CourseTagProfile } from "@/data/courseTags";
 
 // Calculates the dot product between two vectors
 function calculateDotProduct(vecA: Record<string, number>, vecB: Record<string, number>): number {
@@ -66,13 +66,13 @@ export interface MatchResult {
   studyEnvironment?: string;
 }
 
-export function scoreCourses(studentVector: Record<string, number>, streamId: string): MatchResult[] {
+export function scoreCourses(courses: CourseTagProfile[], studentVector: Record<string, number>, streamId: string): MatchResult[] {
   // Hard Filter: Only include courses that allow the student's stream
-  let eligibleCourses = courseTags.filter(c => c.streams.includes(streamId));
+  let eligibleCourses = courses.filter(c => c.streams.includes(streamId));
 
   if (eligibleCourses.length === 0) {
     // Fallback if somehow no courses match stream (should not happen with good data)
-    eligibleCourses = courseTags; 
+    eligibleCourses = courses; 
   }
 
   const scoredCourses = eligibleCourses.map(course => {
