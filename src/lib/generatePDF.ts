@@ -13,143 +13,197 @@ export interface BlueprintResult {
   careerOutcomes?: string[];
 }
 
-export const generateBlueprintPDF = async (results: BlueprintResult[], userName?: string) => {
-  // Create a new A4 document
+export interface UserInfo {
+  name: string;
+  email: string;
+  location: string;
+}
+
+const loadImage = (url: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL("image/png"));
+      } else {
+        reject(new Error("No context"));
+      }
+    };
+    img.onerror = reject;
+    img.src = url;
+  });
+};
+
+export const generateBlueprintPDF = async (results: BlueprintResult[], userInfo?: UserInfo) => {
   const doc = new jsPDF({
     orientation: "portrait",
     unit: "mm",
     format: "a4",
   });
 
+  let logoDataUrl = "";
+  try {
+    logoDataUrl = await loadImage("/logo.png");
+  } catch (e) {
+    console.error("Failed to load logo", e);
+  }
+
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
   const margin = 20;
   let cursorY = margin;
 
-  // Helper to add centered text
-  const addCenteredText = (text: string, y: number, size: number, color: number[], fontStyle: string = "normal") => {
-    doc.setFontSize(size);
-    doc.setTextColor(color[0], color[1], color[2]);
-    doc.setFont("helvetica", fontStyle);
-    const textWidth = doc.getTextWidth(text);
-    doc.text(text, (pageWidth - textWidth) / 2, y);
+  const fillBackground = () => {
+    doc.setFillColor(10, 10, 10);
+    doc.rect(0, 0, pageWidth, pageHeight, "F");
   };
 
-  // Helper to wrap text and add block
-  const addTextBlock = (text: string, y: number, size: number, color: number[], fontStyle: string = "normal", maxWidth: number = pageWidth - margin * 2) => {
-    doc.setFontSize(size);
-    doc.setTextColor(color[0], color[1], color[2]);
-    doc.setFont("helvetica", fontStyle);
-    const lines = doc.splitTextToSize(text, maxWidth);
-    doc.text(lines, margin, y);
-    return lines.length * (size * 0.4); // Approximate height
+  fillBackground();
+
+  const checkPageBreak = (neededHeight: number) => {
+    if (cursorY + neededHeight > pageHeight - margin) {
+      doc.addPage();
+      fillBackground();
+      cursorY = margin + 10;
+      return true;
+    }
+    return false;
   };
 
-  // 1. Header / Branding
-  // Draw a very subtle top accent line
-  doc.setFillColor(59, 130, 246); // Tailwind blue-500
-  doc.rect(0, 0, pageWidth, 5, "F");
+  // 1. Header
+  if (logoDataUrl) {
+    // Center logo (w:20, h:20)
+    doc.addImage(logoDataUrl, "PNG", pageWidth / 2 - 10, cursorY, 20, 20);
+    cursorY += 28;
+  } else {
+    cursorY += 10;
+  }
 
-  cursorY += 15;
-  
-  // Title
-  addCenteredText("NextStep", cursorY, 28, [15, 23, 42], "bold"); // Dark slate
-  cursorY += 10;
-  
-  // Subtitle
-  const titleText = userName ? `${userName}'s Career Blueprint` : "Your Personalized Career Blueprint";
-  addCenteredText(titleText, cursorY, 16, [59, 130, 246], "bold"); // Blue
+  doc.setFontSize(28);
+  doc.setTextColor(255, 255, 255);
+  doc.setFont("helvetica", "bold");
+  const titleText = "NextStep";
+  doc.text(titleText, (pageWidth - doc.getTextWidth(titleText)) / 2, cursorY);
   cursorY += 8;
 
-  // Date
-  const dateStr = `Generated on: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`;
-  addCenteredText(dateStr, cursorY, 10, [100, 116, 139], "normal"); // Slate 500
+  const subText = "CAREER BLUEPRINT";
+  doc.setFontSize(11);
+  doc.setTextColor(168, 85, 247); // purple-500
+  doc.setFont("helvetica", "bold");
+  doc.text(subText, (pageWidth - doc.getTextWidth(subText)) / 2, cursorY);
   cursorY += 20;
 
-  // Divider
-  doc.setDrawColor(226, 232, 240); // Slate 200
+  if (userInfo && userInfo.name) {
+    doc.setFillColor(20, 20, 20);
+    doc.setDrawColor(30, 30, 30);
+    doc.roundedRect(margin, cursorY, pageWidth - margin * 2, 25, 3, 3, "FD");
+    
+    doc.setFontSize(9);
+    doc.setTextColor(156, 163, 175);
+    doc.setFont("helvetica", "bold");
+    
+    const col1 = margin + 8;
+    const col2 = margin + (pageWidth - margin*2)/3 + 5;
+    const col3 = margin + ((pageWidth - margin*2)/3)*2;
+
+    doc.text("PREPARED FOR", col1, cursorY + 10);
+    doc.text("EMAIL", col2, cursorY + 10);
+    doc.text("LOCATION", col3, cursorY + 10);
+
+    doc.setFontSize(11);
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    
+    doc.text(userInfo.name, col1, cursorY + 17);
+    doc.text(userInfo.email || "N/A", col2, cursorY + 17);
+    doc.text(userInfo.location || "N/A", col3, cursorY + 17);
+    
+    cursorY += 40;
+  } else {
+    cursorY += 10;
+  }
+
+  doc.setDrawColor(59, 130, 246); // blue-500
   doc.setLineWidth(0.5);
   doc.line(margin, cursorY, pageWidth - margin, cursorY);
   cursorY += 15;
 
   // 2. Results Section
-  doc.setFontSize(14);
-  doc.setTextColor(15, 23, 42);
+  doc.setFontSize(16);
+  doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
-  doc.text("Recommended Career Paths", margin, cursorY);
-  cursorY += 12;
+  doc.text("Top Recommended Paths", margin, cursorY);
+  cursorY += 15;
 
   results.forEach((res, index) => {
-    // Check page break
-    if (cursorY > pageHeight - 40) {
-      doc.addPage();
-      cursorY = margin;
-    }
-
-    // Card background simulation (light gray rounded rect)
-    const cardHeight = 45;
-    doc.setFillColor(248, 250, 252); // Slate 50
-    doc.setDrawColor(226, 232, 240); // Slate 200
-    doc.roundedRect(margin, cursorY, pageWidth - margin * 2, cardHeight, 3, 3, "FD");
-
-    // Title 
-    doc.setFontSize(12);
-    doc.setTextColor(15, 23, 42);
-    doc.setFont("helvetica", "bold");
-    doc.text(`${index + 1}. ${res.title}`, margin + 5, cursorY + 10);
-    
-    // Match badge (colored badge right aligned inside card)
-    const matchText = `${res.match} Match`;
-    const matchWidth = doc.getTextWidth(matchText);
-    const badgePadding = 3;
-    
-    // Match badge background
-    doc.setFillColor(239, 246, 255); // blue-50
-    doc.roundedRect(pageWidth - margin - matchWidth - badgePadding * 2 - 5, cursorY + 5, matchWidth + badgePadding * 2, 8, 2, 2, "F");
-    
-    // Match badge text
-    doc.setTextColor(59, 130, 246); // blue-500
     doc.setFontSize(10);
-    doc.text(matchText, pageWidth - margin - matchWidth - badgePadding - 5, cursorY + 10.5);
+    doc.setFont("helvetica", "normal");
+    const descLines = doc.splitTextToSize(res.desc, pageWidth - margin * 2 - 14);
+    
+    const baseHeight = 35;
+    const descHeight = descLines.length * 5;
+    const cardHeight = baseHeight + descHeight;
 
-    // Rich Data (Duration, Salary)
+    checkPageBreak(cardHeight + 10);
+
+    doc.setFillColor(20, 20, 20);
+    doc.setDrawColor(40, 40, 40);
+    doc.roundedRect(margin, cursorY, pageWidth - margin * 2, cardHeight, 4, 4, "FD");
+
+    doc.setFontSize(14);
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    doc.text(`${index + 1}. ${res.title}`, margin + 7, cursorY + 12);
+    
+    const matchText = `${res.match} Match`;
+    doc.setFontSize(10);
+    const matchWidth = doc.getTextWidth(matchText);
+    const badgePadding = 4;
+    
+    doc.setFillColor(30, 58, 138); 
+    doc.roundedRect(pageWidth - margin - matchWidth - badgePadding * 2 - 7, cursorY + 7, matchWidth + badgePadding * 2, 7, 2, 2, "F");
+    
+    doc.setTextColor(96, 165, 250); 
+    doc.setFont("helvetica", "bold");
+    doc.text(matchText, pageWidth - margin - matchWidth - badgePadding - 7, cursorY + 12);
+
     doc.setFontSize(9);
-    doc.setTextColor(100, 116, 139); // Slate 500
+    doc.setTextColor(156, 163, 175);
     doc.setFont("helvetica", "italic");
     let statsText = "";
-    if (res.duration) statsText += `Duration: ${res.duration}  |  `;
-    if (res.salaryRange) statsText += `Expected Salary: ${res.salaryRange}  |  `;
-    if (res.costRange) statsText += `Est. Cost: ${res.costRange}`;
-    doc.text(statsText, margin + 5, cursorY + 18);
+    if (res.duration) statsText += `DURATION: ${res.duration}   `;
+    if (res.salaryRange) statsText += `SALARY: ${res.salaryRange}   `;
+    if (res.costRange) statsText += `COST: ${res.costRange}`;
+    doc.text(statsText, margin + 7, cursorY + 22);
 
-    // Description
     doc.setFontSize(10);
-    doc.setTextColor(71, 85, 105); // Slate 600
+    doc.setTextColor(209, 213, 219); 
     doc.setFont("helvetica", "normal");
-    const descLines = doc.splitTextToSize(res.desc, pageWidth - margin * 2 - 10);
-    doc.text(descLines, margin + 5, cursorY + 28);
+    doc.text(descLines, margin + 7, cursorY + 32);
 
-    cursorY += cardHeight + 10;
+    cursorY += cardHeight + 8;
   });
 
   cursorY += 5;
 
-  // 3. Next Steps & Recommended Exams
-  if (cursorY > pageHeight - 60) {
-    doc.addPage();
-    cursorY = margin;
-  }
+  // 3. Next Steps
+  checkPageBreak(80);
 
-  doc.setFontSize(14);
-  doc.setTextColor(15, 23, 42);
+  doc.setFontSize(16);
+  doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
-  doc.text("Actionable Next Steps", margin, cursorY);
-  cursorY += 10;
+  doc.text("Action Plan", margin, cursorY);
+  cursorY += 12;
 
-  // Compile unique exams
   const uniqueExams = Array.from(new Set(results.flatMap(r => r.exams || [])));
   
-  let examText = "Check official entrance exam dates.";
+  let examText = "Check official entrance exam dates and deadlines.";
   if (uniqueExams.length > 0) {
     examText = `Check official entrance exam dates for: ${uniqueExams.join(", ")}.`;
   }
@@ -161,34 +215,39 @@ export const generateBlueprintPDF = async (results: BlueprintResult[], userName?
     "Use the NextStep AI Counselor for specific follow-up questions."
   ];
 
+  const stepsBoxHeight = steps.length * 10 + 10;
+  doc.setFillColor(20, 20, 20);
+  doc.setDrawColor(40, 40, 40);
+  doc.roundedRect(margin, cursorY, pageWidth - margin * 2, stepsBoxHeight, 4, 4, "FD");
+  
+  let stepY = cursorY + 12;
   steps.forEach(step => {
-    doc.setFillColor(59, 130, 246);
-    doc.circle(margin + 2, cursorY - 1, 1.5, "F"); // Bullet point
+    doc.setFillColor(168, 85, 247); 
+    doc.circle(margin + 10, stepY - 1, 1.5, "F"); 
     doc.setFontSize(11);
-    doc.setTextColor(71, 85, 105);
+    doc.setTextColor(209, 213, 219);
     doc.setFont("helvetica", "normal");
     
-    // Wrap step text just in case it's long
-    const stepLines = doc.splitTextToSize(step, pageWidth - margin * 2 - 10);
-    doc.text(stepLines, margin + 8, cursorY);
-    cursorY += stepLines.length * 5 + 3;
+    const stepLines = doc.splitTextToSize(step, pageWidth - margin * 2 - 20);
+    doc.text(stepLines, margin + 15, stepY);
+    stepY += stepLines.length * 6 + 4;
   });
-
+  
   // 4. Footer
   const footerY = pageHeight - 15;
-  doc.setDrawColor(226, 232, 240);
+  doc.setDrawColor(40, 40, 40);
   doc.line(margin, footerY - 5, pageWidth - margin, footerY - 5);
   
   doc.setFontSize(9);
-  doc.setTextColor(148, 163, 184); // Slate 400
+  doc.setTextColor(100, 116, 139); 
   doc.setFont("helvetica", "normal");
-  doc.text("Generated by NextStep Career Guidance", margin, footerY);
+  doc.text("Generated by NextStep Career Guidance Platform", margin, footerY);
   
-  const urlText = process.env.NEXT_PUBLIC_SITE_URL || "https://aetherzen-space-1s1x.vercel.app";
+  const dateStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  const urlText = `Date: ${dateStr}`;
   const urlWidth = doc.getTextWidth(urlText);
   doc.text(urlText, pageWidth - margin - urlWidth, footerY);
 
-  // Save the PDF
-  const filename = userName ? `NextStep_Blueprint_${userName.replace(/\s+/g, '_')}.pdf` : "NextStep-Career-Blueprint.pdf";
+  const filename = userInfo?.name ? `NextStep_Blueprint_${userInfo.name.replace(/\s+/g, '_')}.pdf` : "NextStep-Career-Blueprint.pdf";
   doc.save(filename);
 };

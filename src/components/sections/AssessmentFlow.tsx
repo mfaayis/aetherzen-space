@@ -173,7 +173,7 @@ export function AssessmentFlow() {
   const handleDownloadPDF = async () => {
     setIsGeneratingPDF(true);
     try {
-      await generateBlueprintPDF(results, userInfo.name);
+      await generateBlueprintPDF(results, userInfo);
     } catch (error) {
       console.error("Failed to generate PDF", error);
     } finally {
