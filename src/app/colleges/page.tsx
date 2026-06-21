@@ -9,6 +9,7 @@ export default function CollegesPage() {
   const [search, setSearch] = useState("");
   const [streamFilter, setStreamFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All");
+  const [locationFilter, setLocationFilter] = useState("All");
   const [selectedCollege, setSelectedCollege] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [collegeData, setCollegeData] = useState<College[]>([]);
@@ -34,6 +35,10 @@ export default function CollegesPage() {
 
   const streams = useMemo(() => ["All", ...Array.from(new Set(collegeData.flatMap(c => c.coursesOffered)))], [collegeData]);
   const types = ["All", "Government", "Private", "Deemed"];
+  const locations = useMemo(() => {
+    const states = Array.from(new Set(collegeData.map(c => c.location.state)));
+    return ["All", ...states.sort()];
+  }, [collegeData]);
 
   const filteredColleges = useMemo(() => {
     setCurrentPage(1); // Reset to page 1 on filter change
@@ -42,9 +47,10 @@ export default function CollegesPage() {
                           college.location.city.toLowerCase().includes(search.toLowerCase());
       const matchStream = streamFilter === "All" || college.coursesOffered.includes(streamFilter);
       const matchType = typeFilter === "All" || college.type === typeFilter;
-      return matchSearch && matchStream && matchType;
+      const matchLocation = locationFilter === "All" || college.location.state === locationFilter;
+      return matchSearch && matchStream && matchType && matchLocation;
     });
-  }, [search, streamFilter, typeFilter, collegeData]);
+  }, [search, streamFilter, typeFilter, locationFilter, collegeData]);
 
   const paginatedColleges = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -84,7 +90,14 @@ export default function CollegesPage() {
               className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white font-sans outline-none focus:border-white/30 transition-colors"
             />
           </div>
-          <div className="flex gap-4 w-full md:w-auto">
+          <div className="flex flex-wrap gap-4 w-full md:w-auto">
+            <select 
+              value={locationFilter}
+              onChange={(e) => setLocationFilter(e.target.value)}
+              className="flex-1 md:w-48 px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white font-sans outline-none focus:border-white/30 appearance-none"
+            >
+              {locations.map(loc => <option key={loc} value={loc} className="bg-neutral-900">{loc === "All" ? "All Locations" : loc}</option>)}
+            </select>
             <select 
               value={streamFilter}
               onChange={(e) => setStreamFilter(e.target.value)}
