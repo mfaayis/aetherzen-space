@@ -63217,5 +63217,40 @@
     ],
     "admissionProcess": "Merit, Management Quota, or National Entrance Exam",
     "officialWebsite": "https://example.edu.in"
+  },
+  {
+    "id": "sctce-tvm",
+    "name": "Sree Chitra Thirunal College of Engineering (SCTCE)",
+    "location": {
+      "city": "Thiruvananthapuram",
+      "state": "Kerala"
+    },
+    "type": "Government",
+    "feeRange": "Mid",
+    "approxFee": "₹35,000 - ₹65,000 / year",
+    "coursesOffered": [
+      "Engineering"
+    ],
+    "admissionProcess": "Admission through KEAM rank.",
+    "officialWebsite": "http://www.sctce.ac.in/"
+  },
+  {
+    "id": "aj-college-tvm",
+    "name": "A.J. College of Science and Technology",
+    "location": {
+      "city": "Thiruvananthapuram",
+      "state": "Kerala"
+    },
+    "type": "Private",
+    "feeRange": "Low",
+    "approxFee": "₹25,000 - ₹40,000 / year",
+    "coursesOffered": [
+      "Arts",
+      "Science",
+      "Commerce",
+      "Management"
+    ],
+    "admissionProcess": "Merit and Management quota admission.",
+    "officialWebsite": "http://www.ajcollege.in/"
   }
 ]
