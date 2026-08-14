@@ -66,36 +66,60 @@ export interface MatchResult {
   studyEnvironment?: string;
 }
 
+// Maps a streamId to the list of stream IDs that should be eligible
+// FIX: PCMB students should see both PCM and PCB courses
+function getEligibleStreams(streamId: string): string[] {
+  if (streamId === "pcmb") return ["pcm", "pcb", "pcmb"];
+  return [streamId];
+}
+
 export function scoreCourses(studentVector: Record<string, number>, streamId: string): MatchResult[] {
   // Hard Filter: Only include courses that allow the student's stream
-  let eligibleCourses = courseTags.filter(c => c.streams.includes(streamId));
+  const eligibleStreamIds = getEligibleStreams(streamId);
+  let eligibleCourses = courseTags.filter(c =>
+    c.streams.some(s => eligibleStreamIds.includes(s))
+  );
 
   if (eligibleCourses.length === 0) {
-    // Fallback if somehow no courses match stream (should not happen with good data)
-    eligibleCourses = courseTags; 
+    // Fallback: should not happen with well-maintained data
+    eligibleCourses = courseTags;
   }
 
   const scoredCourses = eligibleCourses.map(course => {
-    // We use a mix of Cosine Similarity (direction) and a small weight for Dot Product (magnitude)
-    // to ensure students with lots of answers don't just match everything.
-    // Cosine similarity gives a value between -1 and 1.
+    // Skip courses with no tags — cosine similarity is undefined for zero vectors
+    const courseTagCount = Object.keys(course.tags).length;
+    if (courseTagCount === 0) {
+      return {
+        title: course.title,
+        category: course.category,
+        score: -1,
+        tags: course.tags,
+        exams: course.exams,
+        duration: course.duration,
+        costRange: course.costRange,
+        salaryRange: course.salaryRange,
+        jobStats: course.jobStats,
+        coreSubjects: course.coreSubjects,
+        careerOutcomes: course.careerOutcomes,
+        studyEnvironment: course.studyEnvironment
+      };
+    }
+
+    // Cosine similarity gives 0-1 directional alignment
     let similarity = calculateCosineSimilarity(studentVector, course.tags);
-    
-    // Core Trait Penalty: if a course has core/dealbreaker tags, check if the student actually has them
+
+    // Core Trait Penalty: if a course has dealbreaker tags the student doesn't have, penalize hard
     let penalty = 0;
     if (course.coreTags && course.coreTags.length > 0) {
       for (const coreTag of course.coreTags) {
         if (!studentVector[coreTag] || studentVector[coreTag] <= 0) {
-          // Apply a massive flat penalty for missing a core trait.
-          // Since similarity is typically 0 to 1, subtracting 0.6 ensures it rarely breaks Top 4.
-          penalty += 0.6; 
+          penalty += 0.5;
         }
       }
     }
 
-    // Add a tiny bit of random noise (0.001) to break exact ties naturally
-    const score = similarity - penalty + (Math.random() * 0.001);
-    
+    const score = Math.max(-1, similarity - penalty);
+
     return {
       title: course.title,
       category: course.category,
@@ -115,26 +139,27 @@ export function scoreCourses(studentVector: Record<string, number>, streamId: st
   // Sort descending by score
   scoredCourses.sort((a, b) => b.score - a.score);
 
-  // Take Top 4
-  const top4 = scoredCourses.slice(0, 4);
+  // Only consider courses with a meaningful positive score to avoid garbage results
+  const MINIMUM_SCORE_THRESHOLD = 0.05;
+  const qualified = scoredCourses.filter(c => c.score >= MINIMUM_SCORE_THRESHOLD);
 
-  // Normalization: 
-  // If the absolute best match has a cosine similarity of 0.85, we treat that as "98% Match"
-  // and scale the rest relative to it so they spread out.
+  // Take Top 4 from qualified candidates (fallback to top 4 overall if needed)
+  const top4 = (qualified.length >= 4 ? qualified : scoredCourses).slice(0, 4);
+
+  // Normalization: best match → 97%, others scaled with a power curve for natural spread
+  // NO artificial 60% floor — bad matches will show their true lower scores
   const maxScore = top4[0]?.score || 1;
-  const baseCeiling = 98; // Highest possible displayed percentage
+  const CEILING = 97;
 
   return top4.map(course => {
-    // Normalize relative to the top scorer
-    const relativeRatio = course.score / maxScore;
-    let percentage = baseCeiling * relativeRatio;
-    
-    // Ensure it doesn't drop to 10% (usually top 4 are at least decent matches)
-    if (percentage < 60) percentage = 60 + (Math.random() * 10);
+    const relativeRatio = maxScore > 0 ? Math.max(0, course.score / maxScore) : 0;
+    // Power curve (0.6) widens the gap between top and lower matches
+    const percentage = CEILING * Math.pow(relativeRatio, 0.6);
 
     return {
       ...course,
-      matchPercentage: `${percentage.toFixed(1)}%`
+      matchPercentage: `${Math.max(percentage, 10).toFixed(1)}%`
     };
   });
 }
+

@@ -17,23 +17,27 @@ export async function POST(req: Request) {
       );
     }
 
-    const prompt = `You are an expert career counselor. A student has taken a career assessment and their answers indicate the following traits/preferences:
+    const prompt = `You are an expert career counselor in India. A student has completed a career assessment. Their profile is:
+
 ${studentProfile}
 
-Based on a mathematical scoring matrix, the absolute best 4 courses for this student have ALREADY been determined. They are:
-${matches.map((m: any, i: number) => `${i + 1}. ${m.title} (Category: ${m.category})`).join('\n')}
+A mathematical scoring algorithm has identified the best 4 courses for this student. Here they are with their match scores:
+${matches.map((m: any, i: number) => `${i + 1}. ${m.title} (Category: ${m.category}, Match: ${m.matchPercentage})`).join('\n')}
 
 YOUR TASK:
-For each of these exactly 4 courses, write a 1-2 sentence personalized explanation of why this course fits the student's profile, referencing their specific traits/preferences mentioned above. 
-DO NOT suggest different courses. DO NOT rank them. ONLY explain the matches provided.
+Write a 2-3 sentence personalized explanation for EACH course explaining specifically why it fits this student's profile. Reference their exact interests, working style, and motivations from the profile above.
 
-CRITICAL INSTRUCTION: If you cannot write a genuine, non-contradictory explanation for why this course fits without using caveats like "even though", "even if", or "despite", then do not soften the mismatch. The explanation should NEVER need to explain away a core mismatch. If a mismatch exists, state the alignment plainly without compensating for the mismatch.
+RULES:
+- Be direct and specific — mention the student's actual traits (e.g., "your interest in Biology", "your preference for hands-on work")
+- Do NOT use vague phrases like "aligns well" or "is a good fit" without explaining why
+- Do NOT use caveats like "even though", "despite", "although" — if you feel the need to, the match is poor and you should state plainly what aspects align and what to be aware of
+- Keep each explanation to 2-3 sentences max
 
-Return the result STRICTLY as a JSON array of objects with this format:
+Return STRICTLY as a JSON array:
 [
   {
-    "title": "Course Name",
-    "explanation": "Your personalized 1-2 sentence explanation here."
+    "title": "Exact Course Name Here",
+    "explanation": "Your 2-3 sentence explanation here."
   }
 ]
 `;

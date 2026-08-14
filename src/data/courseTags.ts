@@ -168,8 +168,13 @@ export const courseTags: CourseTagProfile[] = [
     "streams": [
       "pcm"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "tech": 5,
+      "analytical": 5,
+      "math": 4,
+      "long_duration": 2
+    },
+    "coreTags": ["tech","analytical"],
     "exams": [
       "JEE Main",
       "JEE Advanced",
@@ -2472,8 +2477,12 @@ export const courseTags: CourseTagProfile[] = [
     "streams": [
       "pcm"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "math": 4,
+      "analytical": 4,
+      "lab": 3
+    },
+    "coreTags": ["math","analytical"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -2501,8 +2510,13 @@ export const courseTags: CourseTagProfile[] = [
       "pcm",
       "pcb"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "biology": 3,
+      "analytical": 4,
+      "lab": 4,
+      "math": 2
+    },
+    "coreTags": ["lab","analytical"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -2529,8 +2543,11 @@ export const courseTags: CourseTagProfile[] = [
     "streams": [
       "pcm"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "math": 5,
+      "analytical": 5
+    },
+    "coreTags": ["math"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -2558,8 +2575,12 @@ export const courseTags: CourseTagProfile[] = [
       "pcm",
       "pcb"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "math": 5,
+      "analytical": 5,
+      "tech": 1
+    },
+    "coreTags": ["math","analytical"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -2729,8 +2750,12 @@ export const courseTags: CourseTagProfile[] = [
       "pcm",
       "pcb"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "biology": 5,
+      "lab": 4,
+      "field": 2
+    },
+    "coreTags": ["biology","lab"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -2758,8 +2783,12 @@ export const courseTags: CourseTagProfile[] = [
       "pcm",
       "pcb"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "biology": 5,
+      "lab": 4,
+      "field": 3
+    },
+    "coreTags": ["biology","lab"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -2787,8 +2816,13 @@ export const courseTags: CourseTagProfile[] = [
       "pcm",
       "pcb"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "analytical": 4,
+      "field": 4,
+      "math": 2,
+      "hands_on": 2
+    },
+    "coreTags": ["field","analytical"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -2816,8 +2850,13 @@ export const courseTags: CourseTagProfile[] = [
       "pcm",
       "pcb"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "analytical": 4,
+      "field": 4,
+      "biology": 2,
+      "math": 2
+    },
+    "coreTags": ["field"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -2845,8 +2884,12 @@ export const courseTags: CourseTagProfile[] = [
       "pcm",
       "pcb"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "biology": 3,
+      "field": 4,
+      "analytical": 3
+    },
+    "coreTags": ["field","biology"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -2874,8 +2917,12 @@ export const courseTags: CourseTagProfile[] = [
       "pcm",
       "pcb"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "biology": 3,
+      "analytical": 5,
+      "lab": 4
+    },
+    "coreTags": ["lab","analytical"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -2903,8 +2950,12 @@ export const courseTags: CourseTagProfile[] = [
       "pcm",
       "pcb"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "biology": 4,
+      "field": 4,
+      "hands_on": 3
+    },
+    "coreTags": ["biology","field"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -2932,8 +2983,12 @@ export const courseTags: CourseTagProfile[] = [
       "pcm",
       "pcb"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "biology": 4,
+      "lab": 3,
+      "hands_on": 2
+    },
+    "coreTags": ["biology","lab"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -4829,8 +4884,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "people_facing": 5,
+      "creative": 2,
+      "office": 3,
+      "business": 2
+    },
+    "coreTags": ["people_facing"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -4860,8 +4920,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "people_facing": 4,
+      "field": 3,
+      "business": 2,
+      "creative": 1
+    },
+    "coreTags": ["people_facing"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -4891,8 +4956,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "hands_on": 5,
+      "creative": 4,
+      "people_facing": 2,
+      "studio": 2
+    },
+    "coreTags": ["hands_on","creative"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -4922,8 +4992,12 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "hands_on": 5,
+      "creative": 4,
+      "studio": 2
+    },
+    "coreTags": ["hands_on","creative"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -4953,8 +5027,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "people_facing": 4,
+      "business": 3,
+      "field": 2,
+      "office": 2
+    },
+    "coreTags": ["people_facing"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -4984,8 +5063,12 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "people_facing": 4,
+      "business": 4,
+      "office": 3
+    },
+    "coreTags": ["people_facing","business"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5015,8 +5098,12 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "biology": 3,
+      "field": 5,
+      "hands_on": 4
+    },
+    "coreTags": ["field","hands_on"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5046,8 +5133,12 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "biology": 4,
+      "field": 5,
+      "hands_on": 4
+    },
+    "coreTags": ["field","biology"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5077,8 +5168,12 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "biology": 3,
+      "field": 5,
+      "hands_on": 3
+    },
+    "coreTags": ["field"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5108,8 +5203,12 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "biology": 4,
+      "field": 4,
+      "hands_on": 3
+    },
+    "coreTags": ["biology","field"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5175,8 +5274,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "biology": 5,
+      "lab": 3,
+      "hands_on": 3,
+      "people_facing": 2
+    },
+    "coreTags": ["biology"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5206,8 +5310,12 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "biology": 4,
+      "field": 4,
+      "hands_on": 4
+    },
+    "coreTags": ["biology","field"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5237,8 +5345,14 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "field": 5,
+      "hands_on": 4,
+      "analytical": 2,
+      "long_duration": 2,
+      "risk_tolerant": 2
+    },
+    "coreTags": ["field","hands_on"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5304,8 +5418,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "field": 5,
+      "hands_on": 3,
+      "analytical": 2,
+      "tech": 2
+    },
+    "coreTags": ["field"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5335,8 +5454,12 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "field": 5,
+      "tech": 3,
+      "analytical": 3
+    },
+    "coreTags": ["field","tech"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5366,8 +5489,12 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "field": 5,
+      "hands_on": 3,
+      "analytical": 2
+    },
+    "coreTags": ["field"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5397,8 +5524,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "field": 5,
+      "hands_on": 3,
+      "business": 1,
+      "tech": 2
+    },
+    "coreTags": ["field"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5777,8 +5909,12 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "humanities": 4,
+      "analytical": 2,
+      "people_facing": 2
+    },
+    "coreTags": ["humanities"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5808,8 +5944,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "humanities": 4,
+      "analytical": 2,
+      "people_facing": 2,
+      "creative": 1
+    },
+    "coreTags": ["humanities"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5839,8 +5980,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "humanities": 4,
+      "analytical": 2,
+      "people_facing": 2,
+      "tech": 1
+    },
+    "coreTags": ["humanities"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5870,8 +6016,12 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "humanities": 4,
+      "people_facing": 3,
+      "analytical": 1
+    },
+    "coreTags": ["humanities"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5901,8 +6051,12 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "humanities": 4,
+      "people_facing": 3,
+      "creative": 2
+    },
+    "coreTags": ["humanities"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5932,8 +6086,11 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "humanities": 4,
+      "people_facing": 3
+    },
+    "coreTags": ["humanities"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5963,8 +6120,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "humanities": 4,
+      "people_facing": 3,
+      "business": 2,
+      "analytical": 1
+    },
+    "coreTags": ["humanities"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -5994,8 +6156,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "creative": 3,
+      "business": 4,
+      "people_facing": 3,
+      "tech": 2
+    },
+    "coreTags": ["business"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -6025,8 +6192,12 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "tech": 3,
+      "analytical": 4,
+      "business": 3
+    },
+    "coreTags": ["analytical","tech"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -6093,8 +6264,12 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "creative": 5,
+      "humanities": 3,
+      "people_facing": 2
+    },
+    "coreTags": ["creative"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -6124,8 +6299,12 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "creative": 5,
+      "business": 3,
+      "people_facing": 2
+    },
+    "coreTags": ["creative","business"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -6194,8 +6373,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "analytical": 5,
+      "math": 4,
+      "business": 4,
+      "risk_tolerant": 3
+    },
+    "coreTags": ["analytical","business","risk_tolerant"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -6225,8 +6409,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "analytical": 4,
+      "tech": 3,
+      "business": 4,
+      "risk_tolerant": 4
+    },
+    "coreTags": ["risk_tolerant","analytical"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -6256,8 +6445,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "business": 5,
+      "tech": 2,
+      "creative": 2,
+      "people_facing": 2
+    },
+    "coreTags": ["business"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -6287,8 +6481,12 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "tech": 4,
+      "business": 4,
+      "creative": 2
+    },
+    "coreTags": ["tech","business"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -6318,8 +6516,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "business": 4,
+      "creative": 2,
+      "people_facing": 2,
+      "remote": 3
+    },
+    "coreTags": ["business"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -6577,8 +6780,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "creative": 5,
+      "people_facing": 4,
+      "business": 3,
+      "studio": 2
+    },
+    "coreTags": ["creative","people_facing"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -6802,8 +7010,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "analytical": 4,
+      "office": 4,
+      "risk_averse": 4,
+      "humanities": 2
+    },
+    "coreTags": ["risk_averse","office"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -6833,8 +7046,14 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "analytical": 4,
+      "math": 3,
+      "office": 5,
+      "risk_averse": 4,
+      "business": 2
+    },
+    "coreTags": ["risk_averse","analytical"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -6864,8 +7083,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "analytical": 3,
+      "office": 3,
+      "risk_averse": 4,
+      "hands_on": 2
+    },
+    "coreTags": ["risk_averse"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -6895,8 +7119,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "field": 4,
+      "hands_on": 3,
+      "analytical": 3,
+      "risk_averse": 2
+    },
+    "coreTags": ["field"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -6926,8 +7155,13 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "analytical": 4,
+      "humanities": 3,
+      "office": 4,
+      "risk_averse": 4
+    },
+    "coreTags": ["risk_averse","analytical"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
@@ -6957,8 +7191,14 @@ export const courseTags: CourseTagProfile[] = [
       "commerce",
       "humanities"
     ],
-    "tags": {},
-    "coreTags": [],
+    "tags": {
+      "analytical": 5,
+      "humanities": 4,
+      "office": 3,
+      "risk_averse": 3,
+      "long_duration": 3
+    },
+    "coreTags": ["analytical", "humanities"],
     "exams": [
       "Direct Admission / Self-Taught"
     ],
