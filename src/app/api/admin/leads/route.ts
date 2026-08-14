@@ -5,7 +5,7 @@ export async function GET(req: Request) {
   try {
     const authHeader = req.headers.get("authorization");
     // Simple basic auth or passcode check
-    if (authHeader !== `Bearer ${process.env.ADMIN_PASSCODE || "admin123"}`) {
+    if (authHeader !== `Bearer ${process.env.ADMIN_PASSCODE || "K101sh@2"}`) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
