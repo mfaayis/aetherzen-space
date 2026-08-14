@@ -1,0 +1,481 @@
+%!TEX program = pdflatex
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{fontawesome5}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage[default]{lato}
+\usepackage{enumitem}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage{ragged2e}
+\usepackage{setspace}
+
+\geometry{a4paper,top=0mm,bottom=0mm,left=0mm,right=0mm,noheadfoot}
+
+% ── Colours ──────────────────────────────────────────────
+\definecolor{navy}{RGB}{10,36,74}
+\definecolor{dblue}{RGB}{22,60,110}
+\definecolor{accent}{RGB}{64,122,185}
+\definecolor{subtle}{RGB}{148,186,226}
+\definecolor{stext}{RGB}{225,236,252}
+\definecolor{body}{RGB}{28,28,35}
+\definecolor{pgray}{RGB}{247,249,252}
+\definecolor{rulec}{RGB}{198,212,230}
+\definecolor{tagbg}{RGB}{210,226,245}
+\definecolor{tagfg}{RGB}{14,48,96}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\pagestyle{empty}
+
+% ── Custom itemize list for bullets ──────────────────────
+\newlist{cvlist}{itemize}{1}
+\setlist[cvlist]{
+  label={\color{accent}\tiny$\blacktriangleright$},
+  leftmargin=10pt,
+  labelsep=5pt,
+  itemsep=2pt,
+  parsep=0pt,
+  topsep=0pt,
+  partopsep=0pt
+}
+
+% ── Sidebar section heading ───────────────────────────────
+\newcommand{\sh}[1]{%
+  \vspace{7pt}%
+  {\color{subtle}\fontsize{6}{8}\selectfont\bfseries\MakeUppercase{#1}}\par
+  \vspace{2pt}{\color{dblue}\hrule height 0.3pt}\par
+  \vspace{5pt}%
+}
+
+% ── Right column section heading ──────────────────────────
+\newcommand{\rh}[1]{%
+  \vspace{9pt}%
+  {\color{navy}\fontsize{7.5}{10}\selectfont\bfseries\MakeUppercase{#1}}\par
+  \vspace{2pt}{\color{rulec}\hrule height 0.4pt}\par
+  \vspace{6pt}%
+}
+
+% ── Sidebar icon ──────────────────────────────────────────
+\newcommand{\si}[1]{{\color{subtle}\fontsize{7}{9}\selectfont #1}}
+
+% ── Job block: {title}{company}{dates} ───────────────────
+\newcommand{\job}[3]{%
+  \vspace{2pt}%
+  {\color{navy}\fontsize{8.5}{11}\selectfont\bfseries #1}\par
+  \vspace{1pt}%
+  {\color{dblue}\fontsize{7.5}{9.5}\selectfont\bfseries #2}%
+  \hfill
+  {\color{accent}\fontsize{7}{9}\selectfont #3}\par
+  \vspace{4pt}%
+}
+
+% ── Licence category tag ──────────────────────────────────
+\newcommand{\ltag}[1]{%
+  \colorbox{tagbg}{\color{tagfg}\fontsize{5.8}{7}\selectfont
+    \bfseries\ #1\ }\hspace{1pt}%
+}
+
+% ── Sidebar contact row ───────────────────────────────────
+\newcommand{\srow}[2]{%
+  \si{#1}\ \ {\color{stext}\fontsize{7.5}{11}\selectfont #2}\par
+  \vspace{4pt}%
+}
+
+%=============================================================
+\begin{document}
+%=============================================================
+
+%-------------------------------------------------------------
+% PAGE 1
+%-------------------------------------------------------------
+\noindent
+%--- LEFT SIDEBAR
+\begin{minipage}[t][297mm][t]{0.318\textwidth}
+\colorbox{navy}{%
+\begin{minipage}[t][297mm][t]{\textwidth}
+\hspace{7pt}\begin{minipage}[t]{\textwidth-14pt}
+\vspace{14pt}\centering
+
+% Photo
+\IfFileExists{profile.jpg}{%
+  \begin{tikzpicture}
+    \clip (0,0) circle (1.5cm);
+    \node at (0,0){%
+      \includegraphics[width=3cm,height=3cm,
+        keepaspectratio=false]{profile.jpg}};
+  \end{tikzpicture}
+}{%
+  \begin{tikzpicture}
+    \draw[color=dblue,line width=0.8pt](0,0) circle(1.5cm);
+    \node[color=subtle] at (0,0.3)
+      {\fontsize{22}{26}\selectfont\faUserCircle};
+    \node[color=subtle,font=\fontsize{6}{7}\selectfont]
+      at (0,-0.7){Professional Photo};
+  \end{tikzpicture}
+}
+
+\vspace{10pt}\raggedright
+
+% Contact
+\sh{Contact}
+\srow{\faPhone}{+421 902 229 040}
+\srow{\faEnvelope}{kpnassir@gmail.com}
+\srow{\faMapMarkerAlt}{Germany / Slovakia}
+\srow{\faLinkedin}{[LinkedIn URL]}
+\srow{\faCalendarAlt}{25 May 1967}
+\srow{\faGlobe}{Indian National}
+
+% Driving Licences
+\sh{Driving Licences}
+{\color{stext}\fontsize{7.3}{11}\selectfont
+\si{\faIdCard}\ \textbf{Slovak CE Driving Licence}\par
+\vspace{4pt}
+\hspace{8pt}{\fontsize{6}{7.5}\selectfont\color{subtle}%
+  All categories:}\par
+\vspace{4pt}
+\hspace{4pt}\ltag{AM}\ltag{A1}\ltag{A2}\ltag{A}\par
+\vspace{3pt}
+\hspace{4pt}\ltag{B1}\ltag{B}\ltag{C1}\ltag{C}\par
+\vspace{3pt}
+\hspace{4pt}\ltag{D1}\ltag{D}\ltag{BE}\par
+\vspace{3pt}
+\hspace{4pt}\ltag{C1E}\ltag{CE}\par
+\vspace{3pt}
+\hspace{4pt}\ltag{D1E}\ltag{DE}\ltag{T}\par
+\vspace{7pt}
+\si{\faIdBadge}\ \textbf{Driver CPC -- Code 95}\par
+\vspace{2pt}
+\hspace{8pt}{\fontsize{6}{7.5}\selectfont\color{subtle}%
+  Professional Qualification}\par
+\vspace{6pt}
+\si{\faCreditCard}\ \textbf{Digital Tachograph Card}\par
+\vspace{2pt}
+\hspace{8pt}{\fontsize{6}{7.5}\selectfont\color{subtle}%
+  EU -- Current}\par
+\vspace{6pt}
+\si{\faFileAlt}\ \textbf{EU Residence Permit}\par
+\vspace{2pt}
+\hspace{8pt}{\fontsize{6}{7.5}\selectfont\color{subtle}%
+  Valid -- Europe}\par
+\vspace{6pt}
+\si{\faPassport}\ \textbf{Indian Passport}\par
+\vspace{2pt}
+\hspace{8pt}{\fontsize{6}{7.5}\selectfont\color{subtle}%
+  Valid}\par
+}
+
+% Languages
+\sh{Languages}
+{\color{stext}\fontsize{7.3}{11}\selectfont
+\si{\faLanguage}\ \textbf{Malayalam}%
+\hfill{\fontsize{6.2}{8}\selectfont\color{subtle}Native}\par
+\vspace{4pt}
+\si{\faLanguage}\ \textbf{Hindi}%
+\hfill{\fontsize{6.2}{8}\selectfont\color{subtle}Native}\par
+\vspace{4pt}
+\si{\faLanguage}\ \textbf{English}%
+\hfill{\fontsize{6.2}{8}\selectfont\color{subtle}Professional}\par
+}
+
+% Core Skills
+\sh{Core Skills}
+{\color{stext}\fontsize{7.1}{10.5}\selectfont
+\si{\faCheck}\ CE Articulated Trailers\par\vspace{2.5pt}
+\si{\faCheck}\ Container Transport\par\vspace{2.5pt}
+\si{\faCheck}\ Cross-border Freight\par\vspace{2.5pt}
+\si{\faCheck}\ Digital Tachograph (EU)\par\vspace{2.5pt}
+\si{\faCheck}\ EU Drivers' Hours Rules\par\vspace{2.5pt}
+\si{\faCheck}\ Cargo Securing (VDI 2700)\par\vspace{2.5pt}
+\si{\faCheck}\ Long-Haul Operations\par\vspace{2.5pt}
+\si{\faCheck}\ Vehicle Inspection (UVV)\par\vspace{2.5pt}
+\si{\faCheck}\ Transport Documentation\par\vspace{2.5pt}
+\si{\faCheck}\ CMR / Customs Paperwork\par\vspace{2.5pt}
+\si{\faCheck}\ Route Planning\par\vspace{2.5pt}
+\si{\faCheck}\ Defensive Driving\par
+}
+
+\vspace{6pt}
+\end{minipage}
+\end{minipage}
+}
+\end{minipage}%
+\hfill%
+%--- RIGHT CONTENT
+\begin{minipage}[t][297mm][t]{0.682\textwidth}
+
+% Header bar
+\colorbox{pgray}{%
+\begin{minipage}[t]{\textwidth}
+\hspace{10pt}\begin{minipage}[t]{\textwidth-20pt}
+\vspace{11pt}
+{\color{navy}\fontsize{19}{23}\selectfont\bfseries
+  KASSIM PILLAI NASSIR}\par
+\vspace{3pt}
+{\color{dblue}\fontsize{8.5}{11}\selectfont
+  International CE Trailer Driver\ \textbf{|}%
+  \ Container Transport Specialist}\par
+\vspace{5pt}
+{\color{accent}\fontsize{7}{9}\selectfont
+  \faPhone\ +421 902 229 040
+  \quad{\color{rulec}|}\quad
+  \faEnvelope\ kpnassir@gmail.com
+  \quad{\color{rulec}|}\quad
+  \faMapMarkerAlt\ Germany / Slovakia
+  \quad{\color{rulec}|}\quad
+  \faGlobe\ Indian National}\par
+\vspace{9pt}
+\end{minipage}
+\end{minipage}
+}
+
+\hspace{10pt}\begin{minipage}[t]{\textwidth-20pt}
+\RaggedRight
+
+% Summary
+\rh{Professional Summary}
+{\fontsize{7.9}{12}\selectfont\color{body}
+A CE trailer driver with over 30 years of professional experience
+across India, Saudi Arabia and Europe. After 25 years in heavy
+freight operations in Saudi Arabia, Kassim obtained a full Slovak
+CE driving licence, Driver CPC (Code~95) and a Digital Tachograph
+card before entering European international transport. He has since
+worked with Vander Peol, Duvenbeck and Gartner on container and
+curtainsider routes across ten Schengen countries, operating
+consistently within EU regulatory requirements and carrying a
+clean, accident-free record throughout his career.\par
+}
+
+% Experience
+\rh{Professional Experience}
+
+\job{International CE Container Trailer Driver}%
+    {Vander Peol}{[Start Date] -- Present}
+\begin{cvlist}
+\item Operates CE articulated container trailers on international
+  routes across Germany and multiple European countries; all
+  journeys managed within EC Regulation 561/2006.
+\item Responsible for cargo securing to VDI 2700 standard, full
+  CMR documentation and pre/post-trip UVV inspections --
+  completed without incident throughout the assignment.
+\item Zero tachograph infringements, zero cargo damage claims and
+  no customs irregularities recorded.
+\end{cvlist}
+
+\vspace{2pt}
+
+\job{International CE Trailer Driver}%
+    {Duvenbeck Gruppe}{[Start Date] -- [End Date]}
+\begin{cvlist}
+\item Long-haul CE trailer operations across Germany, Poland,
+  Czech Republic, Austria and Slovakia within Duvenbeck's
+  European freight network.
+\item Managed all cross-border freight documentation and digital
+  tachograph compliance within Duvenbeck's driver compliance
+  framework.
+\item Zero cargo damage and zero regulatory incidents recorded
+  across the full assignment period.
+\end{cvlist}
+
+\vspace{2pt}
+
+\job{International Trailer Driver}%
+    {Gartner Transport}{[Start Date] -- [End Date]}
+\begin{cvlist}
+\item CE heavy trailer transport across Germany, Austria, Hungary,
+  Switzerland, Belgium and the Netherlands; digital tachograph
+  and rest-period records maintained throughout.
+\item All freight delivered to schedule without safety compromise;
+  no incidents or damage claims reported.
+\end{cvlist}
+
+\vspace{2pt}
+
+\job{Heavy Trailer Driver -- Freight \& Industrial Logistics}%
+    {[Employer(s), Saudi Arabia]}{Approx.\ 1994 -- 2019}
+\begin{cvlist}
+\item 25 years of continuous heavy articulated trailer operations
+  in Saudi Arabian freight, construction and industrial
+  logistics -- long-distance highway and demanding desert routes.
+\item Responsible for cargo securing, weight distribution, routine
+  vehicle inspections and site-team coordination; unbroken
+  accident-free record maintained throughout.
+\item Developed considerable mechanical awareness and operational
+  self-sufficiency across independent long-haul assignments.
+\end{cvlist}
+
+\end{minipage}
+\end{minipage}
+
+%-------------------------------------------------------------
+% PAGE 2
+%-------------------------------------------------------------
+\newpage
+\noindent
+%--- LEFT SIDEBAR
+\begin{minipage}[t][297mm][t]{0.318\textwidth}
+\colorbox{navy}{%
+\begin{minipage}[t][297mm][t]{\textwidth}
+\hspace{7pt}\begin{minipage}[t]{\textwidth-14pt}
+\vspace{14pt}
+
+\sh{Countries Operated In}
+{\color{stext}\fontsize{7.3}{11}\selectfont
+\si{\faFlag}\ Germany\par\vspace{2.5pt}
+\si{\faFlag}\ Austria\par\vspace{2.5pt}
+\si{\faFlag}\ Poland\par\vspace{2.5pt}
+\si{\faFlag}\ Czech Republic\par\vspace{2.5pt}
+\si{\faFlag}\ Slovakia\par\vspace{2.5pt}
+\si{\faFlag}\ Hungary\par\vspace{2.5pt}
+\si{\faFlag}\ Switzerland\par\vspace{2.5pt}
+\si{\faFlag}\ Belgium\par\vspace{2.5pt}
+\si{\faFlag}\ Netherlands\par\vspace{2.5pt}
+\si{\faFlag}\ France\par
+}
+
+\sh{Vehicle Types}
+{\color{stext}\fontsize{7.3}{11}\selectfont
+\si{\faTruck}\ CE Articulated Trailers\par\vspace{2.5pt}
+\si{\faTruck}\ Container Chassis\par\vspace{2.5pt}
+\si{\faTruck}\ Curtainsider Trailers\par\vspace{2.5pt}
+\si{\faTruck}\ Flatbed Trailers\par\vspace{2.5pt}
+\si{\faTruck}\ 40\,ft Sea Containers\par\vspace{2.5pt}
+\si{\faTruck}\ Swap Body Units\par
+}
+
+\sh{Personal Profile}
+\srow{\faCalendarAlt}{25 May 1967}
+\srow{\faGlobe}{Indian Nationality}
+\srow{\faMapMarkerAlt}{Germany / Slovakia}
+\srow{\faFileAlt}{Valid EU Residence Permit}
+\srow{\faPassport}{Valid Indian Passport}
+
+\sh{Availability}
+\srow{\faCalendarAlt}{Available from: [Date]}
+\srow{\faTruck}{Full-time, international}
+\srow{\faClock}{Flexible shift patterns}
+\srow{\faGlobe}{Pan-European assignments}
+
+\sh{References}
+{\color{stext}\fontsize{7.3}{11}\selectfont
+Available on request from\par\vspace{2pt}
+Vander Peol, Duvenbeck\par\vspace{2pt}
+and Gartner Transport.\par
+}
+
+\vspace{6pt}
+\end{minipage}
+\end{minipage}
+}
+\end{minipage}%
+\hfill%
+%--- RIGHT CONTENT
+\begin{minipage}[t][297mm][t]{0.682\textwidth}
+
+% Slim header
+\colorbox{pgray}{%
+\begin{minipage}[t]{\textwidth}
+\hspace{10pt}\begin{minipage}[t]{\textwidth-20pt}
+\vspace{6pt}
+{\color{navy}\fontsize{13}{16}\selectfont\bfseries
+  KASSIM PILLAI NASSIR}%
+\hfill
+{\color{accent}\fontsize{7}{9}\selectfont
+  \faPhone\ +421 902 229 040\quad
+  \faEnvelope\ kpnassir@gmail.com}\par
+\vspace{5pt}
+\end{minipage}
+\end{minipage}
+}
+
+\hspace{10pt}\begin{minipage}[t]{\textwidth-20pt}
+\RaggedRight
+
+% Experience continued
+\rh{Professional Experience (Continued)}
+
+\job{Heavy Vehicle Driver}%
+    {[Employer, India]}{Approx.\ 1991 -- 1994}
+\begin{cvlist}
+\item Commercial freight transport in India at the outset of his
+  professional driving career.
+\item Gained foundational skills in heavy vehicle operation,
+  route management, load documentation and road safety.
+\end{cvlist}
+
+% International driving
+\rh{International Driving Experience}
+
+{\fontsize{7.9}{12}\selectfont\color{body}
+Cross-border CE trailer operations across ten European
+countries -- Germany, Austria, Poland, Czech Republic, Slovakia,
+Hungary, Switzerland, Belgium, the Netherlands and France --
+conducted in full compliance with EC Regulation 561/2006 and
+EU Regulation 165/2014. Customs paperwork and CMR documentation
+prepared and verified at each border point throughout.\par
+}
+
+\vspace{5pt}
+
+{\fontsize{7.9}{12}\selectfont\color{body}
+Prior to his European career, Kassim operated heavy articulated
+trailers across Saudi Arabia for approximately 25 years, covering
+long-distance highway and desert freight routes. This period
+demanded a high degree of independent route management,
+mechanical awareness and sustained operational reliability.\par
+}
+
+% Additional information
+\rh{Additional Information}
+
+\begin{cvlist}
+\item \textbf{Work authorisation:} Holds a valid EU residence
+  permit; fully authorised to work across the EU without
+  employer sponsorship.
+\item \textbf{Regulatory compliance:} Driver CPC (Code~95) held
+  and current; well-versed in tachograph management, EU
+  rest-period rules and international freight documentation.
+\item \textbf{Vehicle competence:} CE articulated trailers
+  including container chassis, curtainsiders and flatbed
+  configurations; experienced with 40-foot sea containers and
+  swap body units in port and rail terminal environments.
+\item \textbf{Working pattern:} Open to full-time international
+  long-haul roles and fixed European routes; flexible on night,
+  early and weekend shifts as operationally required.
+\end{cvlist}
+
+% Declaration
+\rh{Declaration}
+
+{\fontsize{7.8}{11}\selectfont\color{body}
+I confirm that all information in this curriculum vitae is
+accurate and complete to the best of my knowledge, and I consent
+to the processing of my personal data for recruitment purposes
+in accordance with applicable data protection legislation
+(GDPR).\par
+}
+
+\vspace{14pt}
+
+{\fontsize{7.8}{11}\selectfont\color{body}
+\textbf{Place, Date:}\quad [City],\ \today\par
+}
+
+\vspace{14pt}
+
+{\fontsize{7.8}{11}\selectfont\color{body}
+\textbf{Signature:}\quad\underline{\hspace{5.5cm}}\par
+}
+
+\end{minipage}
+\end{minipage}
+
+\end{document}
