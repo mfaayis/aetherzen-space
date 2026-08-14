@@ -23,6 +23,8 @@ export function AssessmentFlow() {
 
   const [isDetailsSubmitted, setIsDetailsSubmitted] = useState(false);
   const [userInfo, setUserInfo] = useState({ name: "", email: "", location: "" });
+  const [isLocating, setIsLocating] = useState(false);
+  const [locationError, setLocationError] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -177,6 +179,39 @@ export function AssessmentFlow() {
       url.searchParams.delete("blueprint");
       window.history.replaceState({}, "", url.toString());
     }
+  };
+
+  const handleGetLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationError("Geolocation is not supported by your browser");
+      return;
+    }
+    setIsLocating(true);
+    setLocationError("");
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`);
+          const data = await res.json();
+          const address = data.address;
+          const exactLocation = [
+             address.neighbourhood || address.suburb,
+             address.city_district || address.village,
+             address.city || address.town,
+          ].filter(Boolean).join(", ");
+          
+          setUserInfo(prev => ({ ...prev, location: exactLocation || data.display_name }));
+        } catch (err) {
+          setLocationError("Could not fetch address");
+        } finally {
+          setIsLocating(false);
+        }
+      },
+      (error) => {
+        setIsLocating(false);
+        setLocationError("Location permission denied");
+      }
+    );
   };
 
   const handleDetailsSubmit = async (e: React.FormEvent) => {
@@ -336,14 +371,25 @@ export function AssessmentFlow() {
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-neutral-400 font-sans text-sm uppercase tracking-widest">Location</label>
-                  <input
-                    type="text"
-                    required
-                    value={userInfo.location}
-                    onChange={(e) => setUserInfo({ ...userInfo, location: e.target.value })}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white focus:outline-none focus:border-blue-500 transition-colors font-sans"
-                    placeholder="City, State"
-                  />
+                  <div className="relative">
+                    <input
+                      type="text"
+                      required
+                      value={userInfo.location}
+                      onChange={(e) => setUserInfo({ ...userInfo, location: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white focus:outline-none focus:border-blue-500 transition-colors font-sans pr-36"
+                      placeholder="Neighborhood, City"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleGetLocation}
+                      disabled={isLocating}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-2 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 text-xs rounded-lg transition-colors flex items-center gap-2"
+                    >
+                      {isLocating ? "Locating..." : "📍 Auto-Detect"}
+                    </button>
+                  </div>
+                  {locationError && <p className="text-red-400 text-xs mt-1 px-2">{locationError}</p>}
                 </div>
                 
                 <button
