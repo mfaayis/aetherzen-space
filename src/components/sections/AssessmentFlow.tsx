@@ -5,9 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Download, Share2, Copy, Check, Loader2, Clock, Wallet, Briefcase } from "lucide-react";
 import { generateBlueprintPDF, BlueprintResult } from "@/lib/generatePDF";
 import { assessmentQuestions as questions } from "@/data/assessmentQuestions";
-import { calculateStudentVector, scoreCourses } from "@/lib/matching";
-
-let cachedCourseData: any[] = [];
 
 export function AssessmentFlow() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -76,90 +73,55 @@ export function AssessmentFlow() {
       setCurrentSelections([]);
     } else {
       setIsComplete(true);
-      await generateFinalBlueprint(newAnswers);
+      await calculateMatches();
     }
   };
 
-  const generateFinalBlueprint = async (finalAnswers: string[][]) => {
+  const calculateMatches = async () => {
     setIsCalculating(true);
     
-    const studentVector = calculateStudentVector(finalAnswers, questions);
-    const streamId = finalAnswers[0][0]; 
-
-    let courseData = cachedCourseData;
-    if (courseData.length === 0) {
-      try {
-        const fetchRes = await fetch("/data/courseTags.json");
-        if (fetchRes.ok) {
-          courseData = await fetchRes.json();
-          cachedCourseData = courseData;
-        }
-      } catch (err) {
-        console.error("Failed to load massive course database", err);
-      }
+    // Save current step before calculating
+    const finalAnswers = [...answers];
+    if (currentSelections.length > 0) {
+      finalAnswers[currentStep] = currentSelections;
     }
-    
-    const topMatches = scoreCourses(courseData, studentVector, streamId);
     
     const profileSummary = finalAnswers.map((ans, i) => {
       if (!questions[i]) return "";
       return `Q: ${questions[i].question}\nA: ${ans.map(id => questions[i].options.find(o => o.id === id)?.label).join(", ")}`;
     }).filter(Boolean).join("\n\n");
 
-    const fallbackResults = topMatches.map(match => {
-      let topTag = "your core interests";
-      let topVal = 0;
-      for (const [tag, val] of Object.entries(studentVector)) {
-         if (match.tags[tag] && val > topVal) {
-            topVal = val;
-            topTag = tag.replace(/_/g, " ");
-         }
-      }
-      return {
-        title: match.title,
-        match: match.matchPercentage,
-        desc: `This strongly aligns with your interest in ${topTag} and fits your overall profile.`,
-        exams: match.exams || [],
-        duration: match.duration,
-        costRange: match.costRange,
-        salaryRange: match.salaryRange,
-        jobStats: match.jobStats,
-        coreSubjects: match.coreSubjects,
-        careerOutcomes: match.careerOutcomes
-      };
-    });
-
     try {
-      const res = await fetch("/api/assessment/explain", {
+      const res = await fetch("/api/assessment/recommend", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ studentProfile: profileSummary, matches: topMatches })
+        body: JSON.stringify({ studentProfile: profileSummary })
       });
       
       if (!res.ok) throw new Error("API error");
       const data = await res.json();
       
-      const parsedExplanations = JSON.parse(data.result);
+      let parsedResults = JSON.parse(data.result);
       
-      const finalResults = topMatches.map((match, i) => {
-         const aiDescObj = parsedExplanations.find((e: any) => e.id === i + 1);
-         return {
-           title: aiDescObj && aiDescObj.title ? aiDescObj.title : match.title,
-           match: match.matchPercentage,
-           desc: aiDescObj ? aiDescObj.explanation : `This aligns perfectly with your skills.`,
-           exams: match.exams || [],
-           duration: match.duration,
-           costRange: match.costRange,
-           salaryRange: match.salaryRange,
-           jobStats: match.jobStats,
-           coreSubjects: match.coreSubjects,
-           careerOutcomes: match.careerOutcomes
-         };
-      });
+      // Ensure match mapping uses "match" instead of "matchPercentage" to fit BlueprintResult
+      const finalResults = parsedResults.map((r: any) => ({
+        ...r,
+        match: r.matchPercentage || r.match || "90%"
+      }));
+      
       setResults(finalResults);
     } catch (err) {
-      console.error("AI Generation failed, using fallbacks:", err);
-      setResults(fallbackResults);
+      console.error("AI Generation failed:", err);
+      // Fallback if AI fails completely
+      setResults([{
+        title: "B.Tech Computer Science",
+        match: "85%",
+        desc: "A solid default recommendation based on high industry demand.",
+        exams: ["JEE Main"],
+        duration: "4 years",
+        costRange: "₹4L - ₹12L",
+        salaryRange: "₹6L - ₹20L"
+      }]);
     } finally {
       setIsCalculating(false);
     }
