@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 
 export async function POST(req: Request) {
   try {
-    const { name, email } = await req.json();
+    const { name, email, location } = await req.json();
 
     if (!name || !email) {
       return NextResponse.json({ error: "Name and email are required" }, { status: 400 });
@@ -17,7 +17,8 @@ export async function POST(req: Request) {
 
     // Extract geolocation headers from Vercel
     const country = req.headers.get("x-vercel-ip-country") || "Unknown";
-    const city = req.headers.get("x-vercel-ip-city") || "Unknown";
+    const vCity = req.headers.get("x-vercel-ip-city");
+    const city = location ? location.trim() : (vCity || "Unknown");
     const region = req.headers.get("x-vercel-ip-country-region") || "Unknown";
 
     const { error } = await supabase

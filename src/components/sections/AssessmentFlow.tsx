@@ -186,7 +186,7 @@ export function AssessmentFlow() {
         await fetch("/api/leads", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: userInfo.name, email: userInfo.email })
+          body: JSON.stringify({ name: userInfo.name, email: userInfo.email, location: userInfo.location })
         });
       } catch (err) {
         console.error("Failed to save lead", err);
