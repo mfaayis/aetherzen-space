@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { colleges } from "@/data/colleges";
+import { useState, useMemo, useEffect } from "react";
+import { College } from "@/data/colleges";
 import { Search, MapPin, Building2, ExternalLink, GraduationCap, Banknote, ShieldAlert } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -9,23 +9,48 @@ export default function CollegesPage() {
   const [search, setSearch] = useState("");
   const [streamFilter, setStreamFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All");
+  const [locationFilter, setLocationFilter] = useState("All");
   const [selectedCollege, setSelectedCollege] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [collegeData, setCollegeData] = useState<College[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const ITEMS_PER_PAGE = 24;
 
-  const streams = useMemo(() => ["All", ...Array.from(new Set(colleges.flatMap(c => c.coursesOffered)))], []);
+  useEffect(() => {
+    async function loadColleges() {
+      try {
+        const res = await fetch("/data/colleges.json");
+        if (res.ok) {
+          const data = await res.json();
+          setCollegeData(data);
+        }
+      } catch (err) {
+        console.error("Failed to load colleges", err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadColleges();
+  }, []);
+
+  const streams = useMemo(() => ["All", ...Array.from(new Set(collegeData.flatMap(c => c.coursesOffered)))], [collegeData]);
   const types = ["All", "Government", "Private", "Deemed"];
+  const locations = useMemo(() => {
+    const states = Array.from(new Set(collegeData.map(c => c.location.state)));
+    return ["All", ...states.sort()];
+  }, [collegeData]);
 
   const filteredColleges = useMemo(() => {
     setCurrentPage(1); // Reset to page 1 on filter change
-    return colleges.filter(college => {
+    return collegeData.filter(college => {
       const matchSearch = college.name.toLowerCase().includes(search.toLowerCase()) || 
                           college.location.city.toLowerCase().includes(search.toLowerCase());
       const matchStream = streamFilter === "All" || college.coursesOffered.includes(streamFilter);
       const matchType = typeFilter === "All" || college.type === typeFilter;
-      return matchSearch && matchStream && matchType;
+      const matchLocation = locationFilter === "All" || college.location.state === locationFilter;
+      return matchSearch && matchStream && matchType && matchLocation;
     });
-  }, [search, streamFilter, typeFilter]);
+  }, [search, streamFilter, typeFilter, locationFilter, collegeData]);
 
   const paginatedColleges = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -34,7 +59,7 @@ export default function CollegesPage() {
 
   const totalPages = Math.ceil(filteredColleges.length / ITEMS_PER_PAGE);
 
-  const activeCollege = colleges.find(c => c.id === selectedCollege);
+  const activeCollege = collegeData.find(c => c.id === selectedCollege);
 
   return (
     <main className="min-h-screen pt-32 pb-24 px-6 relative z-10 bg-black/50">
@@ -65,7 +90,14 @@ export default function CollegesPage() {
               className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white font-sans outline-none focus:border-white/30 transition-colors"
             />
           </div>
-          <div className="flex gap-4 w-full md:w-auto">
+          <div className="flex flex-wrap gap-4 w-full md:w-auto">
+            <select 
+              value={locationFilter}
+              onChange={(e) => setLocationFilter(e.target.value)}
+              className="flex-1 md:w-48 px-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-sm text-white font-sans outline-none focus:border-white/30 appearance-none"
+            >
+              {locations.map(loc => <option key={loc} value={loc} className="bg-neutral-900">{loc === "All" ? "All Locations" : loc}</option>)}
+            </select>
             <select 
               value={streamFilter}
               onChange={(e) => setStreamFilter(e.target.value)}
@@ -83,8 +115,15 @@ export default function CollegesPage() {
           </div>
         </div>
 
+        {/* Loading State */}
+        {isLoading && (
+          <div className="flex justify-center items-center py-24">
+            <div className="animate-spin w-8 h-8 border-2 border-white/20 border-t-white rounded-full"></div>
+          </div>
+        )}
+
         {/* Results */}
-        {filteredColleges.length === 0 ? (
+        {!isLoading && filteredColleges.length === 0 ? (
           <div className="text-center py-20">
             <ShieldAlert size={40} className="mx-auto mb-4 text-neutral-600" />
             <h3 className="text-xl font-heading text-white">No colleges found</h3>
@@ -92,52 +131,54 @@ export default function CollegesPage() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {paginatedColleges.map((college) => (
-                <motion.div 
-                  key={college.id}
-                  layoutId={`card-${college.id}`}
-                  onClick={() => setSelectedCollege(college.id)}
-                  className="glass-panel p-6 rounded-3xl border border-white/10 cursor-pointer hover:border-white/30 transition-all hover:bg-white/5 group flex flex-col h-full"
-                >
-                  <div className="flex justify-between items-start mb-4">
-                    <span className="px-2.5 py-1 text-[10px] font-sans font-bold uppercase tracking-widest rounded-md border border-white/10 bg-black/40 text-neutral-300">
-                      {college.type}
-                    </span>
-                    {college.nirfRank && (
-                      <span className="px-2.5 py-1 text-[10px] font-sans font-bold uppercase tracking-widest rounded-md border border-amber-500/30 bg-amber-500/10 text-amber-500">
-                        NIRF #{college.nirfRank}
+            {!isLoading && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {paginatedColleges.map((college) => (
+                  <motion.div 
+                    key={college.id}
+                    layoutId={`card-${college.id}`}
+                    onClick={() => setSelectedCollege(college.id)}
+                    className="glass-panel p-6 rounded-3xl border border-white/10 cursor-pointer hover:border-white/30 transition-all hover:bg-white/5 group flex flex-col h-full"
+                  >
+                    <div className="flex justify-between items-start mb-4">
+                      <span className="px-2.5 py-1 text-[10px] font-sans font-bold uppercase tracking-widest rounded-md border border-white/10 bg-black/40 text-neutral-300">
+                        {college.type}
                       </span>
-                    )}
-                  </div>
-                  
-                  <h3 className="text-xl font-heading font-bold text-white mb-3 group-hover:text-blue-400 transition-colors line-clamp-2 flex-1">
-                    {college.name}
-                  </h3>
-                  
-                  <div className="space-y-3 mt-auto">
-                    <div className="flex items-center gap-2 text-neutral-400 text-xs font-sans">
-                      <MapPin size={14} className="shrink-0" />
-                      <span className="truncate">{college.location.city}, {college.location.state}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-neutral-400 text-xs font-sans">
-                      <Banknote size={14} className="shrink-0" />
-                      <span>{college.approxFee}</span>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 mt-2">
-                      {college.coursesOffered.map((course, i) => (
-                        <span key={i} className="text-[10px] px-2 py-0.5 rounded border border-white/10 bg-white/5 text-neutral-300">
-                          {course}
+                      {college.nirfRank && (
+                        <span className="px-2.5 py-1 text-[10px] font-sans font-bold uppercase tracking-widest rounded-md border border-amber-500/30 bg-amber-500/10 text-amber-500">
+                          NIRF #{college.nirfRank}
                         </span>
-                      ))}
+                      )}
                     </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+                    
+                    <h3 className="text-xl font-heading font-bold text-white mb-3 group-hover:text-blue-400 transition-colors line-clamp-2 flex-1">
+                      {college.name}
+                    </h3>
+                    
+                    <div className="space-y-3 mt-auto">
+                      <div className="flex items-center gap-2 text-neutral-400 text-xs font-sans">
+                        <MapPin size={14} className="shrink-0" />
+                        <span className="truncate">{college.location.city}, {college.location.state}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-neutral-400 text-xs font-sans">
+                        <Banknote size={14} className="shrink-0" />
+                        <span>{college.approxFee}</span>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {college.coursesOffered.map((course, i) => (
+                          <span key={i} className="text-[10px] px-2 py-0.5 rounded border border-white/10 bg-white/5 text-neutral-300">
+                            {course}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
 
             {/* Pagination Controls */}
-            {totalPages > 1 && (
+            {!isLoading && totalPages > 1 && (
               <div className="flex items-center justify-center gap-4 mt-12">
                 <button 
                   onClick={() => setCurrentPage(p => Math.max(1, p - 1))}

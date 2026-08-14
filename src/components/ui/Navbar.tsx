@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -30,12 +31,9 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto flex items-center justify-between glass-panel px-4 md:px-6 py-3 md:py-4 rounded-full border border-white/10 shadow-2xl bg-black/40 backdrop-blur-md">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group shrink-0" onClick={() => setIsMobileOpen(false)}>
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center text-white font-heading font-bold group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(168,85,247,0.4)]">
-              N
+            <div className="w-12 h-12 overflow-hidden transition-transform group-hover:scale-105">
+              <Image src="/logo.png" alt="NextStep Logo" width={48} height={48} className="w-full h-full object-contain filter invert" />
             </div>
-            <span className="text-white font-heading font-bold text-xl tracking-tighter">
-              NextStep
-            </span>
           </Link>
 
           {/* Desktop Navigation */}
