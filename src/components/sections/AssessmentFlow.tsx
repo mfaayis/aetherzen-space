@@ -141,10 +141,10 @@ export function AssessmentFlow() {
       
       const parsedExplanations = JSON.parse(data.result);
       
-      const finalResults = topMatches.map(match => {
-         const aiDescObj = parsedExplanations.find((e: any) => e.title === match.title);
+      const finalResults = topMatches.map((match, i) => {
+         const aiDescObj = parsedExplanations.find((e: any) => e.id === i + 1);
          return {
-           title: match.title,
+           title: aiDescObj && aiDescObj.title ? aiDescObj.title : match.title,
            match: match.matchPercentage,
            desc: aiDescObj ? aiDescObj.explanation : `This aligns perfectly with your skills.`,
            exams: match.exams || [],
@@ -217,11 +217,24 @@ export function AssessmentFlow() {
   const handleDetailsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (userInfo.name && userInfo.email && userInfo.location) {
+      const surveyAnswers = answers.map((ans, i) => {
+        if (!questions[i]) return "";
+        return `Q: ${questions[i].question}\nA: ${ans.map(id => questions[i].options.find(o => o.id === id)?.label).join(", ")}`;
+      }).filter(Boolean).join("\n\n");
+
+      const recommendedCourses = results.map(r => r.title).join(", ");
+
       try {
         await fetch("/api/leads", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: userInfo.name, email: userInfo.email, location: userInfo.location })
+          body: JSON.stringify({ 
+            name: userInfo.name, 
+            email: userInfo.email, 
+            location: userInfo.location,
+            recommended_courses: recommendedCourses,
+            survey_answers: surveyAnswers
+          })
         });
       } catch (err) {
         console.error("Failed to save lead", err);

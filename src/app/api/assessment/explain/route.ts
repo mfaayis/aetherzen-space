@@ -25,18 +25,19 @@ A mathematical scoring algorithm has identified the best 4 courses for this stud
 ${matches.map((m: any, i: number) => `${i + 1}. ${m.title} (Category: ${m.category}, Match: ${m.matchPercentage})`).join('\n')}
 
 YOUR TASK:
-Write a 2-3 sentence personalized explanation for EACH course explaining specifically why it fits this student's profile. Reference their exact interests, working style, and motivations from the profile above.
+1. Write a 2-3 sentence personalized explanation for EACH course explaining specifically why it fits this student's profile. Reference their exact interests, working style, and motivations from the profile above.
+2. If the original course title looks like a weird concatenation or grammatically incorrect (e.g., "B.Com in BA Political Science", "B.Sc in BA Journalism & Digital Humanities", "Diploma in BA Economics"), CORRECT IT to a realistic, standard Indian course name (e.g., "B.A. Political Science", "B.A. Journalism & Digital Humanities", "Diploma in Economics"). Ensure the degree makes sense.
 
 RULES:
-- Be direct and specific — mention the student's actual traits (e.g., "your interest in Biology", "your preference for hands-on work")
-- Do NOT use vague phrases like "aligns well" or "is a good fit" without explaining why
-- Do NOT use caveats like "even though", "despite", "although" — if you feel the need to, the match is poor and you should state plainly what aspects align and what to be aware of
-- Keep each explanation to 2-3 sentences max
+- Be direct and specific — mention the student's actual traits.
+- Do NOT use vague phrases like "aligns well" or "is a good fit" without explaining why.
+- Keep each explanation to 2-3 sentences max.
 
-Return STRICTLY as a JSON array:
+Return STRICTLY as a JSON array (ensure the array maintains the exact 1 to 4 order):
 [
   {
-    "title": "Exact Course Name Here",
+    "id": 1,
+    "title": "Clean, Corrected Course Name Here",
     "explanation": "Your 2-3 sentence explanation here."
   }
 ]

@@ -3,7 +3,7 @@ import { supabase } from "@/lib/supabase";
 
 export async function POST(req: Request) {
   try {
-    const { name, email, location } = await req.json();
+    const { name, email, location, recommended_courses, survey_answers } = await req.json();
 
     if (!name || !email) {
       return NextResponse.json({ error: "Name and email are required" }, { status: 400 });
@@ -29,6 +29,8 @@ export async function POST(req: Request) {
         country,
         city,
         region,
+        recommended_courses,
+        survey_answers,
         created_at: new Date().toISOString() 
       }]);
 

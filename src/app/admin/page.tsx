@@ -10,6 +10,8 @@ type Lead = {
   country: string | null;
   city: string | null;
   region: string | null;
+  recommended_courses: string | null;
+  survey_answers: string | null;
   created_at: string;
 };
 
@@ -21,6 +23,7 @@ export default function AdminDashboard() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState("");
+  const [selectedSurvey, setSelectedSurvey] = useState<{name: string, answers: string} | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -134,18 +137,20 @@ export default function AdminDashboard() {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[800px]">
+            <table className="w-full text-left border-collapse min-w-[1000px]">
               <thead>
                 <tr className="border-b border-white/10 bg-black/20 text-xs uppercase tracking-widest text-neutral-500 font-bold">
                   <th className="p-4 font-sans">User</th>
                   <th className="p-4 font-sans">Location</th>
+                  <th className="p-4 font-sans w-1/3">Recommended Courses</th>
                   <th className="p-4 font-sans">Date Submitted</th>
+                  <th className="p-4 font-sans">Survey</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
                 {filteredLeads.length === 0 ? (
                   <tr>
-                    <td colSpan={3} className="p-12 text-center text-neutral-500 font-sans">
+                    <td colSpan={5} className="p-12 text-center text-neutral-500 font-sans">
                       No leads found matching your search.
                     </td>
                   </tr>
@@ -162,26 +167,31 @@ export default function AdminDashboard() {
                           </span>
                         </div>
                       </td>
-                      <td className="p-4">
+                      <td className="p-4 align-top">
+                        <div className="flex items-center gap-2 mb-1">
+                          <MapPin size={14} className="text-emerald-500" />
+                          <span className="text-white text-sm font-medium">{lead.city !== "Unknown" && lead.city ? lead.city : "Unknown City"}</span>
+                        </div>
+                        <span className="text-neutral-500 text-xs block ml-6">
+                          {lead.region !== "Unknown" && lead.region ? `${lead.region}, ` : ""}
+                          {lead.country !== "Unknown" && lead.country ? lead.country : "Unknown Country"}
+                        </span>
+                      </td>
+                      <td className="p-4 align-top">
+                        <div className="text-neutral-300 text-sm whitespace-pre-wrap">{lead.recommended_courses ? lead.recommended_courses.split(", ").map((c, i) => <div key={i}>• {c}</div>) : "N/A"}</div>
+                      </td>
+                      <td className="p-4 align-top text-neutral-400 text-sm whitespace-nowrap">
                         <div className="flex items-center gap-2">
-                          <MapPin size={16} className="text-emerald-400 shrink-0" />
-                          <div className="flex flex-col">
-                            <span className="text-white text-sm">{lead.city !== "Unknown" && lead.city ? lead.city : "Unknown City"}</span>
-                            <span className="text-neutral-500 text-xs">
-                              {lead.country !== "Unknown" && lead.country ? lead.country : "Unknown Country"}
-                              {lead.region && lead.region !== "Unknown" ? ` (${lead.region})` : ""}
-                            </span>
-                          </div>
+                          <Clock size={14} />
+                          {new Date(lead.created_at).toLocaleString()}
                         </div>
                       </td>
-                      <td className="p-4">
-                        <div className="flex items-center gap-2 text-neutral-300 text-sm font-sans">
-                          <Clock size={14} className="text-neutral-500" />
-                          {new Date(lead.created_at).toLocaleDateString(undefined, { 
-                            year: 'numeric', month: 'short', day: 'numeric',
-                            hour: '2-digit', minute: '2-digit'
-                          })}
-                        </div>
+                      <td className="p-4 align-top">
+                        {lead.survey_answers ? (
+                          <button onClick={() => setSelectedSurvey({ name: lead.name, answers: lead.survey_answers! })} className="text-blue-400 hover:text-blue-300 text-xs bg-blue-500/10 px-3 py-1.5 rounded-lg border border-blue-500/20 whitespace-nowrap transition-colors">
+                            View Survey
+                          </button>
+                        ) : <span className="text-neutral-600 text-xs">N/A</span>}
                       </td>
                     </tr>
                   ))
@@ -191,6 +201,20 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+      
+      {selectedSurvey && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setSelectedSurvey(null)}>
+          <div className="bg-neutral-900 border border-white/10 rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col overflow-hidden shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="p-6 border-b border-white/10 flex justify-between items-center bg-black/40">
+              <h3 className="text-xl font-heading font-bold text-white">{selectedSurvey.name}'s Survey</h3>
+              <button onClick={() => setSelectedSurvey(null)} className="text-neutral-400 hover:text-white transition-colors">✕</button>
+            </div>
+            <div className="p-6 overflow-y-auto whitespace-pre-wrap text-sm text-neutral-300 font-sans leading-relaxed">
+              {selectedSurvey.answers}
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
