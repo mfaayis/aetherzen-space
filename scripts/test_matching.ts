@@ -1,4 +1,5 @@
 import { calculateStudentVector, scoreCourses } from '../src/lib/matching';
+import { courseTags } from '../src/data/courseTags';
 import { assessmentQuestions } from '../src/data/assessmentQuestions';
 
 const answers = [
@@ -17,7 +18,7 @@ const answers = [
 const vector = calculateStudentVector(answers, assessmentQuestions);
 console.log("Student Vector:", vector);
 
-const results = scoreCourses(vector, "pcm");
+const results = scoreCourses(courseTags, vector, "pcm");
 console.log("\nTop 5 Results for Student who dislikes Tech:");
 results.slice(0, 5).forEach((r, i) => console.log(`${i+1}. ${r.title} (${r.matchPercentage}) - Score: ${r.score.toFixed(3)} - Exams: ${r.exams}`));
 

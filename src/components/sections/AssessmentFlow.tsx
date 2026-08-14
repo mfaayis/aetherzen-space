@@ -92,7 +92,7 @@ export function AssessmentFlow() {
       console.error("Failed to load massive course database", err);
     }
     
-    const topMatches = scoreCourses(studentVector, streamId);
+    const topMatches = scoreCourses(courseData, studentVector, streamId);
     
     const profileSummary = finalAnswers.map((ans, i) => {
       if (!questions[i]) return "";

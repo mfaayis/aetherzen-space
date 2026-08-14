@@ -73,16 +73,17 @@ function getEligibleStreams(streamId: string): string[] {
   return [streamId];
 }
 
-export function scoreCourses(studentVector: Record<string, number>, streamId: string): MatchResult[] {
+export function scoreCourses(courseData: CourseTagProfile[], studentVector: Record<string, number>, streamId: string): MatchResult[] {
   // Hard Filter: Only include courses that allow the student's stream
   const eligibleStreamIds = getEligibleStreams(streamId);
-  let eligibleCourses = courseTags.filter(c =>
+  const dataToSearch = courseData && courseData.length > 0 ? courseData : courseTags;
+  let eligibleCourses = dataToSearch.filter(c =>
     c.streams.some(s => eligibleStreamIds.includes(s))
   );
 
   if (eligibleCourses.length === 0) {
     // Fallback: should not happen with well-maintained data
-    eligibleCourses = courseTags;
+    eligibleCourses = dataToSearch;
   }
 
   const scoredCourses = eligibleCourses.map(course => {
