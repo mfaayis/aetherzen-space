@@ -109,12 +109,12 @@ export function scoreCourses(courseData: CourseTagProfile[], studentVector: Reco
     // Cosine similarity gives 0-1 directional alignment
     let similarity = calculateCosineSimilarity(studentVector, course.tags);
 
-    // Core Trait Penalty: if a course has dealbreaker tags the student doesn't have, penalize hard
+    // Core Trait Penalty: if a course has dealbreaker tags the student doesn't have, penalize
     let penalty = 0;
     if (course.coreTags && course.coreTags.length > 0) {
       for (const coreTag of course.coreTags) {
         if (!studentVector[coreTag] || studentVector[coreTag] <= 0) {
-          penalty += 0.5;
+          penalty += 0.2; // Softened penalty so it doesn't instantly zero out
         }
       }
     }
@@ -140,22 +140,23 @@ export function scoreCourses(courseData: CourseTagProfile[], studentVector: Reco
   // Sort descending by score
   scoredCourses.sort((a, b) => b.score - a.score);
 
-  // Only consider courses with a meaningful positive score to avoid garbage results
-  const MINIMUM_SCORE_THRESHOLD = 0.05;
-  const qualified = scoredCourses.filter(c => c.score >= MINIMUM_SCORE_THRESHOLD);
+  // Take Top 4 overall
+  const top4 = scoredCourses.slice(0, 4);
 
-  // Take Top 4 from qualified candidates (fallback to top 4 overall if needed)
-  const top4 = (qualified.length >= 4 ? qualified : scoredCourses).slice(0, 4);
-
-  // Normalization: best match → 97%, others scaled with a power curve for natural spread
-  // NO artificial 60% floor — bad matches will show their true lower scores
-  const maxScore = top4[0]?.score || 1;
+  // Normalization
   const CEILING = 97;
+  const maxScore = Math.max(top4[0]?.score || 0.1, 0.1);
 
-  return top4.map(course => {
-    const relativeRatio = maxScore > 0 ? Math.max(0, course.score / maxScore) : 0;
-    // Power curve (0.6) widens the gap between top and lower matches
-    const percentage = CEILING * Math.pow(relativeRatio, 0.6);
+  return top4.map((course, index) => {
+    let percentage;
+    if (course.score <= 0) {
+       // If the score is zero or negative (terrible match overall), gracefully degrade
+       // 1st = 85%, 2nd = 78%, 3rd = 71%, 4th = 65%
+       percentage = 85 - (index * 7);
+    } else {
+       const relativeRatio = course.score / maxScore;
+       percentage = CEILING * Math.pow(relativeRatio, 0.6);
+    }
 
     return {
       ...course,
