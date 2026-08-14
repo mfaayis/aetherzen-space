@@ -35,7 +35,7 @@ export function AssessmentFlow() {
             setIsComplete(true);
             setIsSharedView(true);
             setIsDetailsSubmitted(true); // skip details for shared view
-            generateFinalBlueprint(decoded);
+            calculateMatches();
           }
         } catch (e) {
           console.error("Failed to parse blueprint data");
