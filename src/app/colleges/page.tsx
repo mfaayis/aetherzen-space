@@ -5,6 +5,8 @@ import { College } from "@/data/colleges";
 import { Search, MapPin, Building2, ExternalLink, GraduationCap, Banknote, ShieldAlert } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
+let cachedCollegeData: College[] = [];
+
 export default function CollegesPage() {
   const [search, setSearch] = useState("");
   const [streamFilter, setStreamFilter] = useState("All");
@@ -12,16 +14,19 @@ export default function CollegesPage() {
   const [locationFilter, setLocationFilter] = useState("All");
   const [selectedCollege, setSelectedCollege] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [collegeData, setCollegeData] = useState<College[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [collegeData, setCollegeData] = useState<College[]>(cachedCollegeData);
+  const [isLoading, setIsLoading] = useState(cachedCollegeData.length === 0);
   const ITEMS_PER_PAGE = 24;
 
   useEffect(() => {
+    if (cachedCollegeData.length > 0) return;
+
     async function loadColleges() {
       try {
         const res = await fetch("/data/colleges.json");
         if (res.ok) {
           const data = await res.json();
+          cachedCollegeData = data;
           setCollegeData(data);
         }
       } catch (err) {

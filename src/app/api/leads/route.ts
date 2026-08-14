@@ -15,9 +15,21 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
     }
 
+    // Extract geolocation headers from Vercel
+    const country = req.headers.get("x-vercel-ip-country") || "Unknown";
+    const city = req.headers.get("x-vercel-ip-city") || "Unknown";
+    const region = req.headers.get("x-vercel-ip-country-region") || "Unknown";
+
     const { error } = await supabase
       .from("leads")
-      .insert([{ name: name.trim(), email: email.trim().toLowerCase(), created_at: new Date().toISOString() }]);
+      .insert([{ 
+        name: name.trim(), 
+        email: email.trim().toLowerCase(), 
+        country,
+        city,
+        region,
+        created_at: new Date().toISOString() 
+      }]);
 
     if (error) {
       // Duplicate email: friendly message
@@ -34,3 +46,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
+

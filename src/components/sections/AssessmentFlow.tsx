@@ -7,6 +7,8 @@ import { generateBlueprintPDF, BlueprintResult } from "@/lib/generatePDF";
 import { assessmentQuestions as questions } from "@/data/assessmentQuestions";
 import { calculateStudentVector, scoreCourses } from "@/lib/matching";
 
+let cachedCourseData: any[] = [];
+
 export function AssessmentFlow() {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<string[][]>([]);
@@ -81,15 +83,18 @@ export function AssessmentFlow() {
     
     const studentVector = calculateStudentVector(finalAnswers, questions);
     const streamId = finalAnswers[0][0]; 
-    
-    let courseData = [];
-    try {
-      const fetchRes = await fetch("/data/courseTags.json");
-      if (fetchRes.ok) {
-        courseData = await fetchRes.json();
+
+    let courseData = cachedCourseData;
+    if (courseData.length === 0) {
+      try {
+        const fetchRes = await fetch("/data/courseTags.json");
+        if (fetchRes.ok) {
+          courseData = await fetchRes.json();
+          cachedCourseData = courseData;
+        }
+      } catch (err) {
+        console.error("Failed to load massive course database", err);
       }
-    } catch (err) {
-      console.error("Failed to load massive course database", err);
     }
     
     const topMatches = scoreCourses(courseData, studentVector, streamId);

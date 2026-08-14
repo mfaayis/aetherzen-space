@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 
+import dynamic from "next/dynamic";
 import { CustomCursor } from "@/components/ui/CustomCursor";
-import { Background3D } from "@/components/canvas/Background3D";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { Navbar } from "@/components/ui/Navbar";
 import { Footer } from "@/components/ui/Footer";
-import { AIChat } from "@/components/ui/AIChat";
+
+const Background3D = dynamic(() => import("@/components/canvas/Background3D").then(mod => mod.Background3D));
+
+const AIChat = dynamic(() => import("@/components/ui/AIChat").then(mod => mod.AIChat));
 
 const inter = Inter({
   variable: "--font-inter",
