@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Download, Share2, Check, Loader2, ChevronDown, ChevronUp,
   CheckCircle2, AlertTriangle, Briefcase, Clock, ArrowRight, RefreshCw,
+  GraduationCap, TrendingUp, Zap, BookOpen,
 } from "lucide-react";
 import { generateBlueprintPDF } from "@/lib/generatePDF";
 import { EnrichedResult, buildUserProfile, rankAndSelectResults, getScoreLabel } from "@/lib/assessmentEngine";
@@ -56,6 +57,16 @@ function getLabelBadge(label: string) {
     "Entrepreneurial Option":"bg-rose-500/20 text-rose-300 border-rose-500/30",
   };
   return map[label] || "bg-white/10 text-white border-white/20";
+}
+
+function getCareerTypeStyle(type: string) {
+  const map: Record<string, { bg: string; text: string; icon: React.ReactNode }> = {
+    academic:       { bg: "bg-blue-500/10 border-blue-500/20",    text: "text-blue-300",   icon: <GraduationCap size={11} /> },
+    employment:     { bg: "bg-indigo-500/10 border-indigo-500/20", text: "text-indigo-300", icon: <Briefcase size={11} /> },
+    entrepreneurial:{ bg: "bg-rose-500/10 border-rose-500/20",    text: "text-rose-300",   icon: <Zap size={11} /> },
+    skill:          { bg: "bg-amber-500/10 border-amber-500/20",   text: "text-amber-300",  icon: <TrendingUp size={11} /> },
+  };
+  return map[type] || { bg: "bg-white/5 border-white/10", text: "text-neutral-400", icon: <BookOpen size={11} /> };
 }
 
 // ── FACTOR BAR ────────────────────────────────────────────────────────────────
@@ -127,8 +138,20 @@ function ResultCard({
             <h3 className="text-xl md:text-2xl font-heading font-bold text-white tracking-tight leading-tight">
               {result.title}
             </h3>
-            {/* Category */}
-            <p className="text-neutral-500 text-xs font-mono uppercase tracking-widest">{result.category}</p>
+            {/* Career type + category row */}
+            <div className="flex flex-wrap items-center gap-2">
+              {(() => {
+                const ct = getCareerTypeStyle(result.careerType);
+                return (
+                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-xs font-semibold ${ct.bg} ${ct.text}`}>
+                    {ct.icon}
+                    {result.careerTypeLabel}
+                  </span>
+                );
+              })()}
+              <span className="text-neutral-600 text-xs font-mono">·</span>
+              <p className="text-neutral-500 text-xs font-mono uppercase tracking-widest">{result.category}</p>
+            </div>
           </div>
 
           {/* Score + expand */}
@@ -187,15 +210,21 @@ function ResultCard({
 
               {/* Factor Breakdown */}
               <div>
-                <p className="text-neutral-500 text-xs font-mono uppercase tracking-widest mb-4">Match Breakdown</p>
+                <div className="flex items-baseline justify-between mb-4">
+                  <p className="text-neutral-500 text-xs font-mono uppercase tracking-widest">Match Breakdown</p>
+                  <p className="text-neutral-700 text-xs font-mono" title="Overall = weighted sum of all factors">
+                    Overall = Σ(factor × weight)
+                  </p>
+                </div>
                 <div className="flex flex-col gap-3">
-                  <FactorBar label="Interest"    value={result.factorScores.interest}    accent={barAccent} />
-                  <FactorBar label="Aptitude"    value={result.factorScores.aptitude}    accent={barAccent} />
-                  <FactorBar label="Work Style"  value={result.factorScores.workStyle}   accent={barAccent} />
-                  <FactorBar label="Environment" value={result.factorScores.environment} accent={barAccent} />
-                  <FactorBar label="Education"   value={result.factorScores.education}   accent={barAccent} />
-                  <div className="flex items-center gap-3 pt-1 border-t border-white/5 mt-1">
-                    <span className="text-white text-xs font-mono w-24 shrink-0 uppercase tracking-wider font-bold">Overall</span>
+                  <FactorBar label={`Interest ×${Math.round(result.factorWeights.interest*100)}%`}    value={result.factorScores.interest}    accent={barAccent} />
+                  <FactorBar label={`Aptitude ×${Math.round(result.factorWeights.aptitude*100)}%`}    value={result.factorScores.aptitude}    accent={barAccent} />
+                  <FactorBar label={`Work Style ×${Math.round(result.factorWeights.workStyle*100)}%`}  value={result.factorScores.workStyle}   accent={barAccent} />
+                  <FactorBar label={`Environ. ×${Math.round(result.factorWeights.environment*100)}%`} value={result.factorScores.environment} accent={barAccent} />
+                  <FactorBar label={`Education ×${Math.round(result.factorWeights.education*100)}%`}  value={result.factorScores.education}   accent={barAccent} />
+                  <FactorBar label={`Risk/Goals ×${Math.round(result.factorWeights.riskGoals*100)}%`} value={result.factorScores.riskGoals}   accent={barAccent} />
+                  <div className="flex items-center gap-3 pt-2 border-t border-white/5 mt-1">
+                    <span className="text-white text-xs font-mono w-28 shrink-0 uppercase tracking-wider font-bold">Overall Score</span>
                     <div className="flex-1 h-2 bg-white/5 rounded-full overflow-hidden">
                       <motion.div
                         className={`h-full rounded-full ${barAccent}`}
@@ -256,8 +285,18 @@ function ResultCard({
                 </div>
               )}
 
-              {/* Indicative Salary */}
-              {(result.salaryEntry || result.salaryMid || result.salaryExperienced) && (
+              {/* Income / Salary */}
+              {result.incomeModel ? (
+                <div>
+                  <p className="text-neutral-500 text-xs font-mono uppercase tracking-widest mb-3">Income Model</p>
+                  <div className="p-4 rounded-xl bg-white/3 border border-white/8 flex flex-col gap-2">
+                    <span className="text-amber-300 text-sm font-semibold">{result.incomeModel}</span>
+                    {result.salaryNote && (
+                      <p className="text-neutral-500 text-xs font-sans leading-relaxed">{result.salaryNote}</p>
+                    )}
+                  </div>
+                </div>
+              ) : (result.salaryEntry || result.salaryMid || result.salaryExperienced) ? (
                 <div>
                   <p className="text-neutral-500 text-xs font-mono uppercase tracking-widest mb-3">
                     Indicative Salary Range
@@ -282,6 +321,21 @@ function ResultCard({
                         <span className="text-white text-sm font-semibold">{result.salaryExperienced}</span>
                       </div>
                     )}
+                  </div>
+                </div>
+              ) : null}
+
+              {/* Recommended Education — for skill/entrepreneurial paths */}
+              {result.recommendedEducation && result.recommendedEducation.length > 0 && (
+                <div>
+                  <p className="text-neutral-500 text-xs font-mono uppercase tracking-widest mb-3">Recommended Education</p>
+                  <div className="flex flex-col gap-1.5">
+                    {result.recommendedEducation.map((edu, i) => (
+                      <div key={i} className="flex items-start gap-2.5">
+                        <GraduationCap size={13} className="text-blue-400 mt-0.5 shrink-0" />
+                        <span className="text-neutral-300 text-sm font-sans">{edu}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
