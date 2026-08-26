@@ -331,6 +331,7 @@ export function AssessmentFlow() {
   const [answers, setAnswers] = useState<string[][]>([]);
   const [currentSelections, setCurrentSelections] = useState<string[]>([]);
   const [isComplete, setIsComplete] = useState(false);
+
   const [isCalculating, setIsCalculating] = useState(false);
   const [results, setResults] = useState<EnrichedResult[]>([]);
   const [expandedIndex, setExpandedIndex] = useState<number>(0); // top result expanded by default
@@ -696,6 +697,22 @@ export function AssessmentFlow() {
                 <p className="text-neutral-400 font-sans text-lg">
                   Enter your details to generate your personalised career PDF.
                 </p>
+                {!isSharedView && (
+                  <div className="mt-4 flex flex-wrap justify-center gap-4 border-t border-white/10 pt-6 w-full max-w-2xl">
+                    <div className="text-center px-4">
+                      <div className="text-neutral-500 text-xs uppercase tracking-widest font-mono mb-1">Prepared For</div>
+                      <div className="text-white font-sans text-lg">{userInfo.name}</div>
+                    </div>
+                    <div className="text-center px-4 border-l border-white/10">
+                      <div className="text-neutral-500 text-xs uppercase tracking-widest font-mono mb-1">Location</div>
+                      <div className="text-white font-sans text-lg">{userInfo.location}</div>
+                    </div>
+                    <div className="text-center px-4 border-l border-white/10">
+                      <div className="text-neutral-500 text-xs uppercase tracking-widest font-mono mb-1">Email</div>
+                      <div className="text-white font-sans text-lg">{userInfo.email}</div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <form onSubmit={handleDetailsSubmit} className="w-full flex flex-col gap-6">
