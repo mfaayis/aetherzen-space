@@ -1,17 +1,7 @@
 import jsPDF from "jspdf";
+import { EnrichedResult } from "@/lib/assessmentEngine";
 
-export interface BlueprintResult {
-  title: string;
-  match: string;
-  desc: string;
-  exams: string[];
-  duration?: string;
-  costRange?: string;
-  salaryRange?: string;
-  jobStats?: string;
-  coreSubjects?: string[];
-  careerOutcomes?: string[];
-}
+export type { EnrichedResult as BlueprintResult };
 
 export interface UserInfo {
   name: string;
@@ -40,7 +30,10 @@ const loadImage = (url: string): Promise<string> => {
   });
 };
 
-export const generateBlueprintPDF = async (results: BlueprintResult[], userInfo?: UserInfo) => {
+export const generateBlueprintPDF = async (
+  results: EnrichedResult[],
+  userInfo?: UserInfo
+) => {
   const doc = new jsPDF({
     orientation: "portrait",
     unit: "mm",
@@ -76,9 +69,8 @@ export const generateBlueprintPDF = async (results: BlueprintResult[], userInfo?
     return false;
   };
 
-  // 1. Header
+  // ── HEADER ──────────────────────────────────────────────────────────────────
   if (logoDataUrl) {
-    // Center logo (w:20, h:20)
     doc.addImage(logoDataUrl, "PNG", pageWidth / 2 - 10, cursorY, 20, 20);
     cursorY += 28;
   } else {
@@ -94,23 +86,31 @@ export const generateBlueprintPDF = async (results: BlueprintResult[], userInfo?
 
   const subText = "CAREER BLUEPRINT";
   doc.setFontSize(11);
-  doc.setTextColor(168, 85, 247); // purple-500
+  doc.setTextColor(168, 85, 247);
   doc.setFont("helvetica", "bold");
   doc.text(subText, (pageWidth - doc.getTextWidth(subText)) / 2, cursorY);
-  cursorY += 20;
+  cursorY += 6;
 
-  if (userInfo && userInfo.name) {
+  const tagline = "Career paths that best match your assessment";
+  doc.setFontSize(9);
+  doc.setTextColor(120, 120, 140);
+  doc.setFont("helvetica", "italic");
+  doc.text(tagline, (pageWidth - doc.getTextWidth(tagline)) / 2, cursorY);
+  cursorY += 18;
+
+  // ── USER INFO ───────────────────────────────────────────────────────────────
+  if (userInfo?.name) {
     doc.setFillColor(20, 20, 20);
     doc.setDrawColor(30, 30, 30);
     doc.roundedRect(margin, cursorY, pageWidth - margin * 2, 25, 3, 3, "FD");
-    
+
     doc.setFontSize(9);
     doc.setTextColor(156, 163, 175);
     doc.setFont("helvetica", "bold");
-    
+
     const col1 = margin + 8;
-    const col2 = margin + (pageWidth - margin*2)/3 + 5;
-    const col3 = margin + ((pageWidth - margin*2)/3)*2;
+    const col2 = margin + (pageWidth - margin * 2) / 3 + 5;
+    const col3 = margin + ((pageWidth - margin * 2) / 3) * 2;
 
     doc.text("PREPARED FOR", col1, cursorY + 10);
     doc.text("EMAIL", col2, cursorY + 10);
@@ -119,135 +119,262 @@ export const generateBlueprintPDF = async (results: BlueprintResult[], userInfo?
     doc.setFontSize(11);
     doc.setTextColor(255, 255, 255);
     doc.setFont("helvetica", "bold");
-    
+
     doc.text(userInfo.name, col1, cursorY + 17);
     doc.text(userInfo.email || "N/A", col2, cursorY + 17);
     doc.text(userInfo.location || "N/A", col3, cursorY + 17);
-    
-    cursorY += 40;
+
+    cursorY += 38;
   } else {
-    cursorY += 10;
+    cursorY += 8;
   }
 
-  doc.setDrawColor(59, 130, 246); // blue-500
+  doc.setDrawColor(59, 130, 246);
   doc.setLineWidth(0.5);
   doc.line(margin, cursorY, pageWidth - margin, cursorY);
-  cursorY += 15;
+  cursorY += 14;
 
-  // 2. Results Section
+  // ── RESULTS ─────────────────────────────────────────────────────────────────
   doc.setFontSize(16);
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
-  doc.text("Top Recommended Paths", margin, cursorY);
-  cursorY += 15;
+  doc.text("Career Paths That Match Your Assessment", margin, cursorY);
+  cursorY += 14;
 
   results.forEach((res, index) => {
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-    const descLines = doc.splitTextToSize(res.desc, pageWidth - margin * 2 - 14);
-    
-    const baseHeight = 35;
+    const descLines = doc.splitTextToSize(
+      res.desc || "",
+      pageWidth - margin * 2 - 14
+    );
+
+    // Why it fits
+    const whyLines: string[][] = (res.whyItFits || []).map((w) =>
+      doc.splitTextToSize(`✓ ${w}`, pageWidth - margin * 2 - 20)
+    );
+    const whyHeight = whyLines.reduce((s, l) => s + l.length * 5, 0);
+
+    // Factor bars (text representation in PDF)
+    const factorHeight = res.factorScores ? 42 : 0;
+
+    const baseHeight = 38;
     const descHeight = descLines.length * 5;
-    const cardHeight = baseHeight + descHeight;
+    const cardHeight = baseHeight + descHeight + whyHeight + factorHeight + 10;
 
     checkPageBreak(cardHeight + 10);
 
-    doc.setFillColor(20, 20, 20);
-    doc.setDrawColor(40, 40, 40);
+    // Card background
+    doc.setFillColor(18, 18, 22);
+    doc.setDrawColor(50, 50, 80);
     doc.roundedRect(margin, cursorY, pageWidth - margin * 2, cardHeight, 4, 4, "FD");
 
-    doc.setFontSize(14);
+    // Label pill
+    const labelColors: Record<string, [number, number, number]> = {
+      "Best Match":             [59, 130, 246],
+      "Strong Alternative":     [99, 102, 241],
+      "Alternative Career Path":[139, 92, 246],
+      "Safe / Stable Option":   [16, 185, 129],
+      "High-Growth Option":     [245, 158, 11],
+      "Entrepreneurial Option": [239, 68, 68],
+    };
+    const [lr, lg, lb] = labelColors[res.resultLabel] || [59, 130, 246];
+    doc.setFillColor(lr, lg, lb);
+    const labelText = res.resultLabel || `#${index + 1}`;
+    const lw = doc.getTextWidth(labelText) + 8;
+    doc.roundedRect(margin + 7, cursorY + 7, lw, 6, 2, 2, "F");
+    doc.setFontSize(7);
     doc.setTextColor(255, 255, 255);
     doc.setFont("helvetica", "bold");
-    doc.text(`${index + 1}. ${res.title}`, margin + 7, cursorY + 12);
-    
-    const matchText = `${res.match} Match`;
-    doc.setFontSize(10);
-    const matchWidth = doc.getTextWidth(matchText);
-    const badgePadding = 4;
-    
-    doc.setFillColor(30, 58, 138); 
-    doc.roundedRect(pageWidth - margin - matchWidth - badgePadding * 2 - 7, cursorY + 7, matchWidth + badgePadding * 2, 7, 2, 2, "F");
-    
-    doc.setTextColor(96, 165, 250); 
+    doc.text(labelText, margin + 11, cursorY + 11.5);
+
+    // Title
+    doc.setFontSize(13);
+    doc.setTextColor(255, 255, 255);
     doc.setFont("helvetica", "bold");
-    doc.text(matchText, pageWidth - margin - matchWidth - badgePadding - 7, cursorY + 12);
+    doc.text(res.title, margin + 7, cursorY + 21);
 
+    // Match % badge
+    const matchText = `${res.matchPercentage} Match`;
     doc.setFontSize(9);
-    doc.setTextColor(156, 163, 175);
-    doc.setFont("helvetica", "italic");
-    let statsText = "";
-    if (res.duration) statsText += `DURATION: ${res.duration}   `;
-    if (res.salaryRange) statsText += `SALARY: ${res.salaryRange}   `;
-    if (res.costRange) statsText += `COST: ${res.costRange}`;
-    doc.text(statsText, margin + 7, cursorY + 22);
+    const matchWidth = doc.getTextWidth(matchText);
+    doc.setFillColor(30, 58, 138);
+    doc.roundedRect(
+      pageWidth - margin - matchWidth - 10,
+      cursorY + 7,
+      matchWidth + 6,
+      7,
+      2, 2, "F"
+    );
+    doc.setTextColor(96, 165, 250);
+    doc.setFont("helvetica", "bold");
+    doc.text(matchText, pageWidth - margin - matchWidth - 7, cursorY + 12.5);
 
-    doc.setFontSize(10);
-    doc.setTextColor(209, 213, 219); 
-    doc.setFont("helvetica", "normal");
-    doc.text(descLines, margin + 7, cursorY + 32);
+    // Confidence
+    const confColors: Record<string, [number, number, number]> = {
+      High:     [16, 185, 129],
+      Moderate: [245, 158, 11],
+      Low:      [239, 68, 68],
+    };
+    const [cr, cg, cb] = confColors[res.confidence] || [120, 120, 120];
+    doc.setTextColor(cr, cg, cb);
+    doc.setFontSize(8);
+    doc.setFont("helvetica", "italic");
+    doc.text(`Confidence: ${res.confidence}`, margin + 7, cursorY + 29);
+
+    let innerY = cursorY + 34;
+
+    // Description
+    if (descLines.length > 0) {
+      doc.setFontSize(9);
+      doc.setTextColor(190, 190, 210);
+      doc.setFont("helvetica", "normal");
+      doc.text(descLines, margin + 7, innerY);
+      innerY += descLines.length * 5 + 4;
+    }
+
+    // Factor scores
+    if (res.factorScores) {
+      doc.setFontSize(8);
+      doc.setTextColor(120, 120, 140);
+      doc.setFont("helvetica", "bold");
+      doc.text("MATCH BREAKDOWN", margin + 7, innerY);
+      innerY += 5;
+
+      const factorLabels: [string, number][] = [
+        ["Interest",    res.factorScores.interest],
+        ["Aptitude",    res.factorScores.aptitude],
+        ["Work Style",  res.factorScores.workStyle],
+        ["Environment", res.factorScores.environment],
+        ["Education",   res.factorScores.education],
+      ];
+      const barWidth = 50;
+      const barH = 3;
+      const colW = (pageWidth - margin * 2 - 14) / 2;
+
+      factorLabels.forEach(([label, value], fi) => {
+        const fx = margin + 7 + (fi % 2) * colW;
+        const fy = innerY + Math.floor(fi / 2) * 9;
+
+        doc.setFontSize(7);
+        doc.setTextColor(180, 180, 200);
+        doc.setFont("helvetica", "normal");
+        doc.text(`${label}: ${value}%`, fx, fy);
+
+        // Background bar
+        doc.setFillColor(40, 40, 60);
+        doc.roundedRect(fx, fy + 1.5, barWidth, barH, 1, 1, "F");
+        // Fill bar
+        const fillW = (value / 100) * barWidth;
+        doc.setFillColor(lr, lg, lb);
+        doc.roundedRect(fx, fy + 1.5, fillW, barH, 1, 1, "F");
+      });
+
+      innerY += Math.ceil(factorLabels.length / 2) * 9 + 3;
+    }
+
+    // Why it fits
+    if (whyLines.length > 0) {
+      doc.setFontSize(8);
+      doc.setTextColor(120, 120, 140);
+      doc.setFont("helvetica", "bold");
+      doc.text("WHY IT FITS", margin + 7, innerY);
+      innerY += 4;
+      doc.setTextColor(16, 185, 129);
+      doc.setFont("helvetica", "normal");
+      for (const lines of whyLines) {
+        doc.text(lines, margin + 7, innerY);
+        innerY += lines.length * 5;
+      }
+    }
+
+    // Salary (indicative)
+    if (res.salaryEntry) {
+      innerY += 2;
+      doc.setFontSize(8);
+      doc.setTextColor(120, 120, 140);
+      doc.setFont("helvetica", "bold");
+      doc.text("INDICATIVE SALARY RANGE", margin + 7, innerY);
+      innerY += 4;
+      doc.setTextColor(200, 200, 200);
+      doc.setFont("helvetica", "normal");
+      const salStr = [
+        res.salaryEntry ? `Entry: ${res.salaryEntry}` : null,
+        res.salaryMid ? `Mid: ${res.salaryMid}` : null,
+        res.salaryExperienced ? `Experienced: ${res.salaryExperienced}` : null,
+      ].filter(Boolean).join("  |  ");
+      doc.text(salStr, margin + 7, innerY);
+    }
 
     cursorY += cardHeight + 8;
   });
 
   cursorY += 5;
 
-  // 3. Next Steps
-  checkPageBreak(80);
+  // ── NEXT STEPS ───────────────────────────────────────────────────────────────
+  const top = results[0];
+  if (top?.nextSteps?.length) {
+    checkPageBreak(80);
 
-  doc.setFontSize(16);
-  doc.setTextColor(255, 255, 255);
-  doc.setFont("helvetica", "bold");
-  doc.text("Action Plan", margin, cursorY);
-  cursorY += 12;
+    doc.setFontSize(14);
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    doc.text("What To Do Next", margin, cursorY);
+    cursorY += 4;
 
-  const uniqueExams = Array.from(new Set(results.flatMap(r => r.exams || [])));
-  
-  let examText = "Check official entrance exam dates and deadlines.";
-  if (uniqueExams.length > 0) {
-    examText = `Check official entrance exam dates for: ${uniqueExams.join(", ")}.`;
+    doc.setFontSize(9);
+    doc.setTextColor(120, 120, 140);
+    doc.setFont("helvetica", "italic");
+    doc.text(`For your top match: ${top.title}`, margin, cursorY);
+    cursorY += 10;
+
+    const stepsBoxHeight = top.nextSteps.length * 9 + 10;
+    doc.setFillColor(18, 18, 22);
+    doc.setDrawColor(40, 40, 60);
+    doc.roundedRect(margin, cursorY, pageWidth - margin * 2, stepsBoxHeight, 4, 4, "FD");
+
+    let stepY = cursorY + 10;
+    top.nextSteps.forEach((step, si) => {
+      doc.setFillColor(59, 130, 246);
+      doc.circle(margin + 10, stepY - 1.5, 2, "F");
+      doc.setFontSize(8);
+      doc.setTextColor(255, 255, 255);
+      doc.setFont("helvetica", "bold");
+      doc.text(`Step ${si + 1}`, margin + 15, stepY - 1);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(200, 200, 220);
+      const stepLines = doc.splitTextToSize(step, pageWidth - margin * 2 - 40);
+      doc.text(stepLines, margin + 35, stepY - 1);
+      stepY += 9;
+    });
+
+    cursorY += stepsBoxHeight + 10;
   }
 
-  const steps = [
-    "Explore these specific courses in our Course Directory.",
-    "Search for top-ranked colleges offering these programs.",
-    examText,
-    "Use the NextStep AI Counselor for specific follow-up questions."
-  ];
-
-  const stepsBoxHeight = steps.length * 10 + 10;
-  doc.setFillColor(20, 20, 20);
-  doc.setDrawColor(40, 40, 40);
-  doc.roundedRect(margin, cursorY, pageWidth - margin * 2, stepsBoxHeight, 4, 4, "FD");
-  
-  let stepY = cursorY + 12;
-  steps.forEach(step => {
-    doc.setFillColor(168, 85, 247); 
-    doc.circle(margin + 10, stepY - 1, 1.5, "F"); 
-    doc.setFontSize(11);
-    doc.setTextColor(209, 213, 219);
-    doc.setFont("helvetica", "normal");
-    
-    const stepLines = doc.splitTextToSize(step, pageWidth - margin * 2 - 20);
-    doc.text(stepLines, margin + 15, stepY);
-    stepY += stepLines.length * 6 + 4;
-  });
-  
-  // 4. Footer
+  // ── FOOTER ───────────────────────────────────────────────────────────────────
   const footerY = pageHeight - 15;
   doc.setDrawColor(40, 40, 40);
   doc.line(margin, footerY - 5, pageWidth - margin, footerY - 5);
-  
-  doc.setFontSize(9);
-  doc.setTextColor(100, 116, 139); 
+
+  doc.setFontSize(8);
+  doc.setTextColor(100, 116, 139);
   doc.setFont("helvetica", "normal");
-  doc.text("Generated by NextStep Career Guidance Platform", margin, footerY);
-  
-  const dateStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  doc.text(
+    "Generated by NextStep Career Guidance Platform  |  Scores reflect assessment answers only. Salary figures are indicative.",
+    margin,
+    footerY,
+    { maxWidth: pageWidth - margin * 2 }
+  );
+
+  const dateStr = new Date().toLocaleDateString("en-IN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
   const urlText = `Date: ${dateStr}`;
   const urlWidth = doc.getTextWidth(urlText);
-  doc.text(urlText, pageWidth - margin - urlWidth, footerY);
+  doc.text(urlText, pageWidth - margin - urlWidth, footerY - 5);
 
-  const filename = userInfo?.name ? `NextStep_Blueprint_${userInfo.name.replace(/\s+/g, '_')}.pdf` : "NextStep-Career-Blueprint.pdf";
+  const filename = userInfo?.name
+    ? `NextStep_Blueprint_${userInfo.name.replace(/\s+/g, "_")}.pdf`
+    : "NextStep-Career-Blueprint.pdf";
   doc.save(filename);
 };

@@ -6,62 +6,79 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const ai = new GoogleGenAI({});
 
+/**
+ * POST /api/assessment/recommend
+ *
+ * Role change: This endpoint NO LONGER calculates match percentages or
+ * generates recommendations. All scoring is done client-side by assessmentEngine.ts.
+ *
+ * This endpoint ONLY enriches the written description for each pre-scored result.
+ * If the API key is unavailable or the call fails, the client uses auto-generated
+ * descriptions and the assessment still works fully.
+ *
+ * Request body:
+ *   { results: Array<{ title: string; matchPercentage: string; whyItFits: string[]; careerPaths: string[] }> }
+ *
+ * Response body:
+ *   { enriched: Array<{ title: string; desc: string }> }
+ */
 export async function POST(req: Request) {
   try {
-    const { studentProfile } = await req.json();
+    const body = await req.json();
+    const { results } = body;
 
-    if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === "YOUR_ACTUAL_KEY_HERE") {
-      return NextResponse.json(
-        { error: "API Key not configured" },
-        { status: 500 }
-      );
+    if (!Array.isArray(results) || results.length === 0) {
+      return NextResponse.json({ enriched: [] });
     }
 
-    const prompt = `You are an expert career counselor in India. A student has completed a career assessment. Their exact answers are:
+    if (
+      !process.env.GEMINI_API_KEY ||
+      process.env.GEMINI_API_KEY === "YOUR_ACTUAL_KEY_HERE"
+    ) {
+      // Gracefully skip enrichment — client descriptions will be used instead
+      return NextResponse.json({ enriched: [] });
+    }
 
-${studentProfile}
+    const summaries = results
+      .map(
+        (r: { title: string; matchPercentage: string; whyItFits: string[]; careerPaths: string[] }, i: number) =>
+          `${i + 1}. ${r.title} (${r.matchPercentage} match)\n` +
+          `   Why it fits: ${r.whyItFits?.join("; ") || "N/A"}\n` +
+          `   Career paths: ${r.careerPaths?.slice(0, 3).join(", ") || "N/A"}`
+      )
+      .join("\n\n");
 
-YOUR TASK:
-Based ONLY on this profile, recommend the TOP 4 absolute best, REAL-WORLD courses/degrees available in India for this student. 
+    const prompt = `You are a career guidance writer. For each course below, write a single clear, factual, 2-sentence description explaining what studying this course leads to professionally. Do NOT invent or exaggerate. Do NOT mention match percentages or scores. Use neutral, evidence-based language.
 
-CRITICAL RULES:
-- The courses MUST BE REAL and widely recognized (e.g. "B.Tech Computer Science", "B.A. Psychology", "B.Des Communication Design", "Chartered Accountancy"). Do NOT invent weird concatenated titles.
-- Order them from best match to 4th best match.
-- Provide a realistic match percentage (e.g., "98%", "95%", "92%", "88%"). Do not just give 100% or 10%.
-- Keep the personalized description ('desc') to exactly 2-3 sentences, explaining WHY this course fits their specific answers.
-- Return EXACTLY in this JSON array format, and nothing else:
+Courses to describe:
 
+${summaries}
+
+Return ONLY a JSON array in this exact format — no markdown, no extra text:
 [
-  {
-    "title": "Course Title",
-    "matchPercentage": "95%",
-    "desc": "Personalized explanation here...",
-    "category": "Broad Category (e.g., Engineering, Arts, Business)",
-    "exams": ["List", "Of", "Entrance", "Exams"],
-    "duration": "e.g. 3 years, 4 years",
-    "costRange": "e.g. ₹2L - ₹10L",
-    "salaryRange": "e.g. ₹4L - ₹15L",
-    "jobStats": "Steady demand",
-    "coreSubjects": ["Subject 1", "Subject 2", "Subject 3"],
-    "careerOutcomes": ["Role 1", "Role 2", "Role 3"]
-  }
-]
-`;
+  { "title": "exact course title from above", "desc": "2-sentence description." }
+]`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: "gemini-2.5-flash",
       contents: prompt,
       config: {
         responseMimeType: "application/json",
-      }
+      },
     });
 
-    return NextResponse.json({ result: response.text });
-  } catch (error: any) {
-    console.error("Gemini Recommendation API Error:", error);
-    return NextResponse.json(
-      { error: "Failed to generate recommendations" },
-      { status: 500 }
-    );
+    let enriched: { title: string; desc: string }[] = [];
+    try {
+      enriched = JSON.parse(response.text ?? "[]");
+    } catch {
+      // Malformed response — client uses fallback descriptions
+      enriched = [];
+    }
+
+    return NextResponse.json({ enriched });
+  } catch (error) {
+    console.error("Gemini enrichment API error:", error);
+    // Non-fatal — client uses auto-generated descriptions
+    return NextResponse.json({ enriched: [] });
   }
 }
