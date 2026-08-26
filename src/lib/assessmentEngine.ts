@@ -683,16 +683,38 @@ function buildSalaryFields(course: CourseTagProfile, careerType: CareerType): {
 // Moderate = most factors agree but some are uncertain or conflicting.
 // Low = answers pull in different directions.
 
-function computeConfidence(factors: FactorScores, overall: number): ConfidenceLevel {
-  const vals   = Object.values(factors);
-  const above70 = vals.filter(v => v >= 70).length;
-  const above55 = vals.filter(v => v >= 55).length;
-  const spread  = Math.max(...vals) - Math.min(...vals);
-  const avg     = vals.reduce((a, b) => a + b, 0) / vals.length;
+// ── CONFIDENCE ────────────────────────────────────────────────────────────────
+//
+// Confidence measures how CONSISTENTLY the user's answers point to this career.
+// High = Strong evidence, consistent factors, minimal contradictory signals.
+// Moderate = Good evidence, but some uncertainty or conflicting signals.
+// Low = Weak, conflicting or insufficient evidence.
 
-  if (above70 >= 4 && overall >= 78 && spread < 28 && avg >= 70) return "High";
-  if (above55 >= 4 && overall >= 63 && spread < 42)              return "Moderate";
-  return "Low";
+function computeConfidence(factors: FactorScores, overall: number): ConfidenceLevel {
+  const vals = Object.values(factors);
+  const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+  
+  // Count how many factors are exceptionally high (strong evidence)
+  const strongSignals = vals.filter(v => v >= 80).length;
+  // Count how many factors are very low (contradictory signals)
+  const contradictorySignals = vals.filter(v => v < 50).length;
+  // Measure consistency (variance)
+  const variance = vals.reduce((sq, n) => sq + Math.pow(n - avg, 2), 0) / vals.length;
+  const stdDev = Math.sqrt(variance);
+
+  // High Confidence: High overall score, highly consistent (low std dev), 
+  // multiple strong signals, NO contradictory signals.
+  if (overall >= 75 && stdDev < 15 && strongSignals >= 3 && contradictorySignals === 0) {
+    return "High";
+  }
+  
+  // Low Confidence: Overall score is low, OR high contradiction, OR highly inconsistent
+  if (overall < 60 || contradictorySignals >= 2 || stdDev > 25) {
+    return "Low";
+  }
+  
+  // Default to Moderate
+  return "Moderate";
 }
 
 // ── RESULT LABEL ──────────────────────────────────────────────────────────────

@@ -34,6 +34,51 @@ export const generateBlueprintPDF = async (
   results: EnrichedResult[],
   userInfo?: UserInfo
 ) => {
+  // ── 8. SCORE VALIDATION ──────────────────────────────────────────────────────
+  // Validate that all scores and weights are mathematically sound and no data is missing
+  if (!results || results.length === 0) {
+    throw new Error("Validation Error: No results provided for PDF generation.");
+  }
+  
+  const seenTitles = new Set<string>();
+  
+  for (const res of results) {
+    if (!res.title) throw new Error("Validation Error: Missing career title.");
+    
+    // Check duplicates
+    if (seenTitles.has(res.title)) {
+      throw new Error(`Validation Error: Duplicate career recommendation detected (${res.title}).`);
+    }
+    seenTitles.add(res.title);
+    
+    // Validate scores
+    if (isNaN(res.overallScore) || res.overallScore < 0 || res.overallScore > 100) {
+      throw new Error(`Validation Error: Invalid overall score for ${res.title} (${res.overallScore}).`);
+    }
+    
+    // Validate confidence
+    if (!["High", "Moderate", "Low"].includes(res.confidence)) {
+      throw new Error(`Validation Error: Invalid confidence level for ${res.title} (${res.confidence}).`);
+    }
+    
+    // Check for placeholders (basic check)
+    if (res.title.includes("£") || (res.desc && res.desc.includes("£"))) {
+      throw new Error(`Validation Error: Placeholder detected in content for ${res.title}.`);
+    }
+    
+    // Validate weights and mathematical consistency
+    if (res.factorScores && res.factorWeights) {
+      const { interest, aptitude, workStyle, environment, education, riskGoals } = res.factorScores;
+      const w = res.factorWeights;
+      
+      const sumWeights = w.interest + w.aptitude + w.workStyle + w.environment + w.education + w.riskGoals;
+      // Float precision check (0.99 to 1.01)
+      if (sumWeights < 0.99 || sumWeights > 1.01) {
+        throw new Error(`Validation Error: Weights do not sum to 100% for ${res.title} (Sum: ${sumWeights}).`);
+      }
+    }
+  }
+
   const doc = new jsPDF({
     orientation: "portrait",
     unit: "mm",
@@ -149,7 +194,7 @@ export const generateBlueprintPDF = async (
 
     // Why it fits
     const whyLines: string[][] = (res.whyItFits || []).map((w) =>
-      doc.splitTextToSize(`✓ ${w}`, pageWidth - margin * 2 - 20)
+      doc.splitTextToSize(`• ${w}`, pageWidth - margin * 2 - 20)
     );
     const whyHeight = whyLines.reduce((s, l) => s + l.length * 5, 0);
 
@@ -260,7 +305,8 @@ export const generateBlueprintPDF = async (
       doc.setFontSize(7);
       doc.setTextColor(100, 100, 120);
       doc.setFont("helvetica", "normal");
-      doc.text("Overall = Σ(factor × weight)", pageWidth - margin - 7 - doc.getTextWidth("Overall = Σ(factor × weight)"), innerY);
+      const overallStr = `Overall Match: ${res.overallScore}%`;
+      doc.text(overallStr, pageWidth - margin - 7 - doc.getTextWidth(overallStr), innerY);
       
       innerY += 5;
 
