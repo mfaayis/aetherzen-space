@@ -155,10 +155,21 @@ export const generateBlueprintPDF = async (
 
     // Factor bars (text representation in PDF)
     const factorHeight = res.factorScores ? 42 : 0;
+    
+    // Income/Salary height
+    let salaryHeight = 0;
+    if (res.incomeModel) salaryHeight = 15;
+    else if (res.salaryEntry) salaryHeight = 10;
+    
+    // Recommended Education height
+    let eduHeight = 0;
+    if (res.recommendedEducation && res.recommendedEducation.length > 0) {
+      eduHeight = res.recommendedEducation.length * 5 + 8;
+    }
 
-    const baseHeight = 38;
+    const baseHeight = 42;
     const descHeight = descLines.length * 5;
-    const cardHeight = baseHeight + descHeight + whyHeight + factorHeight + 10;
+    const cardHeight = baseHeight + descHeight + whyHeight + factorHeight + salaryHeight + eduHeight + 5;
 
     checkPageBreak(cardHeight + 10);
 
@@ -191,6 +202,14 @@ export const generateBlueprintPDF = async (
     doc.setTextColor(255, 255, 255);
     doc.setFont("helvetica", "bold");
     doc.text(res.title, margin + 7, cursorY + 21);
+    
+    // Career Type
+    if (res.careerTypeLabel) {
+      doc.setFontSize(8);
+      doc.setTextColor(190, 190, 210);
+      doc.setFont("helvetica", "normal");
+      doc.text(`${res.careerTypeLabel} · ${res.category}`, margin + 7, cursorY + 26);
+    }
 
     // Match % badge
     const matchText = `${res.matchPercentage} Match`;
@@ -228,7 +247,7 @@ export const generateBlueprintPDF = async (
       doc.setTextColor(190, 190, 210);
       doc.setFont("helvetica", "normal");
       doc.text(descLines, margin + 7, innerY);
-      innerY += descLines.length * 5 + 4;
+      innerY += descLines.length * 5 + 6;
     }
 
     // Factor scores
@@ -237,14 +256,21 @@ export const generateBlueprintPDF = async (
       doc.setTextColor(120, 120, 140);
       doc.setFont("helvetica", "bold");
       doc.text("MATCH BREAKDOWN", margin + 7, innerY);
+      
+      doc.setFontSize(7);
+      doc.setTextColor(100, 100, 120);
+      doc.setFont("helvetica", "normal");
+      doc.text("Overall = Σ(factor × weight)", pageWidth - margin - 7 - doc.getTextWidth("Overall = Σ(factor × weight)"), innerY);
+      
       innerY += 5;
 
       const factorLabels: [string, number][] = [
-        ["Interest",    res.factorScores.interest],
-        ["Aptitude",    res.factorScores.aptitude],
-        ["Work Style",  res.factorScores.workStyle],
-        ["Environment", res.factorScores.environment],
-        ["Education",   res.factorScores.education],
+        [`Interest (x${Math.round((res.factorWeights?.interest || 0)*100)}%)`,    res.factorScores.interest],
+        [`Aptitude (x${Math.round((res.factorWeights?.aptitude || 0)*100)}%)`,    res.factorScores.aptitude],
+        [`Work Style (x${Math.round((res.factorWeights?.workStyle || 0)*100)}%)`,  res.factorScores.workStyle],
+        [`Environ. (x${Math.round((res.factorWeights?.environment || 0)*100)}%)`, res.factorScores.environment],
+        [`Education (x${Math.round((res.factorWeights?.education || 0)*100)}%)`,   res.factorScores.education],
+        [`Risk/Goals (x${Math.round((res.factorWeights?.riskGoals || 0)*100)}%)`, res.factorScores.riskGoals],
       ];
       const barWidth = 50;
       const barH = 3;
@@ -286,8 +312,27 @@ export const generateBlueprintPDF = async (
       }
     }
 
-    // Salary (indicative)
-    if (res.salaryEntry) {
+    // Income / Salary
+    if (res.incomeModel) {
+      innerY += 2;
+      doc.setFontSize(8);
+      doc.setTextColor(120, 120, 140);
+      doc.setFont("helvetica", "bold");
+      doc.text("INCOME MODEL", margin + 7, innerY);
+      innerY += 4;
+      doc.setTextColor(245, 158, 11); // amber
+      doc.setFont("helvetica", "bold");
+      doc.text(res.incomeModel, margin + 7, innerY);
+      if (res.salaryNote) {
+        innerY += 4;
+        doc.setTextColor(150, 150, 170);
+        doc.setFont("helvetica", "normal");
+        const noteLines = doc.splitTextToSize(res.salaryNote, pageWidth - margin * 2 - 14);
+        doc.text(noteLines, margin + 7, innerY);
+        innerY += (noteLines.length - 1) * 4;
+      }
+      innerY += 4;
+    } else if (res.salaryEntry || res.salaryMid || res.salaryExperienced) {
       innerY += 2;
       doc.setFontSize(8);
       doc.setTextColor(120, 120, 140);
@@ -302,6 +347,23 @@ export const generateBlueprintPDF = async (
         res.salaryExperienced ? `Experienced: ${res.salaryExperienced}` : null,
       ].filter(Boolean).join("  |  ");
       doc.text(salStr, margin + 7, innerY);
+      innerY += 4;
+    }
+    
+    // Recommended Education
+    if (res.recommendedEducation && res.recommendedEducation.length > 0) {
+      innerY += 2;
+      doc.setFontSize(8);
+      doc.setTextColor(120, 120, 140);
+      doc.setFont("helvetica", "bold");
+      doc.text("RECOMMENDED EDUCATION", margin + 7, innerY);
+      innerY += 4;
+      doc.setTextColor(96, 165, 250); // blue-400
+      doc.setFont("helvetica", "normal");
+      for (const edu of res.recommendedEducation) {
+        doc.text(`• ${edu}`, margin + 7, innerY);
+        innerY += 5;
+      }
     }
 
     cursorY += cardHeight + 8;
